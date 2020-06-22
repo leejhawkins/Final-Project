@@ -1,5 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const mongoose = require("mongoose");
+const routes = require("./routes");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -12,12 +15,18 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Define API routes here
-
+app.use(routes);
 // Send every other request to the React app
 // Define any API routes before this runs
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
-});
+
+mongoose.connect(
+  process.env.MONGODB_URI ||
+  "mongodb://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@ds139331.mlab.com:39331/heroku_qsv472z6",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+);
 
 app.listen(PORT, () => {
   console.log(`🌎 ==> API server now on port ${PORT}!`);
