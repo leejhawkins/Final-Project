@@ -2,18 +2,20 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+    firstName: {type:String,required:true},
+    lastName: { type: String, required: true },
     userName: { type: String, required: true },
     password: { type: String, required: true },
     dateOfBirth: Date,
     weight: Number,
-    dateCreated: { type: Date, default: Date.now },
-    workout: [
+    program: String,
+    workouts: [
         {
             // Store ObjectIds in the array
             type: Schema.Types.ObjectId,
             // The ObjectIds will refer to the ids in the Note model
-            score: Number,
             ref: "Workout",
+            score: Number
 
         },
 

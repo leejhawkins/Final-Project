@@ -22,9 +22,7 @@ class LogIn extends Component {
         event.preventDefault();
         console.log(this.state.userName)
 
-        API.getUser({
-            userName: this.state.userName
-        })
+        API.getUser(this.state.userName)
             .then(res => window.location.assign("/users/"+res.data.userName))
             .catch(err => console.log(err));
 

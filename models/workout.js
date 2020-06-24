@@ -3,20 +3,17 @@ const Schema = mongoose.Schema;
 
 const workoutSchema = new Schema({
     type: String,
+    rounds: Number,
     movements: [
-        {name: {type:String,required:true} ,reps:{type:Number,required:true},weight:Number}
-    ],
-    user: [
         {
-            // Store ObjectIds in the array
-            type: Schema.Types.ObjectId,
-            // The ObjectIds will refer to the ids in the Note model
-            score: Schema.Types.score,
-            ref: "User",
-            
+            name: String,
+            reps: Number,
+            weight: Number, 
         },
-            
-    ]
+
+    ],
+    time: Number,
+    createdBy: String
     
 });
 

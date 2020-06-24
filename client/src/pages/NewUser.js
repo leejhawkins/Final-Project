@@ -9,10 +9,13 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 
 class LogIn extends Component {
     state = {
+        firstName: "",
+        lastName: "",
         userName: "",
         password: "",
         dateOfBirth: "",
-        weight: ""
+        weight: "",
+        program: ""
     };
     handleInputChange = event => {
         const { name, value } = event.target;
@@ -25,10 +28,13 @@ class LogIn extends Component {
         console.log(this.state.userName)
 
         API.createUser({
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
             userName: this.state.userName,
             password: this.state.password,
             dateOfBirth: this.state.dateOfBirth,
-            weight: this.state.weight
+            weight: this.state.weight,
+            program: this.state.program
         })
             .then(res => window.location.assign("/"))
             .catch(err => console.log(err));
@@ -50,6 +56,18 @@ class LogIn extends Component {
                 <Row>
                     <Col size="md-10 md-offset-1">
                         <form>
+                            <Input
+                                value={this.state.firstName}
+                                onChange={this.handleInputChange}
+                                name="firstName"
+                                placeholder="First Name"
+                            />
+                            <Input
+                                value={this.state.lastName}
+                                onChange={this.handleInputChange}
+                                name="lastName"
+                                placeholder="Last Name"
+                            />
                             <Input
                                 value={this.state.userName}
                                 onChange={this.handleInputChange}
@@ -73,6 +91,12 @@ class LogIn extends Component {
                                 onChange={this.handleInputChange}
                                 name="weight"
                                 placeholder="weight"
+                            />
+                            <Input
+                                value={this.state.program}
+                                onChange={this.handleInputChange}
+                                name="program"
+                                placeholder="Program"
                             />
                             <FormBtn
                                 disabled={!(this.state.userName && this.state.password && this.state.dateOfBirth && this.state.weight)}
