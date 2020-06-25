@@ -17,6 +17,9 @@ export default {
   saveWorkouts: function(workoutData) {
     return axios.post("/api/workouts", workoutData);
   },
+  getUsers: function() {
+    return axios.get("/api/users")
+  },
   getUser: function(userName) {
     return axios.get("/api/users/"+userName);
   },

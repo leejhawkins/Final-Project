@@ -9,6 +9,7 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 
 class LogIn extends Component {
     state = {
+        users: [],
         firstName: "",
         lastName: "",
         userName: "",
@@ -17,6 +18,10 @@ class LogIn extends Component {
         weight: "",
         program: ""
     };
+    componentDidMount() {
+        API.getUsers().then(res => this.setState({users:res.data}))
+            .catch(err => console.log(err));
+    }
     handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({
@@ -25,19 +30,23 @@ class LogIn extends Component {
     };
     handleFormSubmit = event => {
         event.preventDefault();
-        console.log(this.state.userName)
-
-        API.createUser({
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            userName: this.state.userName,
-            password: this.state.password,
-            dateOfBirth: this.state.dateOfBirth,
-            weight: this.state.weight,
-            program: this.state.program
-        })
-            .then(res => window.location.assign("/"))
-            .catch(err => console.log(err));
+        console.log(this.state.users)
+        if (this.state.users.findIndex(element => element.userName === this.state.userName)===-1) {
+            API.createUser({
+                firstName: this.state.firstName,
+                lastName: this.state.lastName,
+                userName: this.state.userName,
+                password: this.state.password,
+                dateOfBirth: this.state.dateOfBirth,
+                weight: this.state.weight,
+                program: this.state.program
+            })
+                .then(res => window.location.assign("/"))
+                .catch(err => console.log(err));
+        } else {
+            alert("that user name is already taken")
+        }
+       
 
     };
 
