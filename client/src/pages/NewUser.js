@@ -19,7 +19,9 @@ class LogIn extends Component {
         program: ""
     };
     componentDidMount() {
-        API.getUsers().then(res => this.setState({users:res.data}))
+        API.getUsers().then(res => {
+            console.log(res.data)
+            this.setState({users:res.data})})
             .catch(err => console.log(err));
     }
     handleInputChange = event => {

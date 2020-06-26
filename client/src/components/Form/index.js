@@ -25,3 +25,20 @@ export function FormBtn(props) {
     </button>
   );
 }
+
+export function Dropdown(props) {
+  return (
+      <select className="custom-select" id="inputGroupSelect01" {...props}>
+        <option >Workout Type</option>
+        <option value="For Time">For Time</option>
+        <option value="AMRAP">AMRAP</option>
+        <option value="Tabata">Tabata</option>
+      </select>
+
+  )
+}
+
+export function Option(props) {
+  return (<option value={props.name}>{props.name}</option>
+  )
+}

@@ -5,7 +5,8 @@ const workoutsController = require("../../controllers/workoutsController");
 // Matches with "/api/workouts"
 router.route("/")
     .get(workoutsController.findAll)
-    .post(workoutsController.create);
+
+router.route("/:name").post(workoutsController.create)
 
 // Matches with "/api/workouts/:id"
 router

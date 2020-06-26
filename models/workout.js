@@ -2,16 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const workoutSchema = new Schema({
-    type: String,
+    workoutType: String,
     rounds: Number,
-    movements: [
-        {
-            name: String,
-            reps: Number,
-            weight: Number, 
-        },
-
-    ],
+    movementName: [String],
+    movementReps: [Number],
+    movementWeight: [Number],
     time: Number,
     createdBy: String
     

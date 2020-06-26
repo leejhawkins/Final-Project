@@ -11,13 +11,20 @@ module.exports = {
     findById: function (req, res) {
         db.Workout
             .findById(req.params.id)
-            .then(dbModel => res.json(dbModel))
+            .then(dbModel => {
+                console.log(dbModel)
+                res.json(dbModel)})
             .catch(err => res.status(422).json(err));
     },
     create: function (req, res) {
         db.Workout
             .create(req.body)
-            .then(dbModel => res.json(dbModel))
+            .then(dbWorkout => {
+                return db.User.findOneAndUpdate({ userName: req.params.name }, { $push: { workouts: dbWorkout._id } }, { new: true });
+            })
+            .then(dbUser => {
+                console.log(dbUser)
+                res.json(dbUser)})
             .catch(err => res.status(422).json(err));
     },
     update: function (req, res) {

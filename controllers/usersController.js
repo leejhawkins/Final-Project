@@ -12,7 +12,10 @@ module.exports = {
         console.log(req.params.userName)
         db.User
             .findOne({userName:req.params.userName})
-            .then(dbModel => res.json(dbModel))
+            .populate("workouts")
+            .then(dbModel => {
+                console.log(dbModel)
+                res.json(dbModel)})
             .catch(err => res.status(422).json(err));
     },
     create: function (req, res) {

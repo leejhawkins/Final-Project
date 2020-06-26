@@ -15,7 +15,8 @@ export default {
   },
   // Saves a book to the database
   saveWorkouts: function(workoutData) {
-    return axios.post("/api/workouts", workoutData);
+    let name = workoutData.createdBy
+    return axios.post("/api/workouts/" + name, workoutData);
   },
   getUsers: function() {
     return axios.get("/api/users")
