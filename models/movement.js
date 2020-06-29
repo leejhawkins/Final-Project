@@ -5,6 +5,6 @@ const movementSchema = new Schema({
     name: { type: String, required: true },
     type: { type: String, required: true}
 })
-const Movement = mongoose.model.length("Movement",movementSchema);
+const Movement = mongoose.model("Movement",movementSchema);
 
 module.exports = Movement;

@@ -4,16 +4,21 @@ import User from "./pages/Users";
 import LogIn from "./pages/LogIn";
 import NoMatch from "./pages/NoMatch";
 import NewUser from "./pages/NewUser"
+import ProtectedRoute from "./ProtectedRoute"
+import { AuthContext} from "./context/auth";
+
 
 
 function App() {
+  const existingTokens = JSON.parse(localStorage.getItem("tokens"));
   return (
+    <AuthContext.Provider value={existingTokens}>
     <Router>
       <div>
         <Switch>
           <Route exact path="/" component={LogIn} />
           <Route exact path="/new-user" component={NewUser} />
-          <Route exact path="/users/:name" component={User} />
+          <ProtectedRoute />
 
           <Route path="*">
             <NoMatch />
@@ -22,6 +27,7 @@ function App() {
       </div>
 
     </Router>
+    </AuthContext.Provider>
   );
 }
 

@@ -13,6 +13,9 @@ router
     .get(usersController.findOne)
     .put(usersController.update)
     .delete(usersController.remove);
+router
+    .route("/:userName/:password")
+    .get(usersController.checkPassword)
 
 
 

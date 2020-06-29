@@ -6,11 +6,12 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
+import {useAuth} from "../context/auth"
 
 class LogIn extends Component {
     state = {
         userName: "",
-        password: ""
+        password: "",
     };
     handleInputChange = event => {
         const { name, value } = event.target;
@@ -20,11 +21,36 @@ class LogIn extends Component {
     };
     handleFormSubmit = event => {
         event.preventDefault();
-        console.log(this.state.userName)
-
-        API.getUser(this.state.userName)
-            .then(res => window.location.assign("/users/"+res.data.userName))
-            .catch(err => console.log(err));
+        let userData={
+            userName:this.state.userName,
+            password:this.state.password
+        }
+        API.checkPassword(userData)
+            .then(res => {
+                if (res.status===200){
+                    localStorage.setItem("tokens", JSON.stringify(
+                        {
+                            userName:res.data.userName,
+                            gym:res.data.program,
+                            dateOfBirth:res.data.dateOfBirth
+                        }
+                    ));
+                    window.location.assign("/users/"+res.data.userName)
+                } else {
+                    alert("Incorrect user name or password")
+                    this.setState(
+                        {userName: "",
+                        password: ""})
+                }
+            })
+            .catch(err => {
+                alert("Incorrect user name or password")
+                this.setState(
+                 {
+                     userName: "",
+                     password: ""
+                 })
+            })
 
     };
     
@@ -51,6 +77,7 @@ class LogIn extends Component {
                                 placeholder="User Name"
                             />
                             <Input
+                                type="password"
                                 value={this.state.password}
                                 onChange={this.handleInputChange}
                                 name="password"
