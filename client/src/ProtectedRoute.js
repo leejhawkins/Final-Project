@@ -7,7 +7,6 @@ function ProtectedRoute() {
     const isAuthenticated = JSON.parse(localStorage.getItem("tokens"));
 
     return (
-
         <div>
             {isAuthenticated ? (
                 <Route exact path="/users/:name" component={User} />
