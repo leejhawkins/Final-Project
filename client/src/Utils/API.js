@@ -1,3 +1,4 @@
+
 import axios from "axios";
 
 export default {
@@ -10,11 +11,9 @@ export default {
   getWorkouts: function(id) {
     return axios.get("/api/workouts/" + id);
   },
-  
   deleteWorkouts: function(id) {
     return axios.delete("/api/workouts/" + id);
   },
-
   saveWorkouts: function(workoutData) {
     let name = workoutData.createdBy
     return axios.post("/api/workouts/" + name, workoutData);
@@ -31,5 +30,4 @@ export default {
   createUser: function(userData) {
     return axios.post("/api/users",userData)
   }
-  
 };
