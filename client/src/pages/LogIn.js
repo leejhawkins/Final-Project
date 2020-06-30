@@ -58,6 +58,7 @@ class LogIn extends Component {
 
     render() {
         return (
+            <div className= "container">
             <Container fluid>
                 <Row>
                     <Col size="md-12">
@@ -94,11 +95,12 @@ class LogIn extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col size="md-2">
+                    <Col size="md-3">
                         <Link to="/new-user">← New User Sign Up</Link>
                     </Col>
                 </Row>
             </Container>
+            </div>
         )
     }
 

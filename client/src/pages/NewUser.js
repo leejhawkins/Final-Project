@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import DeleteBtn from "../components/Buttons/DeleteBtn";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
+import DeleteBtn from "../components/Buttons/DeleteBtn";
+
 
 class LogIn extends Component {
     state = {
@@ -54,6 +55,7 @@ class LogIn extends Component {
 
     render() {
         return (
+            <div className="container">
             <Container fluid>
                 <Row>
                     <Col size="md-12">
@@ -120,6 +122,7 @@ class LogIn extends Component {
                     </Col>
                 </Row>
             </Container>
+            </div>
         )
     }
 

@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import DeleteBtn from "../components/Buttons/DeleteBtn";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn, Dropdown, Option } from "../components/Form";
+import DeleteBtn from "../components/Buttons/DeleteBtn";
+
 
 class User extends Component {
     state = {
@@ -73,6 +74,7 @@ class User extends Component {
 
     render() {
         return (
+            <div className= "container">
             <Container fluid>
                 <Row>
                     <Col size="md-6">
@@ -259,6 +261,7 @@ class User extends Component {
                     </Col>
                 </Row>
             </Container>
+            </div>
         );
     }
 }
