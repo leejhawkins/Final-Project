@@ -2,6 +2,7 @@
 import axios from "axios";
 
 export default {
+
   getMovements: function () {
     return axios.get("/api/movements");
   },

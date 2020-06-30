@@ -35,7 +35,9 @@
     "if-env": "^1.0.4",
     "mongoose": "^5.9.20",
     "path": "^0.12.7",
+    "react": "^16.13.1",
     "react-calendar": "^3.1.0",
+    "react-router-dom": "^5.2.0",
     "react-sparklines": "^1.7.0",
     "sparklines": "^1.2.0"
   },
