@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import User from "./pages/Users";
 import LogIn from "./pages/LogIn";
 import NoMatch from "./pages/NoMatch";
 import NewUser from "./pages/NewUser"
