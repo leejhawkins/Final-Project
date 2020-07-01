@@ -5,7 +5,7 @@ import React from "react";
 export function Input(props) {
   return (
     <div className="form-group">
-      <input className="form-control" {...props} />
+      <input className="form-control" id={props.name} {...props} />
     </div>
   );
 }
@@ -28,13 +28,13 @@ export function FormBtn(props) {
 
 export function Dropdown(props) {
   return (
-      <select className="custom-select" id="inputGroupSelect01" {...props}>
+      <select className="custom-select" id={props.name} {...props}>
       </select>
 
   )
 }
 
 export function Option(props) {
-  return (<option value={props.name}>{props.name}</option>
+  return (<option id={props.name} value={props.name}>{props.name}</option>
   )
 }

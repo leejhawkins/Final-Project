@@ -1,14 +1,14 @@
 import React from "react";
-import "./style.css";
+import "./DeleteBtn.css";
 
 // The ...props means, spread all of the passed props onto this element
 // That way we don't have to define them all individually
-function DeleteBtn(props) {
+export function DeleteBtn(props) {
   return (
     <span className="delete-btn" {...props} role="button" tabIndex="0">
-      ✗
+      <i class="material-icons">remove_circle_outline</i>
     </span>
   );
 }
 
-export default DeleteBtn;
+
