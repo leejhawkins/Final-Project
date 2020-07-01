@@ -23,9 +23,8 @@ class User extends Component {
         weightsArray: [],
         minutes: "",
         seconds: ""
-
-
     };
+
     componentDidMount() {
         const userName = this.props.match.params.name
         this.getMovements()
@@ -85,6 +84,7 @@ class User extends Component {
 
     render() {
         return (
+            <div className="container">
             <Container fluid>
                 <Row>
                     <Col size="md-6">
@@ -122,7 +122,7 @@ class User extends Component {
                             <h1>Stats Go here</h1>
                         </Jumbotron>
 
-
+                        
                         <h3>Log a Workout </h3>
                         <form>
                             <Row>
@@ -228,13 +228,11 @@ class User extends Component {
 
                         </form>
 
-
-
-
-
                     </Col>
                 </Row>
             </Container>
+            
+            </div>
         );
     }
 }

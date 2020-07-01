@@ -3,7 +3,10 @@ import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
-import { Input, FormBtn } from "../components/Form";
+import { List, ListItem } from "../components/List";
+import { Input, TextArea, FormBtn } from "../components/Form";
+import {useAuth} from "../context/auth"
+import DeleteBtn from "../components/Buttons/DeleteBtn";
 
 
 class LogIn extends Component {
@@ -55,6 +58,7 @@ class LogIn extends Component {
 
     render() {
         return (
+            <div className= "container">
             <Container fluid>
                 <Row>
                     <Col size="md-12">
@@ -91,11 +95,12 @@ class LogIn extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col size="md-2">
+                    <Col size="md-3">
                         <Link to="/new-user">← New User Sign Up</Link>
                     </Col>
                 </Row>
             </Container>
+            </div>
         )
     }
 
