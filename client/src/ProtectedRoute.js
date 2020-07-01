@@ -5,6 +5,7 @@ import User from "./pages/Users";
 
 function ProtectedRoute() {
     const isAuthenticated = JSON.parse(localStorage.getItem("tokens"));
+    
 
     return (
 
