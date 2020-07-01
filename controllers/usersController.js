@@ -13,15 +13,14 @@ module.exports = {
             .findOne({userName:req.params.userName})
             .populate("workouts")
             .then(dbModel => {
+                console.log(dbModel)
                 res.json(dbModel)})
             .catch(err => res.status(422).json(err));
     },
     checkPassword: function (req, res) {
-        console.log(req.params.userName)
         db.User
             .findOne({ userName: req.params.userName,password:req.params.password })
             .then(dbModel => {
-                console.log(dbModel)
                 res.json(dbModel)
             })
             .catch(err => res.status(422).json(err));

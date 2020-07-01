@@ -6,14 +6,11 @@ const workoutSchema = new Schema({
     rounds: Number,
     movements: [
         {
-            type: Schema.Types.ObjectId,
-            ref: "Movement"
+            name: String,
+            reps: Number,
+            weight: Number
         }
     ],
-    movementReps: [Number],
-    movementWeight: [Number],
-    time: Number,
-    createdBy: String
     
 });
 

@@ -34,7 +34,6 @@ class User extends Component {
     getMovements = () => {
         API.getMovements()
             .then(res => {
-                console.log(res.data)
                 this.setState({ movements: res.data })
             })
             .catch(err => console.log(err));
@@ -42,6 +41,7 @@ class User extends Component {
     loadUser = userName => {
         API.getUser(userName)
             .then(res => {
+                console.log(res.data.workouts)
                 this.setState({
                     userInfo: res.data, workouts: res.data.workouts, workoutType: "",
                     rounds: "",
@@ -65,6 +65,7 @@ class User extends Component {
         const movement = {name:this.state.movementName,reps:this.state.reps,weight:this.state.weight}
         const movementArray = this.state.movementArray
         movementArray.push(movement)
+        console.log(movementArray)
         this.setState({movementArray:movementArray,movementName:"",reps:"",weight:""})
     }
     handleFormSubmit = event => {
@@ -73,12 +74,12 @@ class User extends Component {
         API.saveWorkouts({
             workoutType: this.state.workoutType,
             rounds: this.state.rounds,
-            movementName: this.state.movementName,
-            movementReps: this.state.reps,
-            movementWeight: this.state.weight,
-            time: time,
-            createdBy: this.state.userInfo.userName
-        }).then(res => this.loadUser(this.state.userInfo.userName))
+            movements: this.state.movementArray,    
+        },
+        {userName:this.state.userInfo.userName,
+         score: time
+        }
+        ).then(res => this.loadUser(this.state.userInfo.userName))
             .catch(err => console.log(err));
     }
 
@@ -95,19 +96,24 @@ class User extends Component {
                             <List>
                                 {this.state.workouts.map(workout => (
                                     <Row key={workout._id}>
-                                        <Col size="md-3">
+                                        <Col size="md-2">
                                             {workout.workoutType}
                                         </Col>
-                                        <Col size="md-3">
+                                        <Col size="md-2">
 
                                             Time: {Math.floor(workout.time / 60)}:{workout.time % 60}
                                         </Col>
-                                        <Col size="md-3">
+                                        <Col size="md-2">
                                             Rounds: {workout.rounds}
                                         </Col>
-                                        <Col size="md-3">
-
-                                            {workout.movementReps}  {workout.movementName} at {workout.movementWeight} lbs
+                                        <Col size="md-2">
+                                            {workout.movements.map(movement=>(
+                                                <p>
+                                                    {movement.reps}x{movement.name}at{movement.weight}
+                                                </p>
+                                            ))}
+                                        
+                                            
                                         </Col>
 
                                     </Row>
@@ -126,7 +132,7 @@ class User extends Component {
                         <h3>Log a Workout </h3>
                         <form>
                             <Row>
-                                <label for="workoutType">Workout Type</label>
+                                <label htmlFor="workoutType">Workout Type</label>
                                 <Dropdown
                                     value={this.state.workoutType}
                                     onChange={this.handleInputChange}
@@ -152,7 +158,7 @@ class User extends Component {
                                     />
                                 </Row>
                                 <Row>
-                                    <label for="movementName">Movement:</label>
+                                    <label htmlFor="movementName">Movement:</label>
                                     <Dropdown
                                         value={this.state.movementName}
                                         onChange={this.handleInputChange}

@@ -16,9 +16,9 @@ export default {
     return axios.delete("/api/workouts/" + id);
   },
 
-  saveWorkouts: function (workoutData) {
-    let name = workoutData.createdBy
-    return axios.post("/api/workouts/" + name, workoutData);
+  saveWorkouts: function (workoutData,userData) {
+
+    return axios.post("/api/workouts/" + userData.userName+"/"+userData.score, workoutData);
   },
   getUsers: function () {
     return axios.get("/api/users")

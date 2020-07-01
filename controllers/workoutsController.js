@@ -20,7 +20,7 @@ module.exports = {
         db.Workout
             .create(req.body)
             .then(dbWorkout => {
-                return db.User.findOneAndUpdate({ userName: req.params.name }, { $push: { workouts: dbWorkout._id } }, { new: true });
+                return db.User.findOneAndUpdate({ userName: req.params.name }, { $push: { workouts:dbWorkout._id }}, { new: true });
             })
             .then(dbUser => {
                 console.log(dbUser)
