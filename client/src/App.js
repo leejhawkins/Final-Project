@@ -11,7 +11,7 @@ function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
   return (
     <AuthContext.Provider value={existingTokens}>
-      <Nav title="Lee's Gym" />
+      <Nav title="Untitled Fitness App" />
       <Router>
         <div>
           <Switch>
