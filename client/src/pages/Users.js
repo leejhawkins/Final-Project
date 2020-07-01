@@ -75,9 +75,7 @@ class User extends Component {
             workoutType: this.state.workoutType,
             rounds: this.state.rounds,
             movements: this.state.movementArray,    
-        },
-        {userName:this.state.userInfo.userName,
-         score: time
+            scores: {userName:this.state.userInfo.userName,score: time}
         }
         ).then(res => this.loadUser(this.state.userInfo.userName))
             .catch(err => console.log(err));
@@ -99,10 +97,16 @@ class User extends Component {
                                         <Col size="md-2">
                                             {workout.workoutType}
                                         </Col>
-                                        <Col size="md-2">
+                                        {workout.scores.map(score =>(
+                                            <Col size="md-2">
+                                                {score.userName === this.state.userInfo.userName ? (
+                                                    <p>Time: {Math.floor(score.score / 60)}:{score.score % 60}</p>
+                                                ) : ("")}
 
-                                            Time: {Math.floor(workout.time / 60)}:{workout.time % 60}
-                                        </Col>
+
+                                            </Col>
+                                        ))}
+                                       
                                         <Col size="md-2">
                                             Rounds: {workout.rounds}
                                         </Col>
