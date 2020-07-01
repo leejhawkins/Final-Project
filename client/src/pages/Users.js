@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
-
+import Nav from "../components/Nav/index";
 
 class User extends Component {
     state = {
@@ -87,43 +87,16 @@ class User extends Component {
             <div className="container">
             <Container fluid>
                 <Row>
+                    
                     <Col size="md-6">
+
+
                         <Jumbotron>
                             <h1>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h1>
                         </Jumbotron>
-                        {this.state.workouts.length ? (
-                            <List>
-                                {this.state.workouts.map(workout => (
-                                    <Row key={workout._id}>
-                                        <Col size="md-3">
-                                            {workout.workoutType}
-                                        </Col>
-                                        <Col size="md-3">
-
-                                            Time: {Math.floor(workout.time / 60)}:{workout.time % 60}
-                                        </Col>
-                                        <Col size="md-3">
-                                            Rounds: {workout.rounds}
-                                        </Col>
-                                        <Col size="md-3">
-
-                                            {workout.movementReps}  {workout.movementName} at {workout.movementWeight} lbs
-                                        </Col>
-
-                                    </Row>
-                                ))}
-                            </List>
-                        ) : (<h3>Future Workouts Go Here </h3>)}
-
-                    </Col>
-                    <Col size="md-6">
-
-                        <Jumbotron>
-                            <h1>Stats Go here</h1>
-                        </Jumbotron>
-
                         
                         <h3>Log a Workout </h3>
+                        
                         <form>
                             <Row>
                                 <label for="workoutType">Workout Type</label>
@@ -217,7 +190,6 @@ class User extends Component {
                                     />
                                 </Row>
 
-
                                 <FormBtn
                                     disabled={!(this.state.workoutType && this.state.rounds)}
                                     onClick={this.handleFormSubmit}
@@ -227,6 +199,33 @@ class User extends Component {
                             </Container>
 
                         </form>
+
+                    </Col>
+                    <Col size="md-6">
+                    <Jumbotron>
+                            <h1>Stats Go here</h1>
+                        </Jumbotron>
+                        {this.state.workouts.length ? (
+                            <List>
+                                {this.state.workouts.map(workout => (
+                                    <Row key={workout._id}>
+                                        <Col size="md-3">
+                                            {workout.workoutType}
+                                        </Col>
+                                        <Col size="md-3">
+                                            Time: {Math.floor(workout.time / 60)}:{workout.time % 60}
+                                        </Col>
+                                        <Col size="md-3">
+                                            Rounds: {workout.rounds}
+                                        </Col>
+                                        <Col size="md-3">
+                                            {workout.movementReps}  {workout.movementName} at {workout.movementWeight} lbs
+                                        </Col>
+
+                                    </Row>
+                                ))}
+                            </List>
+                        ) : (<h3>Future Workouts Go Here </h3>)}
 
                     </Col>
                 </Row>

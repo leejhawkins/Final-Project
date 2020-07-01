@@ -4,6 +4,7 @@ import User from "../pages/User/User"
 import Log from "../pages/Log/Log"
 import Workouts from "../pages/Workouts/Workouts"
 import Stats from "../pages/Stats/Stats"
+import "../components/Nav/style.css";
 
 function NavTabs() {
   return (

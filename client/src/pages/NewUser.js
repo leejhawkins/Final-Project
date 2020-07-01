@@ -6,7 +6,7 @@ import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import DeleteBtn from "../components/Buttons/DeleteBtn";
-
+import Nav from "../components/Nav/index";
 
 class LogIn extends Component {
     state = {
