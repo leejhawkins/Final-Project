@@ -17,7 +17,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={LogIn} />
             <Route exact path="/new-user" component={NewUser} />
-            <ProtectedRoute />
+            <ProtectedRoute exact path="/users/:name"/>
 
             <Route path="*">
               <NoMatch />

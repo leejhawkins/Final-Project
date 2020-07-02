@@ -6,7 +6,7 @@ import "./SaveBtn.css";
 export function SaveBtn(props) {
     return (
         <span {...props} role="button" tabIndex="0" style={{float:"right"}}>
-            Add Movement<i class="material-icons">queue</i>
+            Add Movement<i className="material-icons">queue</i>
         </span>
     );
 }

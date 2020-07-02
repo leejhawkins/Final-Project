@@ -17,8 +17,8 @@ export default {
   },
 
   saveWorkouts: function (workoutData) {
-    let name = workoutData.createdBy
-    return axios.post("/api/workouts/" + name, workoutData);
+
+    return axios.post("/api/workouts/" + workoutData.scores.userName, workoutData);
   },
   getUsers: function () {
     return axios.get("/api/users")
