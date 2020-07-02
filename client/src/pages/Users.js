@@ -141,7 +141,9 @@ class User extends Component {
                                         placeholder="weight"
                                         
                                     />
-                                    <SaveBtn onClick={()=> this.addMovement()}/>
+                                        <SaveBtn 
+                                        disabled={!(this.state.movementName && this.state.reps)}
+                                        onClick={()=> this.addMovement()}/>
                                 
                                 </Row>
                                 {this.state.movementArray.length ? (
@@ -182,7 +184,7 @@ class User extends Component {
                                 </Row>
 
                                 <FormBtn
-                                    disabled={!(this.state.workoutType && this.state.rounds)}
+                                    disabled={!(this.state.workoutType && this.state.rounds && this.state.movementArray && this.state.minutes)}
                                     onClick={this.handleFormSubmit}
                                 >
                                     Log Workout
@@ -197,27 +199,41 @@ class User extends Component {
 
                         <h3>Future Workouts List</h3>
 
-                        {this.state.workouts.length ? (
-                            <List>
-                                {this.state.workouts.map(workout => (
-                                    <Row key={workout._id}>
-                                        <Col size="md-3">
-                                            {workout.workoutType}
-                                        </Col>
-                                        <Col size="md-3">
-                                            Time: {Math.floor(workout.time / 60)}:{workout.time % 60}
-                                        </Col>
-                                        <Col size="md-3">
-                                            Rounds: {workout.rounds}
-                                        </Col>
-                                        <Col size="md-3">
-                                            {workout.movementReps}  {workout.movementName} at {workout.movementWeight} lbs
-                                        </Col>
+                            {this.state.workouts.length ? (
+                                <List>
+                                    {this.state.workouts.map(workout => (
+                                        <Row key={workout._id}>
+                                            <Col size="md-2">
+                                                {workout.workoutType}
+                                            </Col>
+                                            {workout.scores.map(score => (
+                                                <Col size="md-2">
+                                                    {score.userName === this.state.userInfo.userName ? (
+                                                        <p>Time: {Math.floor(score.score / 60)}:{score.score % 60}</p>
+                                                    ) : ("")}
 
-                                    </Row>
-                                ))}
-                            </List>
-                        ) : (<h3>Future Workouts Go Here </h3>)}
+
+                                                </Col>
+                                            ))}
+
+                                            <Col size="md-2">
+                                                Rounds: {workout.rounds}
+                                            </Col>
+                                            <Col size="md-2">
+                                                {workout.movements.map(movement => (
+                                                    <p>
+                                                        {movement.reps}x{movement.name}at{movement.weight}
+                                                    </p>
+                                                ))}
+
+
+                                            </Col>
+
+                                        </Row>
+                                    ))}
+                                </List>
+                            ) : (<h3>Future Workouts Go Here </h3>)}
+
 
                     </Col>
                     <Col size="md-4">
