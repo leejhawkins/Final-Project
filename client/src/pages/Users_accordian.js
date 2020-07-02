@@ -84,7 +84,9 @@ class User extends Component {
 
     render() {
         return (
+            <Accordian>
             <div className="container">
+                
             <Container fluid>
                 <Row>
                     <Col size="md-4">
@@ -253,6 +255,7 @@ class User extends Component {
             </Container>
             
             </div>
+            </Accordian>
         );
     }
 }

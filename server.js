@@ -21,18 +21,15 @@ app.use(routes);
 // Send every other request to the React app
 // Define any API routes before this runs
 
-// mongoose.connect(
-//   process.env.MONGODB_URI ||
-//   "mongodb://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@ds139331.mlab.com:39331/heroku_qsv472z6",
-//   {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-//   }
-// );
+mongoose.connect(
+  process.env.MONGODB_URI ||
+  "mongodb://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@ds139331.mlab.com:39331/heroku_qsv472z6",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+);
 
-
-// Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/user", { useNewUrlParser: true });
 
 
 app.listen(PORT, () => {

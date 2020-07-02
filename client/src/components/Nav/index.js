@@ -11,13 +11,9 @@ function Nav(props) {
   return (
   
     <nav className="navbar">
-              <img src="https://img.icons8.com/ios-filled/150/ffffff/deadlift.png"/>
-
-      <a className="navbar" href="/">{props.title}</a>
-
-
-      {isAuthenticated ? <button onClick={() => logout()}>logout</button> : ""}
-    
+        <img src="https://img.icons8.com/ios-filled/150/ffffff/deadlift.png"/>
+        {props.title}
+        {isAuthenticated ? <button className="btn" onClick={() => logout()}><img src="https://img.icons8.com/ios-filled/50/ffffff/exit.png"/></button> : ""}
     </nav>
   );
 }
