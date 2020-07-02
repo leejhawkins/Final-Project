@@ -1,7 +1,9 @@
 .jumbotron {
-    height: 50; 
+    height: 25; 
     clear: "both"; 
-    margin-top: 25; 
+    margin-top: 25;
+    color: aliceblue; 
     text-align: center;
-    background-color: gray;
+    background-color: rgb(104,183,76);
 }
+/* style={{ height: 300, clear: "both", paddingTop: 120, textAlign: "center" }} */
