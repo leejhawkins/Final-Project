@@ -5,13 +5,16 @@ import NoMatch from "./pages/NoMatch";
 import NewUser from "./pages/NewUser";
 import ProtectedRoute from "./ProtectedRoute";
 import {AuthContext} from "./context/auth";
-import Nav from "./components/Nav";
+import Nav from "./components/Nav/index";
+// import NavTabs from "./components/NavTabs";
+
 
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
   return (
     <AuthContext.Provider value={existingTokens}>
-      <Nav title="Untitled Fitness App" />
+      <Nav title="X'r Fit" />
+      {/* <NavTabs/> */}
       <Router>
         <div>
           <Switch>

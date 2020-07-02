@@ -1,4 +1,6 @@
 import React from "react";
+import "./style.css";
+
 
 function Nav(props) {
   const logout = () => {
@@ -7,11 +9,11 @@ function Nav(props) {
   };
   const isAuthenticated = JSON.parse(localStorage.getItem("tokens"));
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a className="navbar-brand" href="/">
+  
+    <nav className="navbar">
+        <img src="https://img.icons8.com/ios-filled/150/ffffff/deadlift.png"/>
         {props.title}
-      </a>
-      {isAuthenticated ? <button onClick={() => logout()}>logout</button> : ""}
+        {isAuthenticated ? <button className="btn" onClick={() => logout()}><img src="https://img.icons8.com/ios-filled/50/ffffff/exit.png"/></button> : ""}
     </nav>
   );
 }
