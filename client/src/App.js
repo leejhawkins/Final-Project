@@ -5,7 +5,7 @@ import NoMatch from "./pages/NoMatch";
 import NewUser from "./pages/NewUser";
 import ProtectedRoute from "./ProtectedRoute";
 import {AuthContext} from "./context/auth";
-import Nav from "./components/Nav/index";
+import Nav from "./components/Nav";
 
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
