@@ -8,7 +8,8 @@ const workoutSchema = new Schema({
         {
             name: String,
             reps: Number,
-            weight: Number
+            weight: Number,
+            movementType: String
         }
     ],
     scores: [
