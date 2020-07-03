@@ -4,7 +4,7 @@ import { SaveBtn } from "../components/Buttons/SaveBtn"
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
-import { List } from "../components/List";
+import { List, ListItem } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
 
@@ -43,9 +43,10 @@ class User extends Component {
     loadUser = userName => {
         API.getUser(userName)
             .then(res => {
-                console.log(res.data.workouts)
+                console.log(res.data.dateOfBirth.split("T",1))
                 this.setState({
                     userInfo: res.data, workouts: res.data.workouts, workoutType: "",
+                    dateOfBirth: res.data.dateOfBirth.split("T", 1),
                     rounds: "",
                     movementName: "",
                     reps: "",
@@ -100,7 +101,6 @@ class User extends Component {
         for (let i = 0; i < array.length; i++) {
             roundLength += parseInt(array[i].reps)
         }
-        console.log(roundLength)
         return roundLength
 
     }
@@ -124,6 +124,7 @@ class User extends Component {
         ).then(res => this.loadUser(this.state.userInfo.userName))
             .catch(err => console.log(err));
     }
+    
 
     render() {
         return (
@@ -131,7 +132,14 @@ class User extends Component {
                 <Container fluid>
                     <Row>
                         <Col size="md-4">
-                            <Jumbotron>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</Jumbotron>
+                            <div id="user">
+
+                                <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
+                                <hr></hr>
+                                <p>Date of Birth: {this.state.dateOfBirth}</p>
+                                <p>Weight: {this.state.userInfo.weight}</p>
+                                <p>Gym: {this.state.userInfo.program}</p>
+                            </div>
                             <h3>Log a Workout </h3>
                             <form>
                                 <Row>
@@ -142,7 +150,7 @@ class User extends Component {
                                         name="workoutType"
                                         placeholder="Workout"
                                     >
-                                        <Option selected disabled value="" name="Workout" />
+                                        <Option selected disabled value="" name="Workout Type" />
                                         <Option name="For Time" />
                                         <Option name="AMRAP" />
                                     </Dropdown>
@@ -158,6 +166,26 @@ class User extends Component {
                                             />
                                             <h5>{this.state.workoutType=="For Time" ? "Rounds" : "Minutes"} </h5>
                                         </Row>
+                                        {this.state.movementArray.length ? (
+                                            <List>
+
+                                                {this.state.movementArray.map(movement => (
+                                                    <Row>
+                                                        <Col size="md-4">
+                                                            <p>{movement.reps} {movement.movementType === "cardio" ? "m" : "x"} </p>
+                                                        </Col>
+                                                        <Col size="md-4">
+                                                            <p>{movement.name}</p>
+                                                        </Col>
+                                                        {movement.movementType === "weight" || movement.movementType === "to height" ? (
+                                                            <Col size="md-4">
+                                                                {movement.movementType === "weight" ? <p>at {movement.weight} lbs</p> : <p>to {movement.weight} inches</p>}
+                                                            </Col>
+                                                        ) : ("")}
+                                                    </Row>
+                                                ))}
+                                            </List>
+                                        ) : ("")}
                                         <Row>
                                             <label htmlFor="movementName">Movement:</label>
                                             <Dropdown
@@ -166,13 +194,14 @@ class User extends Component {
                                                 name="movementName"
                                                 placeholder="Movement"
                                             >
-                                                <Option selected disabled value="" name="Choose Movement" />
+                                                <Option selected disabled value="" name="Add Movement" />
                                                 {this.state.movements.map(movement => (
                                                     <Option name={movement.name} key={movement._id} />
                                                 ))}
                                             </Dropdown>
+                                        </Row>
                                             {this.state.movementName ? (
-                                                <div>
+                                                <Row>
                                                     <Input
                                                         value={this.state.reps}
                                                         onChange={this.handleInputChange}
@@ -192,31 +221,8 @@ class User extends Component {
                                                     <SaveBtn
                                                         disabled={!(this.state.movementName && this.state.reps)}
                                                         onClick={() => this.addMovement()} />
-                                                </div>
+                                                </Row>
                                             ) : ("")}
-
-
-                                        </Row>
-                                        {this.state.movementArray.length ? (
-                                            <List>
-
-                                                {this.state.movementArray.map(movement => (
-                                                    <Row>
-                                                        <Col size="md-4">
-                                                            <p>{movement.reps} {movement.movementType==="cardio" ? "m":"x"} </p>
-                                                        </Col>
-                                                        <Col size="md-4">
-                                                            <p>{movement.name}</p>
-                                                        </Col>
-                                                        {movement.movementType==="weight" || movement.movementType==="to height" ? (
-                                                        <Col size="md-4">
-                                                            {movement.movementType==="weight" ? <p>at {movement.weight} lbs</p> : <p>to {movement.weight} inches</p>}
-                                                        </Col>
-                                                        ):("")}
-                                                    </Row>
-                                                ))}
-                                            </List>
-                                        ) : ("")}
 
                                         <Row>
                                             <h5>{this.state.workoutType === "For Time" ? "Time: " : "Score: "}</h5>

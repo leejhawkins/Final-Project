@@ -1,3 +1,11 @@
 .container {
     max-width: 75%;
 }
+#user {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    color: white; 
+    background-color: rgb(104,183,76);
+    padding: 20px;
+    border-radius: 5px;
+}

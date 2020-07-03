@@ -3,5 +3,13 @@
     color:white;
     background-color: rgb(39,79,114);
   }
+.form-control {
+  width: 35%;
+  margin: 10px 5px;
+}
+
+.custom-select {
+  margin-bottom: 10px;
+}
   
   

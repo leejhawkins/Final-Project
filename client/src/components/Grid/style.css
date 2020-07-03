@@ -4,11 +4,12 @@
     color: white
 }
 .row {
-    margin-top: 20px;
-    margin-bottom: 20px;
     color: white;
     border-bottom: gray;
 }
 .container{
     background-color: rgb(39,79,114);
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
+

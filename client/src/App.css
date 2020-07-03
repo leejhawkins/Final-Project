@@ -14,8 +14,12 @@
   color: aliceblue;
 }
 
+
 .App-intro {
   font-size: large;
+}
+#minutes, #seconds {
+  width: 30%;
 }
 
 @keyframes App-logo-spin {
