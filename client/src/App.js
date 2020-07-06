@@ -21,7 +21,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={LogIn} />
             <Route exact path="/new-user" component={NewUser} />
-            <Route exact path="/gyms/:name" componetn={Gym }/>
+            <Route exact path="/gyms/:name" component={Gym}/>
             <ProtectedRoute exact path="/users/:name"/>
 
             <Route path="*">

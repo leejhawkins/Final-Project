@@ -7,29 +7,47 @@ import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
+import moment from 'moment'
 
 
 class Gym extends Component {
     state = {
-        userInfo: {},
-        workouts: [],
+        gym: "",
+        userInfo: [],
+        workouts: []
     }
 
     componentDidMount() {
         const gym = this.props.match.params.name
+        const date = moment().format("DD/MM/YYYY")
+
+    
+
+        this.setState({gym:gym,date:date})
         this.loadUsers(gym)
+        this.getWOD(gym,date)
 
     }
-    loadUser = gym => {
+
+    loadUsers = gym => {
         API.getGymUsers(gym)
             .then(res => {
-                console.log(res.data.workouts)
+                console.log(res.data.users)
                 this.setState({
-                    userInfo: res.data, workouts: res.data.workouts
+                    userInfo: res.data.users
                 })
 
             })
             .catch(err => console.log(err));
+    }
+    getWOD = (gym,date) => {
+        API.getWOD({createdBy:gym,date:date})
+            .then(res => {
+                console.log(res.data)
+                this.setState({
+                    wod: res.data
+                })
+            })
     }
     handleInputChange = event => {
         const { name, value } = event.target;
@@ -44,9 +62,22 @@ class Gym extends Component {
                     <Row>
                         
                         <Col size="md-6">
-                            <Jumbotron>Workouts</Jumbotron>
-
-                            <h3>Recent Workouts</h3>
+                            <div id="wod">
+                                <h5>{this.state.gym}'s Workout of the Day {this.state.date}</h5>
+                                
+                                {this.state.wod ? (
+                                    <div>
+                                    { this.state.wod.workoutType } {this.state.wod.rounds} Rounds
+                                    {this.state.wod.movements.map(movement => (
+                                        <p>
+                                            {movement.reps} {movement.movementType === "cardio" ? "m" : "x"} {movement.name}  {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}{movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
+                                        </p>
+                                    ))}
+                                    </div>
+                                ):("")}
+                            
+                               
+                            </div>
 
                             {this.state.workouts.length ? (
                                 <List>
@@ -82,9 +113,18 @@ class Gym extends Component {
                                         </Row>
                                     ))}
                                 </List>
-                            ) : (<h3>Future Workouts Go Here </h3>)}
+                            ) : (<h3></h3>)}
 
 
+                        </Col>
+                        <Col size="md-6">
+                            <div id="members">
+                                <h2>Members:</h2>
+                                <hr></hr>
+                                {this.state.userInfo.map(member =>(
+                                    <p>{member.firstName}  {member.lastName}</p>
+                                ))}
+                            </div>
                         </Col>
                        
                     </Row>

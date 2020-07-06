@@ -17,7 +17,12 @@ const workoutSchema = new Schema({
             userName: String,
             score: Number
         }
-    ]
+    ],
+    date: {
+        type: Date, 
+        default: Date.now
+    },
+    createdBy: String
     
 });
 

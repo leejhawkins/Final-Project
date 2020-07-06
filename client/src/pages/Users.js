@@ -7,6 +7,8 @@ import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
+import moment from 'moment'
+
 
 
 class User extends Component {
@@ -29,9 +31,20 @@ class User extends Component {
 
     componentDidMount() {
         const userName = this.props.match.params.name
+        
         this.getMovements()
         this.loadUser(userName)
 
+
+    }
+    getWOD = (gym, date) => {
+        API.getWOD({ createdBy: gym, date: date })
+            .then(res => {
+                console.log(res.data)
+                this.setState({
+                    wod: res.data
+                })
+            })
     }
     getMovements = () => {
         API.getMovements()
@@ -43,10 +56,9 @@ class User extends Component {
     loadUser = userName => {
         API.getUser(userName)
             .then(res => {
-                console.log(res.data.dateOfBirth.split("T",1))
                 this.setState({
                     userInfo: res.data, workouts: res.data.workouts, workoutType: "",
-                    dateOfBirth: res.data.dateOfBirth.split("T", 1),
+                    dateOfBirth: moment(res.data.dateOfBirth, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY"),
                     rounds: "",
                     movementName: "",
                     reps: "",
@@ -55,6 +67,8 @@ class User extends Component {
                     minutes: "",
                     seconds: ""
                 })
+                const date = moment().format("DD/MM/YYYY")
+                this.getWOD(this.state.userInfo.program,date)
 
             })
             .catch(err => console.log(err));
@@ -115,11 +129,12 @@ class User extends Component {
         }
         console.log(this.state.userInfo.userName)
        
-        API.saveWorkouts({
+        API.saveWorkoutsByUser({
             workoutType: this.state.workoutType,
             rounds: this.state.rounds,
             movements: this.state.movementArray,
-            scores: { userName: this.state.userInfo.userName, score: rawScore }
+            scores: { userName: this.state.userInfo.userName, score: rawScore },
+            createdBy: this.state.userInfo.userName
         }
         ).then(res => this.loadUser(this.state.userInfo.userName))
             .catch(err => console.log(err));
@@ -143,7 +158,6 @@ class User extends Component {
                             <h3>Log a Workout </h3>
                             <form>
                                 <Row>
-                                    <label htmlFor="workout">Workout </label>
                                     <Dropdown
                                         value={this.state.workoutType}
                                         onChange={this.handleInputChange}
@@ -230,14 +244,14 @@ class User extends Component {
                                                 value={this.state.minutes}
                                                 onChange={this.handleInputChange}
                                                 name="minutes"
-                                                placeholder={this.state.workout === "For Time" ? "Minutes" : "Rounds"}
+                                                placeholder={this.state.workoutType === "For Time" ? "Minutes" : "Rounds"}
                                             />
                                             <h3>{this.state.workout === "For Time" ? " : " : " + "}</h3>
                                             <Input
                                                 value={this.state.seconds}
                                                 onChange={this.handleInputChange}
                                                 name="seconds"
-                                                placeholder={this.state.workout === "For Time" ? "Seconds" : "Reps"}
+                                                placeholder={this.state.workoutType === "For Time" ? "Seconds" : "Reps"}
                                             />
                                         </Row>
 
@@ -298,32 +312,26 @@ class User extends Component {
 
                         </Col>
                         <Col size="md-4">
-                            <Jumbotron>Stats</Jumbotron>
+                            <div id="wod">
+                                <h5>{this.state.userInfo.program}'s Workout of the Day {this.state.date}</h5>
+
+                                {this.state.wod ? (
+                                    <div>
+                                        {this.state.wod.workoutType} {this.state.wod.rounds} Rounds
+                                        {this.state.wod.movements.map(movement => (
+                                            <p>
+                                                {movement.reps} {movement.movementType === "cardio" ? "m" : "x"} {movement.name}  {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}{movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
+                                            </p>
+                                        ))}
+                                    </div>
+                                ) : ("")}
+                                <p><Link to={"../gyms/" + this.state.userInfo.program}>Go to {this.state.userInfo.program}'s page</Link></p>
+
+                            </div>
 
                             <h3>See Workout Stats</h3>
 
-                            {this.state.workouts.length ? (
-                                <List>
-                                    {this.state.workouts.map(workout => (
-                                        <Row key={workout._id}>
-                                            <Col size="md-3">
-                                                {workout.workout}
-                                            </Col>
-                                            <Col size="md-3">
-                                                Time: {Math.floor(workout.time / 60)}:{workout.time % 60}
-                                            </Col>
-                                            <Col size="md-3">
-                                                Rounds: {workout.rounds}
-                                            </Col>
-                                            <Col size="md-3">
-                                                {workout.movementReps}  {workout.movementName} at {workout.movementWeight} lbs
-                                        </Col>
-
-                                        </Row>
-                                    ))}
-                                </List>
-                            ) : (<h3></h3>)}
-
+                            
                         </Col>
                     </Row>
 

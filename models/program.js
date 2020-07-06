@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const programSchema = new Schema({
     name: {type:String,required:true},
     users: [
         {
@@ -11,14 +11,12 @@ const userSchema = new Schema({
     ],
     workouts: [
         {
-            type: Schema.Types.ObjectId,
-            ref: "Workout",
-
+            type:Schema.Types.ObjectId,
+            ref: "Workout"
         },
-
-    ]
+    ],
 });
 
-const User = mongoose.model("User", userSchema);
+const Program = mongoose.model("Program", programSchema);
 
-module.exports = User;
+module.exports = Program;

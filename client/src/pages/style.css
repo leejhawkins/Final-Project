@@ -1,7 +1,7 @@
 .container {
     max-width: 75%;
 }
-#user {
+#user,#members,#wod {
     margin-top: 25px;
     margin-bottom: 25px;
     color: white; 

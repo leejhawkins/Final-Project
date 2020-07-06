@@ -5,8 +5,13 @@ export default {
   getMovements: function () {
     return axios.get("/api/movements");
   },
-  getWorkouts: function () {
-    return axios.get("/api/workouts");
+  getGymUsers: function (gym) {
+    return axios.get("/api/programs/"+gym);
+  },
+  getWOD: function (workoutData) {
+    console.log(workoutData)
+    return axios.get("/api/workouts/"+workoutData.createdBy,workoutData)
+
   },
   getWorkouts: function (id) {
     return axios.get("/api/workouts/" + id);
@@ -16,7 +21,7 @@ export default {
     return axios.delete("/api/workouts/" + id);
   },
 
-  saveWorkouts: function (workoutData) {
+  saveWorkoutsByUser: function (workoutData) {
 
     return axios.post("/api/workouts/" + workoutData.scores.userName, workoutData);
   },
@@ -31,5 +36,8 @@ export default {
   },
   createUser: function (userData) {
     return axios.post("/api/users", userData)
+  },
+  getPrograms() {
+    return axios.get("api/programs")
   }
 };

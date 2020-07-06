@@ -29,10 +29,33 @@ const movementSeed = [
         type: "to height"
     }
 ];
+const programSeed = [
+    {
+        name:"Omnia"
+    },
+    {
+        name:"Crossfit/general"
+    },
+    {
+        name: "Other/Stay at home dad"
+    }
+]
+
 
 db.Movement
     .remove({})
     .then(() => db.Movement.collection.insertMany(movementSeed))
+    .then(data => {
+        console.log(data.result.n + " records inserted!");
+        process.exit(0);
+    })
+    .catch(err => {
+        console.error(err);
+        process.exit(1);
+    });
+db.Program
+    .remove({})
+    .then(() => db.Program.collection.insertMany(programSeed))
     .then(data => {
         console.log(data.result.n + " records inserted!");
         process.exit(0);

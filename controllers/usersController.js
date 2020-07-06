@@ -26,8 +26,10 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
     create: function (req, res) {
-        db.User
-            .create(req.body)
+        db.User.create(req.body)
+            .then(dbUser => {
+                return db.Program.findOneAndUpdate({ name: dbUser.program }, { $push: { users: dbUser._id } }, { new: true });
+            })
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     },

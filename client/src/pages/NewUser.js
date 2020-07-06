@@ -3,13 +3,14 @@ import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
-import { Input, FormBtn } from "../components/Form";
+import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
 
 
 class LogIn extends Component {
     state = {
         users: [],
+        programs: [],
         firstName: "",
         lastName: "",
         userName: "",
@@ -21,8 +22,15 @@ class LogIn extends Component {
     componentDidMount() {
         API.getUsers().then(res => {
             console.log(res.data)
-            this.setState({users:res.data})})
+            this.setState({ users: res.data })
+            API.getPrograms().then(res => {
+                console.log(res.data)
+                this.setState({ programs: res.data })
+                    
+            })
+        })
             .catch(err => console.log(err));
+        
     }
     handleInputChange = event => {
         const { name, value } = event.target;
@@ -33,7 +41,7 @@ class LogIn extends Component {
     handleFormSubmit = event => {
         event.preventDefault();
         console.log(this.state.users)
-        if (this.state.users.findIndex(element => element.userName === this.state.userName)===-1) {
+        if (this.state.users.findIndex(element => element.userName === this.state.userName) === -1) {
             API.createUser({
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
@@ -48,79 +56,84 @@ class LogIn extends Component {
         } else {
             alert("that user name is already taken")
         }
-       
+
 
     };
 
     render() {
         return (
             <div className="container">
-            <Container fluid>
-                <Row>
-                    <Col size="md-12">
-                        <Jumbotron>
-                            <h1>
-                                Fitness App
+                <Container fluid>
+                    <Row>
+                        <Col size="md-12">
+                            <Jumbotron>
+                                <h1>
+                                    Fitness App
                         </h1>
-                        </Jumbotron>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col size="md-10 md-offset-1">
-                        <form>
-                            <Input
-                                value={this.state.firstName}
-                                onChange={this.handleInputChange}
-                                name="firstName"
-                                placeholder="First Name"
-                            />
-                            <Input
-                                value={this.state.lastName}
-                                onChange={this.handleInputChange}
-                                name="lastName"
-                                placeholder="Last Name"
-                            />
-                            <Input
-                                value={this.state.userName}
-                                onChange={this.handleInputChange}
-                                name="userName"
-                                placeholder="User Name"
-                            />
-                            <Input
-                                type="password"
-                                value={this.state.password}
-                                onChange={this.handleInputChange}
-                                name="password"
-                                placeholder="Password"
-                            />
-                            <Input
-                                value={this.state.dateOfBirth}
-                                onChange={this.handleInputChange}
-                                name="dateOfBirth"
-                                placeholder="Date of Birth"
-                            />
-                            <Input
-                                value={this.state.weight}
-                                onChange={this.handleInputChange}
-                                name="weight"
-                                placeholder="weight"
-                            />
-                            <Input
-                                value={this.state.program}
-                                onChange={this.handleInputChange}
-                                name="program"
-                                placeholder="Program"
-                            />
-                            <FormBtn
-                                disabled={!(this.state.userName && this.state.password && this.state.dateOfBirth && this.state.weight)}
-                                onClick={this.handleFormSubmit}
-                            >
-                                Create New User
+                            </Jumbotron>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col size="md-10 md-offset-1">
+                            <form>
+                                <Input
+                                    value={this.state.firstName}
+                                    onChange={this.handleInputChange}
+                                    name="firstName"
+                                    placeholder="First Name"
+                                />
+                                <Input
+                                    value={this.state.lastName}
+                                    onChange={this.handleInputChange}
+                                    name="lastName"
+                                    placeholder="Last Name"
+                                />
+                                <Input
+                                    value={this.state.userName}
+                                    onChange={this.handleInputChange}
+                                    name="userName"
+                                    placeholder="User Name"
+                                />
+                                <Input
+                                    type="password"
+                                    value={this.state.password}
+                                    onChange={this.handleInputChange}
+                                    name="password"
+                                    placeholder="Password"
+                                />
+                                <Input
+                                    value={this.state.dateOfBirth}
+                                    onChange={this.handleInputChange}
+                                    name="dateOfBirth"
+                                    placeholder="Date of Birth"
+                                />
+                                <Input
+                                    value={this.state.weight}
+                                    onChange={this.handleInputChange}
+                                    name="weight"
+                                    placeholder="weight"
+                                />
+                                <Dropdown
+                                    value={this.state.program}
+                                    onChange={this.handleInputChange}
+                                    name="program"
+                                    placeholder="Program"
+                                >
+                                    <Option selected disabled value="" name="Program" />
+                                    {this.state.programs.map(program => (
+                                        <Option name={program.name} key={program._id} />
+                                    ))}
+                                </Dropdown>
+                                <FormBtn
+                                    disabled={!(this.state.userName && this.state.password && this.state.dateOfBirth && this.state.weight)}
+                                    onClick={this.handleFormSubmit}
+                                >
+                                    Create New User
                             </FormBtn>
-                        </form>
-                    </Col>
-                </Row>
-            </Container>
+                            </form>
+                        </Col>
+                    </Row>
+                </Container>
             </div>
         )
     }

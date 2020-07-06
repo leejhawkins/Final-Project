@@ -17,7 +17,6 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
     create: function (req, res) {
-        console.log(req.body)
         db.Workout
             .create(req.body)
             .then(dbWorkout => {
@@ -38,6 +37,13 @@ module.exports = {
         db.Workout
             .findById({ _id: req.params.id })
             .then(dbModel => dbModel.remove())
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+    getWOD: function (req,res) {
+        console.log(req.params.name)
+        db.Workout
+            .findOne({createdBy:req.params.name,data:req.body.date})
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     }
