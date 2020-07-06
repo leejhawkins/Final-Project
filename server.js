@@ -9,7 +9,7 @@ const app = express();
 // const calendar = require("calendar")
 
 // Define middleware here
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
@@ -21,16 +21,22 @@ app.use(routes);
 // Send every other request to the React app
 // Define any API routes before this runs
 
-mongoose.connect(
-  process.env.MONGODB_URI ||
-  "mongodb://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@ds139331.mlab.com:39331/heroku_qsv472z6",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  }
-);
-
-
+mongoose
+  .connect(
+    process.env.MONGODB_URI ||
+      "mongodb://" +
+        process.env.DB_USER +
+        ":" +
+        process.env.DB_PASS +
+        "@ds139331.mlab.com:39331/heroku_qsv472z6",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .catch((err) => {
+    console.log(err);
+  });
 
 app.listen(PORT, () => {
   console.log(`🌎 ==> API server now on port ${PORT}!`);
