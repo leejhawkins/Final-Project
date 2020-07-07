@@ -1,4 +1,5 @@
 const db = require("../models");
+const moment = require("moment")
 
 
 module.exports = {
@@ -41,10 +42,14 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
     getWOD: function (req,res) {
-        console.log(req.params.name)
+        const minDate = moment(req.params.date,"YYYY-MM-DD").format("YYYY-MM-DDT00:00")
+        const maxDate = moment(req.params.date, "YYYY-MM-DD").format("YYYY-MM-DDT23:59")
+        console.log(maxDate)
         db.Workout
-            .findOne({createdBy:req.params.name,data:req.body.date})
-            .then(dbModel => res.json(dbModel))
+            .findOne({createdBy:req.params.createdBy,date:{$gte:minDate,$lte:maxDate}})
+            .then(dbModel => {
+                console.log(dbModel)
+                res.json(dbModel)})
             .catch(err => res.status(422).json(err));
     }
 };

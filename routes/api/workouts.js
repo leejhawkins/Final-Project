@@ -7,7 +7,6 @@ router.route("/")
     .get(workoutsController.findAll)
 
 router.route("/:name")
-    .get(workoutsController.getWOD)
     .post(workoutsController.create)
 
 // Matches with "/api/workouts/:id"
@@ -16,6 +15,9 @@ router
     .get(workoutsController.findById)
     .put(workoutsController.update)
     .delete(workoutsController.remove);
+
+router.route("/:createdBy/:date")
+    .get(workoutsController.getWOD)
 
 
 

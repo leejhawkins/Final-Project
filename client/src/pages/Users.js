@@ -56,6 +56,7 @@ class User extends Component {
     loadUser = userName => {
         API.getUser(userName)
             .then(res => {
+                console.log(res.data.workouts)
                 this.setState({
                     userInfo: res.data, workouts: res.data.workouts, workoutType: "",
                     dateOfBirth: moment(res.data.dateOfBirth, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY"),
@@ -67,7 +68,7 @@ class User extends Component {
                     minutes: "",
                     seconds: ""
                 })
-                const date = moment().format("DD/MM/YYYY")
+                const date = moment().format("YYYY-MM-DD")
                 this.getWOD(this.state.userInfo.program,date)
 
             })
@@ -220,7 +221,7 @@ class User extends Component {
                                                         value={this.state.reps}
                                                         onChange={this.handleInputChange}
                                                         name="reps"
-                                                        placeholder={this.state.movementType === "cardio" ? "Distance" : "Reps"}
+                                                        placeholder={this.state.movementType === "Cardio" ? "Distance" : "Reps"}
                                                     />
                                                     {this.state. movementType=== "weight" || this.state. movementType=== "to height" ? (
                                                         <Input
@@ -285,7 +286,7 @@ class User extends Component {
                                                 {workout.workoutType === "For Time" ? <p>Rounds: {workout.rounds}</p> : ""}
                                                 {workout.movements.map(movement => (
                                                     <p>
-                                                        {movement.reps} {movement.movementType === "cardio" ? "m" : "x"} {movement.name}  {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}{movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
+                                                        {movement.reps} {movement.movementType === "Cardio" ? "m" : "x"} {movement.name}  {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}{movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
                                                     </p>
                                                 ))}
 
@@ -314,13 +315,13 @@ class User extends Component {
                         <Col size="md-4">
                             <div id="wod">
                                 <h5>{this.state.userInfo.program}'s Workout of the Day {this.state.date}</h5>
-
+                                <hr></hr>
                                 {this.state.wod ? (
                                     <div>
                                         {this.state.wod.workoutType} {this.state.wod.rounds} Rounds
                                         {this.state.wod.movements.map(movement => (
                                             <p>
-                                                {movement.reps} {movement.movementType === "cardio" ? "m" : "x"} {movement.name}  {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}{movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
+                                                {movement.reps} {movement.movementType === "Cardio" ? "m" : "x"} {movement.name}  {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}{movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
                                             </p>
                                         ))}
                                     </div>

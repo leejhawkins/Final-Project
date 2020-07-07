@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 const db = require("../models");
 require("dotenv").config();
+const moment = require("moment")
 
 mongoose.connect(
     process.env.MONGODB_URI ||
-    "mongodb://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@ds139331.mlab.com:39331/heroku_qsv472z6",
+    "mongodb://leejhawkins:hotsauce26@ds139331.mlab.com:39331/heroku_qsv472z6",
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -22,7 +23,7 @@ const movementSeed = [
     },
     {
         name: "Run",
-        type: "Cardio"
+        type: "cardio"
     },
     {
         name: "Box Jump",
@@ -40,11 +41,33 @@ const programSeed = [
         name: "Other/Stay at home dad"
     }
 ]
+const workoutSeed = [
+    {
+        workoutType:"For Time",
+        rounds: 3,
+        movements: [
+            {
+                name:"Thruster",
+                reps: 21,
+                weight: 95,
+                movementType: "weight"
+            },
+            {
+                name:"Pull Up",
+                reps: 15,
+                movementType: "body weight"
+            }
+        ],
+        workoutDate: moment().format("YYYY-MM-DD"),
+        createdBy: "Omnia"
 
+    }
 
-db.Movement
+]
+
+db.Workout
     .remove({})
-    .then(() => db.Movement.collection.insertMany(movementSeed))
+    .then(() => db.Workout.collection.insertMany(workoutSeed))
     .then(data => {
         console.log(data.result.n + " records inserted!");
         process.exit(0);
@@ -53,14 +76,14 @@ db.Movement
         console.error(err);
         process.exit(1);
     });
-db.Program
-    .remove({})
-    .then(() => db.Program.collection.insertMany(programSeed))
-    .then(data => {
-        console.log(data.result.n + " records inserted!");
-        process.exit(0);
-    })
-    .catch(err => {
-        console.error(err);
-        process.exit(1);
-    });
+// db.Program
+//     .remove({})
+//     .then(() => db.Program.collection.insertMany(programSeed))
+//     .then(data => {
+//         console.log(data.result.n + " records inserted!");
+//         process.exit(0);
+//     })
+//     .catch(err => {
+//         console.error(err);
+//         process.exit(1);
+//     });

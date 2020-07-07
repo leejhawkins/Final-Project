@@ -19,8 +19,8 @@ class Gym extends Component {
 
     componentDidMount() {
         const gym = this.props.match.params.name
-        const date = moment().format("DD/MM/YYYY")
-
+        const date = moment().format("YYYY-MM-DD")
+        console.log(date)
     
 
         this.setState({gym:gym,date:date})
@@ -32,7 +32,6 @@ class Gym extends Component {
     loadUsers = gym => {
         API.getGymUsers(gym)
             .then(res => {
-                console.log(res.data.users)
                 this.setState({
                     userInfo: res.data.users
                 })
@@ -43,7 +42,7 @@ class Gym extends Component {
     getWOD = (gym,date) => {
         API.getWOD({createdBy:gym,date:date})
             .then(res => {
-                console.log(res.data)
+                console.log(res.data.movements)
                 this.setState({
                     wod: res.data
                 })
@@ -64,7 +63,7 @@ class Gym extends Component {
                         <Col size="md-6">
                             <div id="wod">
                                 <h5>{this.state.gym}'s Workout of the Day {this.state.date}</h5>
-                                
+                                <hr></hr>
                                 {this.state.wod ? (
                                     <div>
                                     { this.state.wod.workoutType } {this.state.wod.rounds} Rounds

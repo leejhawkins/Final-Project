@@ -10,7 +10,7 @@ export default {
   },
   getWOD: function (workoutData) {
     console.log(workoutData)
-    return axios.get("/api/workouts/"+workoutData.createdBy,workoutData)
+    return axios.get("/api/workouts/"+workoutData.createdBy+"/"+ workoutData.date)
 
   },
   getWorkouts: function (id) {
