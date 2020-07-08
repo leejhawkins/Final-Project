@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const db = require("../models");
 require("dotenv").config();
-const moment = require("moment")
 
 mongoose.connect(
     process.env.MONGODB_URI ||
@@ -58,16 +57,15 @@ const workoutSeed = [
                 movementType: "body weight"
             }
         ],
-        workoutDate: moment().format("YYYY-MM-DD"),
-        createdBy: "Omnia"
+        date: Date.now()
 
     }
 
 ]
 
-db.Workout
+db.Movement
     .remove({})
-    .then(() => db.Workout.collection.insertMany(workoutSeed))
+    .then(() => db.Movement.collection.insertMany(movementSeed))
     .then(data => {
         console.log(data.result.n + " records inserted!");
         process.exit(0);
@@ -76,14 +74,14 @@ db.Workout
         console.error(err);
         process.exit(1);
     });
-// db.Program
-//     .remove({})
-//     .then(() => db.Program.collection.insertMany(programSeed))
-//     .then(data => {
-//         console.log(data.result.n + " records inserted!");
-//         process.exit(0);
-//     })
-//     .catch(err => {
-//         console.error(err);
-//         process.exit(1);
-//     });
+db.Program
+    .remove({})
+    .then(() => db.Program.collection.insertMany(programSeed))
+    .then(data => {
+        console.log(data.result.n + " records inserted!");
+        process.exit(0);
+    })
+    .catch(err => {
+        console.error(err);
+        process.exit(1);
+    });

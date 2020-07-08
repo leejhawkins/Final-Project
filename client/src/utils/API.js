@@ -13,6 +13,10 @@ export default {
     return axios.get("/api/workouts/"+workoutData.createdBy+"/"+ workoutData.date)
 
   },
+  submitScore: function (id,workoutData) {
+    console.log(id._id)
+    return axios.put("/api/workouts/"+id._id,workoutData)
+  },
   getWorkouts: function (id) {
     return axios.get("/api/workouts/" + id);
   },

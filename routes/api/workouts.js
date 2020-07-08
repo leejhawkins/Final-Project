@@ -13,7 +13,7 @@ router.route("/:name")
 router
     .route("/:id")
     .get(workoutsController.findById)
-    .put(workoutsController.update)
+    .put(workoutsController.submitScore)
     .delete(workoutsController.remove);
 
 router.route("/:createdBy/:date")
