@@ -6,7 +6,7 @@ import { Col, Row, Container } from "../components/Grid";
 import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
-import moment from 'moment'
+import moment, { now } from 'moment'
 import Calendar from 'react-calendar';
 
 
@@ -26,16 +26,14 @@ class User extends Component {
         weightsArray: [],
         minutes: "",
         seconds: "",
-        date: ""
+        date: "",
+        age:""
     };
 
     componentDidMount() {
-        const userName = this.props.match.params.name
-        
+        const userName = this.props.match.params.name      
         this.getMovements()
         this.loadUser(userName)
-
-
     }
     getWOD = (gym, date) => {
         API.getWOD({ createdBy: gym, date: date })
@@ -59,6 +57,7 @@ class User extends Component {
                 this.setState({
                     userInfo: res.data, workouts: res.data.workouts, workoutType: "",
                     dateOfBirth: moment(res.data.dateOfBirth, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY"),
+                    age: moment(Date()).diff(res.data.dateOfBirth, 'years', true).toFixed(0),
                     rounds: "",
                     movementName: "",
                     reps: "",
@@ -176,6 +175,7 @@ class User extends Component {
                                 <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
                                 <hr></hr>
                                 <p>Date of Birth: {this.state.dateOfBirth}</p>
+                                <p>Age: {this.state.age}</p>
                                 <p>Weight: {this.state.userInfo.weight}</p>
                                 <p>Gym: {this.state.userInfo.program}</p>
                             </div>
