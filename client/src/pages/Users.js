@@ -150,13 +150,15 @@ class User extends Component {
     }
     submitScore =event => {
         event.preventDefault()
+        console.log(this.state.minutes)
         let rawScore; 
         if (this.state.wod.workoutType === "For Time") {
             rawScore = parseInt(this.state.minutes) * 60 + parseInt(this.state.seconds);
         } else {
-            let roundLength = this.getRoundLength(this.state.movementArray)
+            let roundLength = this.getRoundLength(this.state.wod.movements)
             rawScore = parseInt(this.state.minutes) * roundLength + parseInt(this.state.seconds)
         }
+        console.log(rawScore)
         API.submitScore({_id:this.state.wod._id},
             {scores:{ userName: this.state.userInfo.userName, score: rawScore }}
         ).then(res => this.loadUser(this.state.userInfo.userName))
