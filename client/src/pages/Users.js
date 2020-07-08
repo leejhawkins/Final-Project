@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { SaveBtn } from "../components/Buttons/SaveBtn"
-import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
-import { List, ListItem } from "../components/List";
+import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
 import moment from 'moment'
@@ -134,7 +133,7 @@ class User extends Component {
             workoutType: this.state.workoutType,
             rounds: this.state.rounds,
             movements: this.state.movementArray,
-            scores: { userName: this.state.userInfo.userName, score: rawScore },
+            scores: { userName: this.state.userInfo.userName, firstName: this.state.userInfo.firstName, lastName: this.state.userInfo.lastName, score: rawScore },
             date: this.state.date,
             createdBy: this.state.userInfo.userName
         }
@@ -146,6 +145,7 @@ class User extends Component {
     }
     changeWODDate = date => {
         const newDate = moment(date, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DD")
+        this.setState({wodDate:newDate})
         this.getWOD(this.state.userInfo.program, newDate)
     }
     submitScore =event => {
@@ -160,7 +160,7 @@ class User extends Component {
         }
         console.log(rawScore)
         API.submitScore({_id:this.state.wod._id},
-            {scores:{ userName: this.state.userInfo.userName, score: rawScore }}
+            {scores:{ userName: this.state.userInfo.userName, firstName:this.state.userInfo.firstName,lastName:this.state.userInfo.lastName,score: rawScore }}
         ).then(res => this.loadUser(this.state.userInfo.userName))
             .catch(err => console.log(err));
     }
@@ -202,7 +202,7 @@ class User extends Component {
                                                 name="rounds"
                                                 placeholder={this.state.workoutType === "For Time" ? "Rounds" : "Time"}
                                             />
-                                            <h5>{this.state.workoutType=="For Time" ? "Rounds" : "Minutes"} </h5>
+                                            <h5>{this.state.workoutType==="For Time" ? "Rounds" : "Minutes"} </h5>
                                         </Row>
                                         {this.state.movementArray.length ? (
                                             <List>
@@ -246,7 +246,7 @@ class User extends Component {
                                                         name="reps"
                                                         placeholder={this.state.movementType === "cardio" ? "Distance" : "Reps"}
                                                     />
-                                                    {this.state. movementType=== "weight" || this.state. movementType=== "to height" ? (
+                                                    {this.state.movementType=== "weight" || this.state.movementType=== "to height" ? (
                                                         <Input
                                                             value={this.state.weight}
                                                             onChange={this.handleInputChange}
@@ -280,23 +280,24 @@ class User extends Component {
                                                 placeholder={this.state.workoutType === "For Time" ? "Seconds" : "Reps"}
                                             />
                                         </Row>
+                                       
                                         <div>
                                             <Calendar
                                                 onChange={this.changeDate}
                                             />
                                         </div>
-
                                         <FormBtn
                                             disabled={!(this.state.workoutType && this.state.rounds && this.state.movementArray && this.state.minutes)}
                                             onClick={this.handleFormSubmit}
                                         >
                                             Log Workout
-                            </FormBtn>
+                                         </FormBtn>
                                     </Container>
 
                                 ) : ("")}
-
+                              
                             </form>
+                           
 
                         </Col>
                         <Col size="md-4">
@@ -328,24 +329,23 @@ class User extends Component {
                                                 name="seconds"
                                                 placeholder={this.state.wod.workoutType === "For Time" ? "Seconds" : "Reps"}
                                             />
-                                            <div>
-                                                <Calendar
-                                                    onChange={this.changeWODDate}
-                                                />
-                                            </div>
+                                           
                                             <FormBtn
                                                 disabled={!(this.state.seconds && this.state.minutes)}
                                                 onClick={this.submitScore}
                                             >
                                                 Submit Score
-                            </FormBtn>
+                                            </FormBtn>
                                         </Row>
 
                                     </div>
 
-                                ) : ("")}
-                                <p><Link to={"../gyms/" + this.state.userInfo.program}>Go to {this.state.userInfo.program}'s page</Link></p>
-
+                                ) : (<h5>There is no workout for {this.state.wodDate}</h5>)}
+                                <div>
+                                    <Calendar
+                                        onChange={this.changeWODDate}
+                                    />
+                                </div>           
                             </div>
 
 

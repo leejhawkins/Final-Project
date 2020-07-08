@@ -1,10 +1,12 @@
-.navbar {
-  font-size: 60px;
+.navbar-item {
+  font-size:40px;
   color: aliceblue;
   background-color: rgb(39,79,114);
-  /* /* margin-bottom: 30px; */
   
 }
 .img {outline-color: white
 
   ;}
+.navbar-brand {
+  font-size: 40px;
+}

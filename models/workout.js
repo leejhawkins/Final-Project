@@ -15,6 +15,8 @@ const workoutSchema = new Schema({
     scores: [
         {
             userName: String,
+            firstName: String,
+            lastName: String,
             score: Number
         }
     ],

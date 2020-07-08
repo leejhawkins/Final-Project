@@ -14,10 +14,11 @@ function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
   return (
     <AuthContext.Provider value={existingTokens}>
-      <Nav title="X'r Fit" />
+     
       {/* <NavTabs/> */}
       <Router>
         <div>
+          <Nav title="X'r Fit" />
           <Switch>
             <Route exact path="/" component={LogIn} />
             <Route exact path="/new-user" component={NewUser} />
