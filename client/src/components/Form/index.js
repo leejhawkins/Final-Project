@@ -20,7 +20,7 @@ export function TextArea(props) {
 
 export function FormBtn(props) {
   return (
-    <button {...props} style={{ float: "right", marginBottom: 10 }} className="btn btn-success">
+    <button {...props} className="submit">
       {props.children}
     </button>
   );
@@ -30,7 +30,6 @@ export function Dropdown(props) {
   return (
       <select className="custom-select" id={props.name} {...props}>
       </select>
-
   )
 }
 

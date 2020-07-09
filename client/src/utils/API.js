@@ -26,7 +26,6 @@ export default {
   },
 
   saveWorkoutsByUser: function (workoutData) {
-
     return axios.post("/api/workouts/" + workoutData.scores.userName, workoutData);
   },
   getUsers: function () {

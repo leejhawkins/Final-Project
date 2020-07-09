@@ -18,7 +18,4 @@ router
     .get(usersController.checkPassword)
 
 
-
-
-
 module.exports = router;
