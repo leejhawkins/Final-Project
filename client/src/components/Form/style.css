@@ -1,15 +1,15 @@
-.btn {
-    float: Right;
-    color:white;
-    background-color: rgb(39,79,114);
-  }
 .form-control {
   width: 35%;
   margin: 10px 5px;
 }
-
 .custom-select {
   margin-bottom: 10px;
 }
-  
-  
+.submit {
+  margin: 5px;
+  background-color: rgb(104,183,76);
+  border-radius: 5px;
+  padding: 2px;
+  border-color: white;
+  color: white; 
+}  
