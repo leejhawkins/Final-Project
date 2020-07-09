@@ -1,11 +1,45 @@
 .container {
-    max-width: 75%;
+    max-width: 80%;
 }
-#user,#members,#wod,#scores,#workouts {
+#user,#members,#wod,#scores,#workouts,#logworkout {
     margin-top: 25px;
     margin-bottom: 25px;
     color: white; 
     background-color: rgb(104,183,76);
     padding: 20px;
     border-radius: 5px;
+}
+.recent-workout-column {
+    text-align: center;
+}
+th {
+    color: rgb(39,79,114);
+    background-color: lightgrey;
+    text-align: center;
+    font-size: 16px;
+}
+td {
+    color: white;
+    text-align: center;
+    padding-top:0px;
+    padding-bottom:0px;
+    font-size: 16px;
+}
+.nav-link {
+    color: white;
+}
+.nav-item {
+    color: white;
+}
+/* .day-div {
+    color: rgb(39,79,114);
+    background-color: lightgrey;
+    padding: 0px;
+    margin: 10px;
+} */
+p {
+    padding: 0px;
+}
+.submit-button {
+    background-color: rgb(39,79,114);
 }

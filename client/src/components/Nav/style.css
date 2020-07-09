@@ -1,12 +1,26 @@
-.navbar-item {
-  font-size:40px;
-  color: aliceblue;
+.nav-item {
+  font-size: 30px;
+  color: white;
   background-color: rgb(39,79,114);
-  
+  text-align: center;
 }
 .img {outline-color: white
-
   ;}
+.navbar {
+  font-size: 30px;
+  background-color: rgb(39,79,114);
+  text-align: center;
+  color: white;
+}
 .navbar-brand {
-  font-size: 40px;
+  font-size: 30px;
+  background-color: rgb(39,79,114);
+  text-align: center;
+  color: white;
+}
+.nav {
+  font-size: 30px;
+  background-color: rgb(39,79,114);
+  text-align: center;
+  color: white;
 }

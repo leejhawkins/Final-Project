@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { SaveBtn } from "../components/Buttons/SaveBtn"
+import { DeleteBtn } from "../components/Buttons/DeleteBtn"
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
 import { List } from "../components/List";
@@ -109,6 +110,13 @@ class User extends Component {
         
        
     };
+    
+    deleteWorkout = id => {
+        API.deleteWorkouts(id)
+          .then(res => this.loadUser())
+          .catch(err => console.log(err));
+      };
+
     getRoundLength = array => {
         var roundLength = 0;
         for (let i = 0; i < array.length; i++) {
@@ -171,7 +179,6 @@ class User extends Component {
                     <Row>
                         <Col size="md-4">
                             <div id="user">
-
                                 <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
                                 <hr></hr>
                                 <p>Date of Birth: {this.state.dateOfBirth}</p>
@@ -179,7 +186,71 @@ class User extends Component {
                                 <p>Weight: {this.state.userInfo.weight}</p>
                                 <p>Gym: {this.state.userInfo.program}</p>
                             </div>
-                            <h3>Log a Workout </h3>
+                        </Col>
+
+                       <Col size="md-4">
+                            <div id="wod" >
+                                <h5>{this.state.userInfo.program}'s Workout of the Day</h5>
+                                <hr></hr>
+                                {this.state.wod ? (
+                                    <div>
+                                        <p>{moment(this.state.wod.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</p>
+                                        {this.state.wod.workoutType === "For Time" ? <p>{this.state.wod.workoutType} 
+                                        
+                                        {this.state.wod.rounds} Rounds</p> : <p>{this.state.wod.workoutType} for 
+                                        {this.state.wod.rounds} minutes</p>}
+                                        
+                                        {this.state.wod.movements.map(movement => (
+                                            <p>
+                                                {movement.reps} {movement.movementType === "cardio" ? "m" : "x"} {movement.name}  {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}{movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
+                                            </p>
+                                        ))}
+
+                                    <div>
+                                        <Row key={this.state.wod._id}>
+                                            <h5>{this.state.wod.workoutType === "For Time" ? "Time: " : "Score: "}</h5>
+
+                                            <Input
+                                                value={this.state.minutes}
+                                                onChange={this.handleInputChange}
+                                                name="minutes"
+                                                placeholder={this.state.wod.workoutType === "For Time" ? "Minutes" : "Rounds"}
+                                            />
+                                         
+                                            <h3>{this.state.wod.workoutType === "For Time" ? " : " : " + "}</h3>
+                                            <Input
+                                                value={this.state.seconds}
+                                                onChange={this.handleInputChange}
+                                                name="seconds"
+                                                placeholder={this.state.wod.workoutType === "For Time" ? "Seconds" : "Reps"}
+                                            />
+                                    
+                                    
+                                        <div>
+                                            <FormBtn 
+                                                className="btn submit-button"
+                                                disabled={!(this.state.seconds && this.state.minutes)}
+                                                onClick={this.submitScore}
+                                            >Submit Score
+                                            </FormBtn>
+                                        </div>
+
+                                        </Row>
+                                        </div>
+                                    </div>
+
+                                ) : (<h5>There is no workout for {this.state.wodDate}</h5>)}
+                                <div>
+                                    <Calendar
+                                        onChange={this.changeWODDate}
+                                    />
+                                </div>           
+                            </div>
+                        </Col>
+
+                        <Col size="md-4">
+                    <div id="logworkout">
+                        <h3>Log a Workout </h3>
                             <form>
                                 <Row>
                                     <Dropdown
@@ -254,8 +325,7 @@ class User extends Component {
                                                             placeholder={this.state.movementType === "weight" ? "Weight" : "Height"}
 
                                                         />
-                                                    ):("")}
-                                               
+                                                    ):("")}                                             
 
                                                     
                                                     <SaveBtn
@@ -297,97 +367,68 @@ class User extends Component {
                                 ) : ("")}
                               
                             </form>
-                           
-
-                        </Col>
-                        <Col size="md-4">
-                            <div id="wod" >
-                                <h5>{this.state.userInfo.program}'s Workout of the Day</h5>
-                                <hr></hr>
-                                {this.state.wod ? (
-                                    <div>
-                                        <p>{moment(this.state.wod.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</p>
-                                        {this.state.wod.workoutType === "For Time" ? <p>{this.state.wod.workoutType} {this.state.wod.rounds} Rounds</p> : <p>{this.state.wod.workoutType} for {this.state.wod.rounds} minutes</p>}
-                                        {this.state.wod.movements.map(movement => (
-                                            <p>
-                                                {movement.reps} {movement.movementType === "cardio" ? "m" : "x"} {movement.name}  {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}{movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
-                                            </p>
-
-                                        ))}
-                                        <Row key={this.state.wod._id}>
-                                            <h5>{this.state.wod.workoutType === "For Time" ? "Time: " : "Score: "}</h5>
-                                            <Input
-                                                value={this.state.minutes}
-                                                onChange={this.handleInputChange}
-                                                name="minutes"
-                                                placeholder={this.state.wod.workoutType === "For Time" ? "Minutes" : "Rounds"}
-                                            />
-                                            <h3>{this.state.wod.workoutType === "For Time" ? " : " : " + "}</h3>
-                                            <Input
-                                                value={this.state.seconds}
-                                                onChange={this.handleInputChange}
-                                                name="seconds"
-                                                placeholder={this.state.wod.workoutType === "For Time" ? "Seconds" : "Reps"}
-                                            />
-                                           
-                                            <FormBtn
-                                                disabled={!(this.state.seconds && this.state.minutes)}
-                                                onClick={this.submitScore}
-                                            >
-                                                Submit Score
-                                            </FormBtn>
-                                        </Row>
-
-                                    </div>
-
-                                ) : (<h5>There is no workout for {this.state.wodDate}</h5>)}
-                                <div>
-                                    <Calendar
-                                        onChange={this.changeWODDate}
-                                    />
-                                </div>           
                             </div>
-
-
-
-                        </Col>
-                        <Col size="md-4">
+                           </Col>
+                       </Row>
+                <Row>
+                        <Col size="md-12">
                             <div id="workouts">
                                 <h2>Recent Workouts</h2>
                                 <hr></hr>
 
                             {this.state.workouts.length ? (
                                 <div>
+                                    
                                     {this.state.workouts.map(workout => (
                                         <Row key={workout._id}>
-                                            <Col size="md-3">
-                                                <p>{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</p>
-                                                <p>{workout.workoutType}</p>
-                                                {workout.workoutType === "AMRAP" ? <p>For {workout.rounds} minutes</p>:""}
-                                            </Col>
-                                            <Col size="md-5">
-                                                {workout.workoutType === "For Time" ? <p>Rounds: {workout.rounds}</p> : ""}
-                                                {workout.movements.map(movement => (
+                                            <table className="table table-sm fluid">
+                                            <thead>
+                                                    <tr>
+                                                    <th>Date</th>
+                                                    <th>Workout Type</th>
+                                                    <th>Movements</th>
+                                                    <th>Score</th>
+                                                    <th>Time</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                </tbody>
+                                                
+                                        <td>{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</td>
+                                        <td>{workout.workoutType}</td>
+
+                                        
+                                        <td>{workout.movements.map(movement => (
                                                     <p>
-                                                        {movement.reps} {movement.movementType === "cardio" ? "m" : "x"} {movement.name}  {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}{movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
+                                                        {movement.reps} {movement.movementType === "cardio" ? "m" : "x"} 
+                                                        {movement.name}  
+                                                        {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}
+                                                        {movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
                                                     </p>
-                                                ))}
+                                                ))}</td>
 
-
-                                            </Col>
-
-                                            {workout.scores.map(score => (
-                                                <Col size="md-4">
+                                        {workout.scores.map(score => 
+                                                <td>
                                                     {score.userName === this.state.userInfo.userName && workout.workoutType ==="For Time" ? (
-                                                    <p>Time: {Math.floor(score.score / 60)}:{score.score % 60}</p>):("")}
+                                                    <p>{Math.floor(score.score / 60)}:{score.score % 60}</p>) : ("")}
+
                                                     {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
                                                         <p>Score: {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps</p>
                                                      ) : ("")}
+                                                </td>
+                                        )}
 
+                                                <td>{workout.workoutType === "AMRAP" ? 
+                                                <p>For {workout.rounds} minutes</p>:""}
+                                                    {workout.workoutType === "For Time" ? <p>
+                                                    {workout.rounds}</p> : ""}</td>
 
-                                                </Col>
-                                            ))}
-                                           
+                                            <td>
+                                            <DeleteBtn class="btn" onClick={() => this.deleteWorkout(workout._id)}>X</DeleteBtn>
+                                            </td>
+
+                                            </table>
                                         </Row>
                                     ))}
                                 </div>
