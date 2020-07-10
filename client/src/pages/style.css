@@ -123,3 +123,7 @@ p {
     font-weight: bolder;
     margin-right: 2px;
 }
+.profile-picture {
+    width: 90px;
+    margin-right: 30px;
+}

@@ -182,11 +182,19 @@ class User extends Component {
                             <div id="user">
                                 <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
                                 <hr></hr>
-                                <p className="image">Insert Photo Here: {this.state.image}</p>
-                                <hr></hr>
-                                <p>Age: {this.state.age}</p>
-                                <p>Weight: {this.state.userInfo.weight}</p>
-                                <p>Gym: {this.state.userInfo.program}</p>
+                                <Row>
+                                    <Col size="md-4">
+                                        <img className="profile-picture" src={this.state.userInfo.image ? this.state.userInfo.image : "https://4.bp.blogspot.com/_CFGTjIBDv4o/Si08hun6XRI/AAAAAAAAAUg/j1ZqSvAmcIU/s280/Pumping+Iron.jpg"}></img>
+                                    </Col>
+                                    <Col size="md-8" style="float:right">
+                                        <p>Age: {this.state.age}</p>
+                                        <p>Weight: {this.state.userInfo.weight}</p>
+                                        <p>Gym: {this.state.userInfo.program}</p>
+                                    </Col>
+                                </Row>
+                               
+                               
+                               
                             </div>
                         </Col>
 
@@ -414,19 +422,20 @@ class User extends Component {
                                                 {this.state.workouts.map(workout => (
                                                     <Row key={workout._id}>
 
-                                                        <td>{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</td>
-                                                        <td><span className="table-labels">Type: </span> {workout.workoutType}</td>
+                                                        <td><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
+                                                        <td> {workout.workoutType}</td>
                                                         <td>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
                                                         </td>
 
                                                         <td>
                                                             
-                                                                {workout.movements.map(movement => (
+                                                                {workout.movements.map((movement,i) => (
 
                                                                     <span> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
                                                                         {movement.name}
                                                                         {movement.movementType === "weight" ? ` at ${movement.weight} lbs` : ""}
-                                                                        {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""},
+                                                                        {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""}
+                                                                        {(workout.movements.length-1)===i ? "":","}
                                                                     </span>
 
                                                                 ))}
