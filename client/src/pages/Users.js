@@ -73,6 +73,7 @@ class User extends Component {
                     seconds: ""
                 })
                 const date = moment().format("YYYY-MM-DD")
+                this.setState({wodDate:date})
                 this.getWOD(this.state.userInfo.program, date)
 
             })
@@ -269,7 +270,7 @@ class User extends Component {
                                 <hr></hr>
                                 <div className="calendar-div">
                                     <div>
-                                        <p>Date:</p>
+                                        <p>Change WOD Date:</p>
                                         <DatePicker
                                             onChange={this.changeWODDate}
                                         />
