@@ -4,11 +4,15 @@ import { SaveBtn } from "../components/Buttons/SaveBtn"
 import { DeleteBtn } from "../components/Buttons/DeleteBtn"
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
+import Card from "../components/Card"
 import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
 import moment, { now } from 'moment'
 import Calendar from 'react-calendar';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 
 class User extends Component {
@@ -184,7 +188,10 @@ class User extends Component {
                                 <hr></hr>
                                 <Row>
                                     <Col size="md-4">
-                                        <img className="profile-picture" src={this.state.userInfo.image ? this.state.userInfo.image : "https://4.bp.blogspot.com/_CFGTjIBDv4o/Si08hun6XRI/AAAAAAAAAUg/j1ZqSvAmcIU/s280/Pumping+Iron.jpg"}></img>
+                                        <Card 
+                                        image={this.state.userInfo.image ? this.state.userInfo.image : "https://4.bp.blogspot.com/_CFGTjIBDv4o/Si08hun6XRI/AAAAAAAAAUg/j1ZqSvAmcIU/s280/Pumping+Iron.jpg"}
+                                        name={this.state.userInfo.userName}
+                                        />
                                     </Col>
                                     <Col size="md-8" style="float:right">
                                         <p>Age: {this.state.age}</p>
@@ -261,9 +268,12 @@ class User extends Component {
                                 ) : (<h6>There is no workout for: {this.state.wodDate}</h6>)}
                                 <hr></hr>
                                 <div className="calendar-div">
-                                    <Calendar
-                                        onChange={this.changeWODDate}
-                                    />
+                                    <div>
+                                        <p>Date:</p>
+                                        <DatePicker
+                                            onChange={this.changeWODDate}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </Col>
@@ -382,8 +392,8 @@ class User extends Component {
                                             <hr></hr>
 
                                             <div>
-                                                <Calendar
-                                                    className="calendar-div"
+                                                <DatePicker
+                                                    selected={this.state.date}
                                                     onChange={this.changeDate}
                                                 />
                                             </div>

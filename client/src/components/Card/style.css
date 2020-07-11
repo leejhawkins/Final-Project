@@ -1,0 +1,37 @@
+.profile-picture.col {
+  border-radius: 2px;
+  border: solid green 2px;
+  margin-right: 30px;
+  height: 150px;
+  margin: 1rem;
+  position: relative;
+  width: 150px;
+  box-shadow: 0 3px 6px #999, 0 3px 6px #999;
+  padding: 0px 0px 0px 0px;
+  overflow: hidden;
+} 
+
+.profile-picture > .img-container {
+  /* position: absolute;
+  top: 0;
+  left: 0; */
+  height: 100%;
+  width: 100%;
+}
+.profile-picture > .img-container > img {
+  height: 100%;
+  width: 100%;
+  border-radius: 2px;
+  -webkit-transition: 0.4s ease;
+  transition: 0.4s ease;
+}
+
+.click-item.col:hover .img-container > img {
+  -webkit-transform: scale(1.15);
+  transform: scale(1.15);
+  width: 175px;
+  height: 175px;
+
+} 
+
+
