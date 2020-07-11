@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { SaveBtn } from "../components/Buttons/SaveBtn"
 import { DeleteBtn } from "../components/Buttons/DeleteBtn"
 import API from "../utils/API";
-import { Col, Row, Container } from "../components/Grid";
+import { Col, Row, ContainerUserlogin, Container, ContainerNewuser } from "../components/Grid";
 import Card from "../components/Card"
 import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
@@ -12,7 +12,6 @@ import moment, { now } from 'moment'
 import Calendar from 'react-calendar';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 
 
 class User extends Component {
@@ -229,6 +228,17 @@ class User extends Component {
                             <div id="wod" >
                                 <h5>{this.state.userInfo.program}'s Workout of the Day</h5>
                                 <hr></hr>
+                                <div>
+                                    <div>Date: 
+                                        <DatePicker
+                                            className="datepicker"
+                                            onChange={this.changeWODDate}
+                                            name="select date"
+                                        />
+                                    </div>
+                                </div>
+                                <hr></hr>
+
                                 {this.state.wod ? (
                                     <div className="div-wod-score">
 
@@ -273,7 +283,7 @@ class User extends Component {
 
                                                     <div>
                                                         <FormBtn
-                                                            className="submit-score"
+                                                            className="submit"
                                                             disabled={!(this.state.seconds && this.state.minutes)}
                                                             onClick={this.submitScore}
                                                         >Submit Score
@@ -286,14 +296,6 @@ class User extends Component {
                                     </div>
 
                                 ) : (<h6>There is no workout for: {this.state.wodDate}</h6>)}
-                                <hr></hr>
-                                <div className="calendar-div">
-                                    <div>Date: 
-                                        <DatePicker
-                                            onChange={this.changeWODDate}
-                                        />
-                                    </div>
-                                </div>
                             </div>
                         </Col>
 
@@ -301,6 +303,14 @@ class User extends Component {
                             <div id="logworkout">
                                 <h5>Log a Workout </h5>
                                 <hr></hr>
+                                <div>Date:
+                                                <DatePicker
+                                                    className="datepicker"
+                                                    selected={this.state.date}
+                                                    onChange={this.changeDate}
+                                                />
+                                            </div>
+                                            <hr></hr>
 
                                 <form id="log-workouts">
                                     <Row>
@@ -393,7 +403,7 @@ class User extends Component {
                                             <hr></hr>
 
                                             <Row className="div-wod-score">
-                                                <h5>{this.state.workoutType === "For Time" ? "Time: " : "Score: "}</h5>
+                                                <div className="div-wod-title">{this.state.workoutType === "For Time" ? "Time: " : "Score: "}</div>
                                                 <Input className="wod-score-input"
                                                     value={this.state.minutes}
                                                     onChange={this.handleInputChange}
@@ -408,16 +418,8 @@ class User extends Component {
                                                     placeholder={this.state.workoutType === "For Time" ? "Seconds" : "Reps"}
                                                 />
                                             </Row>
-                                            <hr></hr>
-
-                                            <div>Date:
-                                                <DatePicker
-                                                    selected={this.state.date}
-                                                    onChange={this.changeDate}
-                                                />
-                                            </div>
                                             <FormBtn
-                                                className="submit-button"
+                                                className="logscore"
                                                 disabled={!(this.state.workoutType && this.state.rounds && this.state.movementArray && this.state.minutes)}
                                                 onClick={this.handleFormSubmit}
                                             >
@@ -437,17 +439,12 @@ class User extends Component {
                         <Col size="md-12">
                             <div id="workouts">
                                 <h5>Recent Workouts</h5>
-
                                 <hr></hr>
-
-
                                 {this.state.workouts.length ? (
                                     <div>
 
                                         <Row>
-
                                             <table className="table table-sm fluid">
-
                                                 {this.state.workouts.map(workout => (
                                                     <Row key={workout._id}>
 
