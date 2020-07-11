@@ -199,10 +199,30 @@ class User extends Component {
                                         <p>Gym: {this.state.userInfo.program}</p>
                                     </Col>
                                 </Row>
+                                <hr></hr>
+                                <Row>
+                                <Dropdown className="dropdown"
+                                            // value={this.state.workoutType}
+                                            // onChange={this.handleInputChange}
+                                            name="workoutType"
+                                            placeholder="Workout"
+                                        >
+                                            <Option selected disabled value="" name="Workout Type Stats" />
+                                            <Option name="For Time" />
+                                            <Option name="AMRAP" />
+                                        </Dropdown>
+
+                                        {/* <p>Rounds: {this.state.userInfo.roundsTotal}</p>
+                                        <p>Minutes: {this.state.userInfo.minutesTotal}</p>
+                                        <p>Score: {this.state.userInfo.scoreTotal} </p>
+                                        <p>Reps: {this.state.userInfo.repTotal} </p>
+                                        <p>Thrusters: {this.state.userInfo.thrusterTotal}</p>
+                                        <p>Pull ups: {this.state.userInfo.pullupTotal}</p>
+                                        <p>Box Jumps: {this.state.userInfo.boxjumpTotal}</p>
+                                        <p>Run Miles: {this.state.userInfo.runMilesTotal}</p> */}
+                                </Row>
                                
-                               
-                               
-                            </div>
+                               </div>
                         </Col>
 
                         <Col size="md-4">
@@ -257,7 +277,7 @@ class User extends Component {
                                                             disabled={!(this.state.seconds && this.state.minutes)}
                                                             onClick={this.submitScore}
                                                         >Submit Score
-                                            </FormBtn>
+                                                        </FormBtn>
                                                     </div>
 
                                                 </Row>
@@ -268,8 +288,7 @@ class User extends Component {
                                 ) : (<h6>There is no workout for: {this.state.wodDate}</h6>)}
                                 <hr></hr>
                                 <div className="calendar-div">
-                                    <div>
-                                        <p>Date:</p>
+                                    <div>Date: 
                                         <DatePicker
                                             onChange={this.changeWODDate}
                                         />
@@ -391,7 +410,7 @@ class User extends Component {
                                             </Row>
                                             <hr></hr>
 
-                                            <div>
+                                            <div>Date:
                                                 <DatePicker
                                                     selected={this.state.date}
                                                     onChange={this.changeDate}

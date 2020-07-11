@@ -3,7 +3,7 @@
 }
 #user,#members,#wod,#scores,#workouts,#logworkout {
     margin-top: 25px;
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
     color: white; 
     background-color: rgb(104,183,76);
     padding: 20px;
@@ -34,14 +34,15 @@ td {
 }
 
 p {
-    padding: 0px;
+    padding: 4px;
     margin: 0px;
 }
-.submit-button {
+/* .submit-button {
     background-color: rgb(39,79,114);
-}
+    margin-top: 5px;
+} */
 .dropdown {
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
     color: white; 
@@ -87,13 +88,13 @@ p {
     background-color: rgb(104,183,76);
     border-radius: 5px;
 }
-.calendar-div {
+/* .calendar-div {
     width: 250px;
     height: 250px;
     float: center;
     font-size: 16px;
     margin: 0px;
-}
+} */
 .submit-movement {
     margin: 10px;
     background-color: rgb(39,79,114);
