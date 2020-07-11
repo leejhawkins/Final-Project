@@ -4,7 +4,8 @@ import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
 import "./style.css";
 import moment from 'moment';
-import Calendar from 'react-calendar';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 class Gym extends Component {
@@ -95,7 +96,8 @@ class Gym extends Component {
                                     </div>
                                 ) : (<h5>There is no workout for {this.state.date}</h5>)}
                                 <div>
-                                    <Calendar
+                                    <p>Change WOD Date:</p>
+                                    <DatePicker
                                         onChange={this.changeWODDate}
                                     />
                                 </div>
