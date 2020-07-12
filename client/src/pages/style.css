@@ -1,5 +1,15 @@
 .container {
     max-width: 75%;
+    margin-bottom:25px;
+    margin-top:25px;
+    background-position: center;
+}
+.user-input {
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    padding: 2px;
 }
 #user,#members,#wod,#scores,#workouts,#logworkout {
     margin-top: 25px;
@@ -34,14 +44,11 @@ td {
 }
 
 p {
-    padding: 0px;
+    padding: 4px;
     margin: 0px;
 }
-.submit-button {
-    background-color: rgb(39,79,114);
-}
 .dropdown {
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
     color: white; 
@@ -102,18 +109,22 @@ p {
     margin-right: 5px;
     width: 100%;
 }
-.btn-log-workout {
-    margin: 10px;
-    background-color: rgb(39,79,114);
-    border-radius: 5px;
-    padding: 2px;
-    border-color: white;
-    color: white; 
-  } 
 .table-labels {
     color: rgb(39,79,114);
     font-size: 16px;
     font-weight: bolder;
     margin-right: 2px;
 }
-
+.datepicker {
+    border-radius: 5px;
+    margin-left: 10px;
+    width: 50%;
+}
+.login {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: rgb(104,183,76);
+    border-radius: 5px;
+    border-color: white;
+    color: white; 
+}  

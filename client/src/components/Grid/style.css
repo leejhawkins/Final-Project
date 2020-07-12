@@ -9,7 +9,13 @@
 }
 .container{
     background-color: rgb(39,79,114);
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom:25px;
+    margin-top:25px;
+    border-radius: 5px;
 }
-
+.containerlogin {
+    margin-bottom:25px;
+    margin-top:25px;
+    background-color: rgb(39,79,114);
+    border-radius: 5px;
+}

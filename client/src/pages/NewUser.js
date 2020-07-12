@@ -25,11 +25,9 @@ class LogIn extends Component {
             API.getPrograms().then(res => {
                 console.log(res.data)
                 this.setState({ programs: res.data })
-                    
             })
         })
             .catch(err => console.log(err));
-        
     }
     handleInputChange = event => {
         const { name, value } = event.target;
@@ -55,19 +53,17 @@ class LogIn extends Component {
         } else {
             alert("that user name is already taken")
         }
-
-
     };
 
     render() {
         return (
-            <div className="container">
+           <div className="container">
                 <Container fluid>
                     <Row>
                         <Col size="md-12">
                             <Jumbotron>
                                 <h1>
-                                    Fitness App
+                                    New User Setup
                         </h1>
                             </Jumbotron>
                         </Col>
@@ -76,24 +72,28 @@ class LogIn extends Component {
                         <Col size="md-10 md-offset-1">
                             <form>
                                 <Input
+                                    className="user-input"
                                     value={this.state.firstName}
                                     onChange={this.handleInputChange}
                                     name="firstName"
                                     placeholder="First Name"
                                 />
                                 <Input
+                                    className="user-input"
                                     value={this.state.lastName}
                                     onChange={this.handleInputChange}
                                     name="lastName"
                                     placeholder="Last Name"
                                 />
                                 <Input
+                                    className="user-input"
                                     value={this.state.userName}
                                     onChange={this.handleInputChange}
                                     name="userName"
                                     placeholder="User Name"
                                 />
                                 <Input
+                                    className="user-input"
                                     type="password"
                                     value={this.state.password}
                                     onChange={this.handleInputChange}
@@ -101,18 +101,21 @@ class LogIn extends Component {
                                     placeholder="Password"
                                 />
                                 <Input
+                                    className="user-input"
                                     value={this.state.dateOfBirth}
                                     onChange={this.handleInputChange}
                                     name="dateOfBirth"
                                     placeholder="Date of Birth"
                                 />
                                 <Input
+                                    className="user-input"
                                     value={this.state.weight}
                                     onChange={this.handleInputChange}
                                     name="weight"
                                     placeholder="weight"
                                 />
                                 <Dropdown
+                                    className="user-input"
                                     value={this.state.program}
                                     onChange={this.handleInputChange}
                                     name="program"
@@ -123,7 +126,9 @@ class LogIn extends Component {
                                         <Option name={program.name} key={program._id} />
                                     ))}
                                 </Dropdown>
+
                                 <FormBtn
+                                    className="login"
                                     disabled={!(this.state.userName && this.state.password && this.state.dateOfBirth && this.state.weight)}
                                     onClick={this.handleFormSubmit}
                                 >

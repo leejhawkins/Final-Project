@@ -6,7 +6,6 @@ import { Col, Row, Container } from "../components/Grid";
 import { Input, FormBtn } from "../components/Form";
 import "./style.css";
 
-
 class LogIn extends Component {
     state = {
         userName: "",
@@ -62,21 +61,23 @@ class LogIn extends Component {
                     <Col size="md-12">
                         <Jumbotron>
                             <h1>
-                                Fitness App
+                                User Login
                         </h1>
                         </Jumbotron>
                     </Col>
                 </Row>
                 <Row>
-                    <Col size="md-10 md-offset-1">
+                    <Col size="md-12 md-offset-5">
                         <form>
                             <Input
+                                className="user-input"
                                 value={this.state.userName}
                                 onChange={this.handleInputChange}
                                 name="userName"
                                 placeholder="User Name"
                             />
                             <Input
+                                className="user-input"
                                 type="password"
                                 value={this.state.password}
                                 onChange={this.handleInputChange}
@@ -84,6 +85,7 @@ class LogIn extends Component {
                                 placeholder="Password"
                             />
                             <FormBtn
+                                className="login"
                                 disabled={!(this.state.userName && this.state.password)}
                                 onClick={this.handleFormSubmit}
                             >
@@ -101,7 +103,6 @@ class LogIn extends Component {
             </div>
         )
     }
-
 }
 
 export default LogIn;

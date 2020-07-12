@@ -6,10 +6,18 @@
   margin-bottom: 10px;
 }
 .submit {
-  margin: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   background-color: rgb(104,183,76);
   border-radius: 5px;
-  padding: 2px;
+  border-color: white;
+  color: white; 
+}  
+.logscore {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(39,79,114);
+  border-radius: 5px;
   border-color: white;
   color: white; 
 }  
