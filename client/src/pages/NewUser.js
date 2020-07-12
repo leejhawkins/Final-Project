@@ -63,7 +63,7 @@ class LogIn extends Component {
                         <Col size="md-12">
                             <Jumbotron>
                                 <h1>
-                                    New User Setup
+                                    New User Setup <img src="https://img.icons8.com/ios/100/ffffff/strength.png"/>
                         </h1>
                             </Jumbotron>
                         </Col>

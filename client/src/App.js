@@ -18,7 +18,7 @@ function App() {
       {/* <NavTabs/> */}
       <Router>
         <div>
-          <Nav title="X'r Fit" />
+          <Nav/>
           <Switch>
             <Route exact path="/" component={LogIn} />
             <Route exact path="/new-user" component={NewUser} />

@@ -3,13 +3,12 @@ import { Link } from "react-router-dom";
 import { SaveBtn } from "../components/Buttons/SaveBtn"
 import { DeleteBtn } from "../components/Buttons/DeleteBtn"
 import API from "../utils/API";
-import { Col, Row, ContainerUserlogin, Container, ContainerNewuser } from "../components/Grid";
+import { Col, Row, Container } from "../components/Grid";
 import Card from "../components/Card"
 import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
 import moment, { now } from 'moment'
-import Calendar from 'react-calendar';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -440,14 +439,19 @@ class User extends Component {
                             <div id="workouts">
                                 <h5>Recent Workouts</h5>
                                 <hr></hr>
+
+
+
                                 {this.state.workouts.length ? (
                                     <div>
 
                                         <Row>
-                                            <table className="table table-sm fluid">
+                                            <table className="table table-hover fluid">
+
+                                                
                                                 {this.state.workouts.map(workout => (
                                                     <Row key={workout._id}>
-
+                                                      <tr>
                                                         <td><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
                                                         <td> {workout.workoutType}</td>
                                                         <td>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
@@ -485,7 +489,7 @@ class User extends Component {
                                                         <td>
                                                             <DeleteBtn class="submit-button" onClick={() => this.deleteWorkout(workout._id)}>X</DeleteBtn>
                                                         </td>
-
+                                                </tr>      
                                                     </Row>
 
                                                 ))}
