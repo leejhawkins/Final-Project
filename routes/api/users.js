@@ -11,11 +11,12 @@ router.route("/")
 router
     .route("/:userName")
     .get(usersController.findOne)
-    .put(usersController.update)
-    .delete(usersController.remove);
 router
     .route("/:userName/:password")
     .get(usersController.checkPassword)
+router
+    .route("/:id")
+    .put(usersController.deleteWOD)
 
 
 module.exports = router;

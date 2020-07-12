@@ -1,4 +1,7 @@
 const db = require("../models");
+const LocalStrategy = require('passport-local').Strategy;
+const passport = require('passport');
+
 
 
 
@@ -18,25 +21,48 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
     checkPassword: function (req, res) {
-        db.User
-            .findOne({ userName: req.params.userName,password:req.params.password })
-            .then(dbModel => {
-                res.json(dbModel)
-            })
-            .catch(err => res.status(422).json(err));
+        const newStrategy = new LocalStrategy(req.params.userName,req.params.password)
+        passport.use(newStrategy,
+                db.User.findOne({userName:req.params.userName}).then(dbUser => {
+                    db.User.comparePassword(newStrategy._verify, dbUser.password, function (err, isMatch) {
+                        console.log(isMatch)
+                        if (err) throw err;
+                        if (isMatch) {
+                            res.json(dbUser) ;
+                        } else {
+                            res.status(422).json(err);
+                        }
+                    });
+                })
+
+        )
+
     },
     create: function (req, res) {
-        db.User.create(req.body)
-            .then(dbUser => {
-                return db.Program.findOneAndUpdate({ name: dbUser.program }, { $push: { users: dbUser._id } }, { new: true });
-            })
-            .then(dbModel => res.json(dbModel))
-            .catch(err => res.status(422).json(err));
+            
+                db.User.createUser(req.body, function(dbUser){
+                    return db.Program.findOneAndUpdate({ name: dbUser.program }, { $push: { users: dbUser._id, firstName: dbUser.firstName, lastName: dbUser.lastName } }, { new: true })
+                        .then(dbUser => {
+                            res.json(dbUser)
+                        })
+                        .catch(err => res.status(422).json(err));
+                })     
+       
     },
-    update: function (req, res) {
-        db.User
-            .findOneAndUpdate({ _id: req.params.id }, req.body)
-            .then(dbModel => res.json(dbModel))
+    deleteWOD: function (req, res) {
+        const userName = req.body.userName
+        const _id = req.body._id
+        console.log(_id)
+
+        db.Workout
+            .findOneAndUpdate({ _id: req.params.id }, { $pull: { scores: {_id:_id }  } })
+            .then(dbWorkout => {
+                console.log(dbWorkout)
+                return db.User.findOneAndUpdate({ userName: userName }, { $pull: { workouts: dbWorkout._id } });
+            })
+            .then(dbUser => {
+                res.json(dbUser)
+            })
             .catch(err => res.status(422).json(err));
     },
     remove: function (req, res) {
