@@ -183,8 +183,8 @@ class User extends Component {
             .catch(err => console.log(err));
     }
 
-    render() {
-        return (
+render() {
+       return (
             <div className="container">
             
                 <Container fluid>
@@ -449,9 +449,7 @@ class User extends Component {
                             <div id="workouts">
                                 <h5>Recent Workouts</h5>
                                 <hr></hr>
-
                                 <Row>
-
                                     {this.state.workouts.length ? (
                                             <div>
                                                 <table className="table table-hover fluid">
@@ -463,9 +461,7 @@ class User extends Component {
                                                                     <td> {workout.workoutType}</td>
                                                                     <td>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
                                                                     </td>
-
                                                                     <td>
-
                                                                         {workout.movements.map((movement, i) => (
 
                                                                             <span> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
@@ -474,12 +470,8 @@ class User extends Component {
                                                                                 {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""}
                                                                                 {(workout.movements.length - 1) === i ? "" : ","}
                                                                             </span>
-
                                                                         ))}
-
-
                                                                     </td>
-
                                                                     {workout.scores.map(score =>
                                                                         <td>
                                                                             {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
@@ -493,29 +485,20 @@ class User extends Component {
                                                                             ) : ("")}
                                                                         </td>
                                                                     )}
-
+                                                                </tr>
                                                             </Row>
-
                                                         ))}
-
                                                 </table>
-
                                             </div>
-
                                         ) : ("")}
-
                                 </Row>
-
                             </div>
-
-                        </Col>
-
+                       </Col>
                     </Row>
-                                                                                            
+
                 </Container>
-
             </div>
-        );
-    }
-
+    )
+}};
+    
 export default User
