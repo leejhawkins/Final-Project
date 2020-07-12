@@ -17,8 +17,10 @@ function Nav(props) {
   
     <header className="navbar navbar-expand-lg flex-column flex-md-row">
       <a className="navbar-brand mr-0 mr-md-2" href="/"><img src="https://img.icons8.com/ios-filled/150/ffffff/deadlift.png" style={{height:80}} />{props.title} </a>
-      {userLink && gymLink ? (
+      CROSS-FIT WORKOUT ORGANIZER {userLink && gymLink ? (
+        
         <ul className="navbar-nav ml-md-auto" >
+           
           <li className="nav-item">
             <Link 
               to={"/users/" + isAuthenticated.userName} className={window.location.pathname === userLink ? "nav-link active" : "nav-link"}>
