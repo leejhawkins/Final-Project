@@ -28,15 +28,25 @@ module.exports = {
     create: function (req, res) {
         db.User.create(req.body)
             .then(dbUser => {
-                return db.Program.findOneAndUpdate({ name: dbUser.program }, { $push: { users: dbUser._id } }, { new: true });
+                return db.Program.findOneAndUpdate({ name: dbUser.program }, { $push: { users: dbUser._id, firstName:dbUser.firstName, lastName:dbUser.lastName } }, { new: true });
             })
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     },
-    update: function (req, res) {
-        db.User
-            .findOneAndUpdate({ _id: req.params.id }, req.body)
-            .then(dbModel => res.json(dbModel))
+    deleteWOD: function (req, res) {
+        const userName = req.body.userName
+        const _id = req.body._id
+        console.log(_id)
+
+        db.Workout
+            .findOneAndUpdate({ _id: req.params.id }, { $pull: { scores: {_id:_id }  } })
+            .then(dbWorkout => {
+                console.log(dbWorkout)
+                return db.User.findOneAndUpdate({ userName: userName }, { $pull: { workouts: dbWorkout._id } });
+            })
+            .then(dbUser => {
+                res.json(dbUser)
+            })
             .catch(err => res.status(422).json(err));
     },
     remove: function (req, res) {

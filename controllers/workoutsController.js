@@ -46,8 +46,11 @@ module.exports = {
     },
     remove: function (req, res) {
         db.Workout
-            .findById({ _id: req.params.id })
-            .then(dbModel => dbModel.remove())
+            .findOneAndDelete({ _id: req.params.id })
+            .then(dbWorkout => {
+                console.log(dbWorkout)
+                return db.User.findOneAndUpdate({ userName: dbWorkout.createdBy }, { $pull: { workouts: dbWorkout._id } });
+            })
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     },

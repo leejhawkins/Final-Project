@@ -87,13 +87,6 @@ p {
     background-color: rgb(104,183,76);
     border-radius: 5px;
 }
-.calendar-div {
-    width: 250px;
-    height: 250px;
-    float: center;
-    font-size: 16px;
-    margin: 0px;
-}
 .submit-movement {
     margin: 10px;
     background-color: rgb(39,79,114);

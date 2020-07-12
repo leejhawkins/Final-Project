@@ -8,7 +8,7 @@ import Card from "../components/Card"
 import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
-import moment, { now } from 'moment'
+import moment, { now } from 'moment' ;
 import Calendar from 'react-calendar';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -44,7 +44,7 @@ class User extends Component {
     getWOD = (gym, date) => {
         API.getWOD({ createdBy: gym, date: date })
             .then(res => {
-                console.log(res.data)
+
                 this.setState({
                     wod: res.data
                 })
@@ -99,12 +99,10 @@ class User extends Component {
         console.log(this.state.movements)
         const { name, value } = event.target;
         let index;
-        this.state.movements.forEach(movement => {
-            for (let i = 0; i < this.state.movements.length; i++) {
-                if (this.state.movements[i].name === value) {
+        this.state.movements.forEach((movement,i) => {
+                if (movement.name === value) {
                     index = i
                 }
-            }
         })
         const movementType = this.state.movements[index].type
         console.log(index)
@@ -117,10 +115,20 @@ class User extends Component {
 
     };
 
-    deleteWorkout = id => {
-        API.deleteWorkouts(id)
-            .then(res => this.loadUser())
-            .catch(err => console.log(err));
+    deleteWorkout = (id,createdBy,scoreId) => {
+        console.log(createdBy)
+        if (createdBy===this.state.userInfo.userName) {
+            API.deleteWorkout(id)
+                .then(res => this.loadUser(this.state.userInfo.userName))
+                .catch(err => console.log(err));
+           
+
+        } else {
+            API.deleteWOD( id, {userName:this.state.userInfo.userName,_id:scoreId })
+                .then(res => this.loadUser(this.state.userInfo.userName))
+                .catch(err => console.log(err));
+        }
+       
     };
 
     getRoundLength = array => {
@@ -163,7 +171,6 @@ class User extends Component {
     }
     submitScore = event => {
         event.preventDefault()
-        console.log(this.state.minutes)
         let rawScore;
         if (this.state.wod.workoutType === "For Time") {
             rawScore = parseInt(this.state.minutes) * 60 + parseInt(this.state.seconds);
@@ -171,7 +178,6 @@ class User extends Component {
             let roundLength = this.getRoundLength(this.state.wod.movements)
             rawScore = parseInt(this.state.minutes) * roundLength + parseInt(this.state.seconds)
         }
-        console.log(rawScore)
         API.submitScore({ _id: this.state.wod._id },
             { scores: { userName: this.state.userInfo.userName, firstName: this.state.userInfo.firstName, lastName: this.state.userInfo.lastName, score: rawScore } }
         ).then(res => this.loadUser(this.state.userInfo.userName))
@@ -457,19 +463,21 @@ class User extends Component {
                                                         {workout.scores.map(score =>
                                                             <td>
                                                                 {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
-                                                                    <p><span className="table-labels">Time:</span>{Math.floor(score.score / 60)}:{score.score % 60}</p>) : ("")}
+                                                                    <p><span className="table-labels">Time:</span>{Math.floor(score.score / 60)}:{score.score % 60}
+                                                                        <DeleteBtn class="submit-button" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>X</DeleteBtn></p>) : ("")}
 
                                                                 {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
 
-                                                                    <p><span className="table-labels">Score:</span> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps</p>
+                                                                    <p><span className="table-labels">Score:</span> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps
+                                                                    <DeleteBtn class="submit-button" onClick={() => this.deleteWorkout(workout._id, workout.createdBy,score._id)}>X</DeleteBtn></p>
                                                                 ) : ("")}
                                                             </td>
                                                         )}
 
                                                        
-                                                        <td>
-                                                            <DeleteBtn class="submit-button" onClick={() => this.deleteWorkout(workout._id)}>X</DeleteBtn>
-                                                        </td>
+                                                        
+                                                           
+                                                       
 
                                                     </Row>
 
