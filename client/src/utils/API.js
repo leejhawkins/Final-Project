@@ -14,17 +14,18 @@ export default {
 
   },
   submitScore: function (id,workoutData) {
-    console.log(id._id)
     return axios.put("/api/workouts/"+id._id,workoutData)
   },
   getWorkouts: function (id) {
     return axios.get("/api/workouts/" + id);
   },
-
-  deleteWorkouts: function (id) {
+  deleteWOD: function(id, userData) {
+    console.log(id)
+    return axios.put("/api/users/" + id, userData);
+  },
+  deleteWorkout: function (id) {
     return axios.delete("/api/workouts/" + id);
   },
-
   saveWorkoutsByUser: function (workoutData) {
     return axios.post("/api/workouts/" + workoutData.scores.userName, workoutData);
   },
