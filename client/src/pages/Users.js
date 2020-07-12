@@ -183,12 +183,12 @@ class User extends Component {
             .catch(err => console.log(err));
     }
 
-render() {
-       return (
+    render() {
+        return (
             <div className="container">
-            
+
                 <Container fluid>
-            
+
                     <Row>
                         <Col size="md-4">
                             <div id="user">
@@ -450,55 +450,94 @@ render() {
                                 <h5>Recent Workouts</h5>
                                 <hr></hr>
                                 <Row>
+
                                     {this.state.workouts.length ? (
-                                            <div>
-                                                <table className="table table-hover fluid">
 
-                                                        {this.state.workouts.map(workout => (
-                                                            <Row key={workout._id}>
-                                                                <tr>
-                                                                    <td><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
-                                                                    <td> {workout.workoutType}</td>
-                                                                    <td>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
+                                        <div className="table-responsive">
+                                            <table className="table-fluid">
+
+                                                {this.state.workouts.map(workout => (
+
+                                                    <Row key={workout._id} className="fluid">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Type</th>
+                                                                <th>Duration</th>
+                                                                <th>Movements</th>
+                                                                <th>Score/Time</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr className="fluid">
+
+                                                                <td><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
+
+                                                                <td> {workout.workoutType}</td>
+
+                                                                <td>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
+                                                                </td>
+
+                                                                <td >
+                                                                    {workout.movements.map((movement, i) => (
+
+                                                                        <span> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
+                                                                            {movement.name}
+                                                                            {movement.movementType === "weight" ? ` at ${movement.weight} lbs` : ""}
+                                                                            {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""}
+                                                                            {(workout.movements.length - 1) === i ? "" : ","}
+                                                                        </span>
+                                                                    ))}
+                                                                </td>
+
+                                                                {workout.scores.map(score =>
+                                                                    <td >
+                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
+                                                                            <p><span className="table-labels">Time:</span>{Math.floor(score.score / 60)}:{score.score % 60}</p>) : ("")}
+                                                   
+
+                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
+
+                                                                            <p><span className="table-labels">Score:</span> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps</p>) : ("")}
                                                                     </td>
-                                                                    <td>
-                                                                        {workout.movements.map((movement, i) => (
 
-                                                                            <span> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
-                                                                                {movement.name}
-                                                                                {movement.movementType === "weight" ? ` at ${movement.weight} lbs` : ""}
-                                                                                {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""}
-                                                                                {(workout.movements.length - 1) === i ? "" : ","}
-                                                                            </span>
-                                                                        ))}
+                                                                )}
+                                                                {workout.scores.map(score =>
+                                                                    <td >
+                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (<DeleteBtn class="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn>) : ("")}
+                                                                        {/* 
+                                                                    <UpdateBtn class="btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</UpdateBtn></p>) : ("")} */}
+
+
+                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (<DeleteBtn class="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn>
+
+                                                                            // <UpdateBtn class="btn-submit, workout.createdBy, score._id)}>Delete</UpdateBtn></p>
+
+                                                                        ) : ("")}
                                                                     </td>
-                                                                    {workout.scores.map(score =>
-                                                                        <td>
-                                                                            {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
-                                                                                <p><span className="table-labels">Time:</span>{Math.floor(score.score / 60)}:{score.score % 60}
-                                                                                    <DeleteBtn class="submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>X</DeleteBtn></p>) : ("")}
 
-                                                                            {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
+                                                                )}
 
-                                                                                <p><span className="table-labels">Score:</span> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps
-                                                                                    <DeleteBtn class="submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>X</DeleteBtn></p>
-                                                                            ) : ("")}
-                                                                        </td>
-                                                                    )}
-                                                                </tr>
-                                                            </Row>
-                                                        ))}
-                                                </table>
-                                            </div>
-                                        ) : ("")}
+
+                                                            </tr>
+                                                        </tbody>
+                                                    </Row>
+
+                                                ))}
+
+                                            </table>
+                                        </div>
+                                    ) : ("")}
                                 </Row>
                             </div>
-                       </Col>
+                        </Col>
                     </Row>
 
-                </Container>
-            </div>
-    )
-}};
-    
+                </Container >
+            </div >
+        )
+    }
+};
+
 export default User
