@@ -83,8 +83,16 @@ class Gym extends Component {
 
                         <Col size="md-4">
                             <div id="wod">
-                                <h5>{this.state.gym}'s Workout of the Day {this.state.date}</h5>
+                                <h5>{this.state.gym}'s Workout of the Day: {this.state.date}</h5>
                                 <hr></hr>
+                                <div>Change WOD Date:
+                                        <DatePicker
+                                            className="datepicker"
+                                            onChange={this.changeWODDate}
+                                        />
+                                </div>
+                                <hr></hr>
+
                                 {this.state.wod ? (
                                     <div>
                                         {this.state.wod.workoutType} {this.state.wod.rounds} Rounds
@@ -94,19 +102,13 @@ class Gym extends Component {
                                             </p>
                                         ))}
                                     </div>
-                                ) : (<h5>There is no workout for {this.state.date}</h5>)}
-                                <div>
-                                    <p>Change WOD Date:</p>
-                                    <DatePicker
-                                        onChange={this.changeWODDate}
-                                    />
-                                </div>
+                                ) : (<h6>There is no workout for: {this.state.date}</h6>)}
 
                             </div>
                         </Col>
                         <Col size="md-4">
                             <div id="scores">
-                                <h2>WOD Scores:</h2>
+                                <h5>WOD Scores:</h5>
                                 <hr></hr>
                                 {this.state.wod ? (<div>
                                     {
@@ -133,7 +135,7 @@ class Gym extends Component {
                         </Col>
                         <Col size="md-4">
                             <div id="members">
-                                <h2>Members:</h2>
+                                <h5>Members:</h5>
                                 <hr></hr>
                                 {this.state.userInfo.map(member => (
                                     <p>{member.firstName}  {member.lastName}</p>
