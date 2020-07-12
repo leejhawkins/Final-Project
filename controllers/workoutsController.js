@@ -34,7 +34,7 @@ module.exports = {
         const userName = req.body.scores.userName
         
         db.Workout
-            .findOneAndUpdate({ _id: req.params.id }, { $push: { scores: { userName: userName,firstName:req.body.firstName,lastName:req.body.lastName, score: req.body.scores.score } } })
+            .findOneAndUpdate({ _id: req.params.id }, { $push: { scores: { userName: userName,firstName:req.body.scores.firstName,lastName:req.body.scores.lastName, score: req.body.scores.score } } })
             .then(dbWorkout => {
                 console.log(userName)
                 return db.User.findOneAndUpdate({ userName: userName }, { $push: { workouts: dbWorkout._id } }, { new: true });
