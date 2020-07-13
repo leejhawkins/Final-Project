@@ -1,6 +1,6 @@
 import React from "react";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import LogIn from "./pages/LogIn";
+
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import NoMatch from "./pages/NoMatch";
 import NewUser from "./pages/NewUser";
 import Gym from "./pages/Gyms";
@@ -10,7 +10,9 @@ import Nav from "./components/Nav/index";
 
 import User from "./pages/Users";
 import AuthenticatedRoute from "./AuthenticatedRoute";
-// import NavTabs from "./components/NavTabs";
+
+import Footer from "./components/Footer";
+
 
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
@@ -22,26 +24,21 @@ function App() {
           <Switch>
             <AuthenticatedRoute exact path="/" />
             <Route exact path="/new-user" component={NewUser} />
-            <ProtectedRoute
-              exact
-              path="/gyms/:name"
-              redirect="/"
-              component={Gym}
-            />
-            <ProtectedRoute
-              exact
-              path="/users/:name"
-              redirect="/"
-              component={User}
-            />
+
+            <Route exact path="/gyms/:name" component={Gym}/>
+            <ProtectedRoute exact path="/users/:name" redirect="/" component={User}/>
+
 
             <Route path="*">
               <NoMatch />
             </Route>
           </Switch>
+          <Footer/>
         </div>
+
       </Router>
     </AuthContext.Provider>
+    
   );
 }
 
