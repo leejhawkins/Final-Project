@@ -29,7 +29,10 @@ class User extends Component {
         repsArray: [],
         weightsArray: [],
         minutes: "",
-        seconds: ""
+        seconds: "",
+        date: "",
+        age: "",
+        image: ""
     };
 
     componentDidMount() {
@@ -181,14 +184,17 @@ class User extends Component {
         let countWorkout = array.length;
         var sumMinutes=0;
         let stats = {};
+        var sumMiles=0;
+        var countForTime  = array.length;
+        var countForAMRAP = array.length;
 
         console.log(array);
 
-        for (let i = 0; i < array.length; i++) {
+        for (var i = 0; i < array.length; i++) {
 
             if (array[i].workoutType === "AMRAP") {
                 
-                for (let j = 0; j < array[i].scores.length; j++) {
+                for (var j = 0; j < array[i].scores.length; j++) {
                     
                     if (array[i].scores[j].userName === userName) {
                         sumMinutes += parseInt(array[i].rounds * 60);
@@ -198,7 +204,7 @@ class User extends Component {
                 }
             }
             else {
-                for (let j = 0; j < array[i].scores.length; j++) {
+                for (var j = 0; j < array[i].scores.length; j++) {
 
                     console.log("Total Minutes: " + sumMinutes);
 
@@ -250,7 +256,10 @@ class User extends Component {
 
                                     <div>
                                         <p>Workouts: {this.state.stats.countWorkout}</p>
+                                        {/* <p>For Time:</p>
+                                        <p>AMRAP:</p> */}
                                         <p>Minutes:{this.state.stats.sumMinutes}</p>
+                                        {/* <p>Miles:{this.state.stats.sumMiles}</p> */}
                                     </div>
                                     ) : ("")
                                 }
@@ -334,7 +343,7 @@ class User extends Component {
                         </Col>
 
                         <Col size="md-4">
-                            <div id="logworkout">
+                            <div id="logworkout" className="fluid">
                                 <h5>Log a Workout </h5>
                                 <hr></hr>
                                 <div>Date:
@@ -346,7 +355,7 @@ class User extends Component {
                                 </div>
                                 <hr></hr>
 
-                                <form id="log-workouts">
+                                <form id="log-workouts"className="fluid">
                                     <Row>
                                         <Dropdown className="dropdown"
                                             value={this.state.workoutType}
@@ -430,7 +439,7 @@ class User extends Component {
                                                     ) : ("")}
                                                     
                                                 <Row>
-                                                    <SaveBtn class="submit-movement"
+                                                    <SaveBtn className="submit-movement"
                                                         disabled={!(this.state.movementName && this.state.reps)}
                                                         onClick={() => this.addMovement()} />
                                                 </Row>
@@ -484,23 +493,33 @@ class User extends Component {
 
                                     {this.state.workouts.length ? (
 
-                                       
+                                        <div className="table-responsive">
                                             <table className="table-fluid">
-    
 
                                                 {this.state.workouts.map(workout => (
 
                                                     <Row key={workout._id} className="fluid">
-                                                        
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Type</th>
+                                                                <th>Duration</th>
+                                                                <th>Movements</th>
+                                                                <th>Score/Time</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
                                                         <tbody>
                                                             <tr className="fluid">
 
-                                                                <td><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
+                                                                <td style={{ textAlign: "center" }}><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
 
-                                                                <td>{workout.workoutType === "AMRAP" ? <p>{workout.workoutType} for {workout.rounds} minutes of: </p> : <p>{workout.workoutType} {workout.rounds} rounds of: </p>}
+                                                                <td style={{ textAlign: "center" }}> {workout.workoutType}</td>
+
+                                                                <td style={{ textAlign: "center" }}>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
                                                                 </td>
 
-                                                                <td>
+                                                                <td >
                                                                     {workout.movements.map((movement, i) => (
 
                                                                         <span> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
@@ -511,22 +530,35 @@ class User extends Component {
                                                                         </span>
                                                                     ))}
                                                                 </td>
-                                                                <td>
+
                                                                 {workout.scores.map(score =>
-                                                                    <span>
+                                                                    <td style={{ textAlign: "center" }}>
                                                                         {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
-                                                                            <p className="score"><span className="table-labels">Time:</span>{Math.floor(score.score / 60)}:{score.score % 60}
-                                                                                <DeleteBtn class="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn></p>) : ("")}
+                                                                            <p><span className="table-labels">Time:</span>{Math.floor(score.score / 60)}:{score.score % 60}</p>) : ("")}
 
 
                                                                         {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
 
-                                                                            <p className= "score"><span className="table-labels">Score:</span> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps
-                                                                                <DeleteBtn class="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn></p>) : ("")}
-                                                                    </span>
+                                                                            <p><span className="table-labels">Score:</span> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps</p>) : ("")}
+                                                                    </td>
 
                                                                 )}
-                                                                </td>
+                                                                {workout.scores.map(score =>
+                                                                    <td style={{ textAlign: "center" }}>
+                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? 
+                                                                        
+                                                                        (<DeleteBtn className="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn> 
+                                                                        // <UpdateBtn className="btn btn-submit"></UpdateBtn>
+                                                                        ) : ("")}
+
+                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? 
+                                                                        (
+                                                                        <DeleteBtn className="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn> 
+                                                                        // <UpdateBtn className="btn btn-submit">Update</UpdateBtn>
+                                                                        ) : ("")}
+                                                                    </td>
+
+                                                                )}
 
                                                             </tr>
                                                         </tbody>
@@ -535,7 +567,7 @@ class User extends Component {
                                                 ))}
 
                                             </table>
-                                
+                                        </div>
                                     ) : ("")}
                                 </Row>
                             </div>

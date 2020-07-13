@@ -18,7 +18,7 @@
     background-color: rgb(104,183,76);
     padding: 20px;
     border-radius: 5px;
-    height: 600px;
+    height: 500px;
 }
 .recent-workout-column {
     text-align: center;
@@ -33,13 +33,17 @@ p {
     padding: 0px;
     margin: 0px;
 }
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 .dropdown {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     /* margin-left: 5px; */
     margin-right: 10px;
     color: white; 
     background-color: rgb(39,79,114);
-    padding: 10px;
+    padding: 5px;
     border-radius: 5px;
     width: 100%;
 }
@@ -114,19 +118,19 @@ th {
     color: white;
     background-color:rgb(39,79,114);
     padding: 4px;
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
     margin: 10px;
     width: 2%;
+    
 }
-
 td {
     color: white;
     text-align: left;
-    padding-top:10px;
-    padding-bottom:10px;
+    padding-top:15px;
+    padding-bottom:15px;
     font-size: 16px;
-    margin: 5px;
+    margin-bottom: 20px;
     width: 10%;
 }
 tr {
@@ -137,8 +141,7 @@ tr {
     width: 100%;
 
 }
- 
-.table-labels {
+ .table-labels {
     color: rgb(39,79,114);
     font-size: 20px;
     font-weight: bolder;

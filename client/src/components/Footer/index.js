@@ -6,7 +6,7 @@ function Footer() {
   return (
     <nav className="footer fa fa-copyright">
         FITNESS TRAINER
-        <i class="material-icons">{"nbsp"}copyright </i>
+        <i className="material-icons">{"nbsp"}copyright </i>
     </nav>
   );
 }
