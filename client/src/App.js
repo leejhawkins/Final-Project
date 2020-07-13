@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import LogIn from "./pages/LogIn";
 import NoMatch from "./pages/NoMatch";
 import NewUser from "./pages/NewUser";
 import Gym from "./pages/Gyms"
@@ -22,7 +21,7 @@ function App() {
           <Switch>
             <AuthenticatedRoute exact path="/"/>
             <Route exact path="/new-user" component={NewUser} />
-            <ProtectedRoute exact path="/gyms/:name" redirect="/" component={Gym}/>
+            <Route exact path="/gyms/:name" component={Gym}/>
             <ProtectedRoute exact path="/users/:name" redirect="/" component={User}/>
 
             <Route path="*">
