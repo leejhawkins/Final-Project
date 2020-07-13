@@ -119,6 +119,7 @@ th {
     margin: 10px;
     width: 2%;
 }
+
 td {
     color: white;
     text-align: left;
@@ -134,7 +135,9 @@ tr {
     padding-bottom:10px;
     font-size: 16px;
     width: 100%;
+
 }
+ 
 .table-labels {
     color: rgb(39,79,114);
     font-size: 20px;

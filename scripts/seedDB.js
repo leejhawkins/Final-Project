@@ -4,7 +4,7 @@ require("dotenv").config();
 
 mongoose.connect(
     process.env.MONGODB_URI ||
-    "mongodb://leejhawkins:hotsauce26@ds139331.mlab.com:39331/heroku_qsv472z6",
+    "mongodb://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@ds139331.mlab.com:39331/heroku_qsv472z6",
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
