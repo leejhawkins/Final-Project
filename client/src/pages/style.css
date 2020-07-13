@@ -21,17 +21,8 @@ container {
     height: 500px;
     display: -moz-inline-grid;
 }
-
-th {
-    color: rgb(39,79,114);
-    background-color: lightgrey;
+.recent-workout-column {
     text-align: center;
-    font-size: 16px;
-    width: 100%;
-}
-td {
-    color: white;
-    font-size: 16px;
 }
 .nav-link {
     color: white;
@@ -40,10 +31,13 @@ td {
     color: white;
 }
 
-
+p {
+    padding: 0px;
+    margin: 0px;
+}
 .dropdown {
-    margin-bottom: 10px;
-    margin-left: 10px;
+    margin-bottom: 15px;
+    /* margin-left: 5px; */
     margin-right: 10px;
     color: white; 
     background-color: rgb(39,79,114);
@@ -56,25 +50,25 @@ td {
     margin-right: 5px;
     color: white; 
     background-color: rgb(39,79,114);
-    padding: 10px;
+    /* padding: 10px; */
     border-radius: 5px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 .wod-score-title {
     color: white; 
     background-color: rgb(39,79,114);
     border-radius: 5px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     text-align: center;
 }
 .wod-score-input {
     color:rgb(39,79,114);
     background-color: white;
     border-radius: 5px;
-    margin-bottom: 10px;
-    width: 25%;
-    margin-left: 10px;
-    margin-right: 10px;
+    /* margin-bottom: 0px; */
+    width: 35%;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 .image {
     width: 150px;
@@ -89,12 +83,12 @@ td {
     border-radius: 5px;
 }
 .submit-movement {
-    margin: 10px;
     background-color: rgb(39,79,114);
     border-radius: 5px;
     padding: 2px;
     border-color: white;
     color: white; 
+    margin-top: 10px;
   } 
 .row {
     margin-top: 0px;
@@ -102,12 +96,6 @@ td {
     margin-left: 5px;
     margin-right: 5px;
     width: 100%;
-}
-.table-labels {
-    color: rgb(39,79,114);
-    font-size: 16px;
-    font-weight: bolder;
-    margin-right: 2px;
 }
 .datepicker {
     border-radius: 5px;
@@ -122,3 +110,47 @@ td {
     border-color: white;
     color: white; 
 }  
+table, tbody, thead {
+    width: 100%;
+    
+}
+th {
+    color: white;
+    background-color:rgb(39,79,114);
+    padding: 4px;
+    font-size: 14px;
+    text-align: center;
+    width: 5%;
+}
+td {
+    color: white;
+    text-align: left;
+    padding-top:10px;
+    padding-bottom:10px;
+    font-size: 16px;
+    margin: 5px;
+    width: 5%;
+}
+tr {
+    color: white;
+    padding-top:10px;
+    padding-bottom:10px;
+    font-size: 16px;
+    width: 100%;
+}
+.table-labels {
+    color: rgb(39,79,114);
+    font-size: 20px;
+    font-weight: bolder;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+.btn-submit {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: rgb(39,79,114);
+    border-radius: 5px;
+    border-color: white;
+    color: white; 
+    padding: 4px;
+  }  
