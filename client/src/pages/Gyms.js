@@ -114,10 +114,10 @@ class Gym extends Component {
                                     {
                                         this.state.wod.scores.map(score => (
                                             <Row>
-                                                <Col size="md-6">
+                                                <Col size="md-4">
                                                     {score.firstName} {score.lastName}
                                                 </Col>
-                                                <Col size="md-6">
+                                                <Col size="md-8">
                                                     {this.state.wod.workoutType === "For Time" ? (
                                                         <p>Time: {Math.floor(score.score / 60)}:{score.score % 60}</p>) : ("")}
                                                     {this.state.wod.workoutType === "AMRAP" ? (
@@ -135,7 +135,7 @@ class Gym extends Component {
                         </Col>
                         <Col size="md-4">
                             <div id="members">
-                                <h5>Members:</h5>
+                                <h5>Gym Members:</h5>
                                 <hr></hr>
                                 {this.state.userInfo.map(member => (
                                     <p>{member.firstName}  {member.lastName}</p>

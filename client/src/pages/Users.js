@@ -226,6 +226,7 @@ class User extends Component {
         return stats;
     }  
     
+
     render() {
         return (
             <div className="container container-fluid">
@@ -325,7 +326,6 @@ class User extends Component {
                                                         name="seconds"
                                                         placeholder={this.state.wod.workoutType === "For Time" ? "Seconds" : "Reps"}
                                                     />
-
                                                     <div>
                                                         <FormBtn
                                                             className="submit"
@@ -334,14 +334,12 @@ class User extends Component {
                                                         >Submit Score
                                                         </FormBtn>
                                                     </div>
-
                                                 </Row>
                                             </div>
                                         </div>
                                     </div>
 
                                 ) : (<h6>There is no workout for: {this.state.wodDate}</h6>)}
-
                             </div>
                         </Col>
 

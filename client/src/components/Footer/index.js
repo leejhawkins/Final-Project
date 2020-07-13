@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 function Footer() {
   return (
     <nav className="footer fa fa-copyright">
-      <i class="material-icons">copyright</i>
-        FITNESS TRAINER         
+        FITNESS TRAINER
+        <i class="material-icons">{"nbsp"}copyright </i>
     </nav>
   );
 }
