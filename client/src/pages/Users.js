@@ -219,11 +219,9 @@ class User extends Component {
         return stats;
     }  
     
-
-
     render() {
         return (
-            <div className="container-fluid">
+            <div className="container container-fluid">
                 <Container fluid>
                     <Row className="container-fluid">
                         <Col size="md-4" className="container-fluid">

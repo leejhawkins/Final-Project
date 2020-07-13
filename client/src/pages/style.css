@@ -1,4 +1,4 @@
-container {
+.container {
     max-width: 75%;
     margin-bottom:25px;
     margin-top:25px;
@@ -13,13 +13,12 @@ container {
 }
 #user,#members,#wod,#scores,#workouts,#logworkout {
     margin-top: 25px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     color: white; 
     background-color: rgb(104,183,76);
     padding: 20px;
     border-radius: 5px;
-    height: 500px;
-    display: -moz-inline-grid;
+    height: 600px;
 }
 .recent-workout-column {
     text-align: center;
@@ -30,7 +29,6 @@ container {
 .nav-item {
     color: white;
 }
-
 p {
     padding: 0px;
     margin: 0px;
@@ -50,22 +48,21 @@ p {
     margin-right: 5px;
     color: white; 
     background-color: rgb(39,79,114);
-    /* padding: 10px; */
+    padding: 10px;
     border-radius: 5px;
-    /* margin-bottom: 10px; */
+    margin-bottom: 10px;
 }
 .wod-score-title {
     color: white; 
     background-color: rgb(39,79,114);
     border-radius: 5px;
-    /* margin-bottom: 10px; */
+    margin-bottom: 10px;
     text-align: center;
 }
 .wod-score-input {
     color:rgb(39,79,114);
     background-color: white;
     border-radius: 5px;
-    /* margin-bottom: 0px; */
     width: 35%;
     margin-left: 5px;
     margin-right: 5px;
@@ -112,7 +109,6 @@ p {
 }  
 table, tbody, thead {
     width: 100%;
-    
 }
 th {
     color: white;
@@ -120,10 +116,26 @@ th {
     padding: 4px;
     font-size: 14px;
     text-align: center;
-    width: 5%;
+    margin: 10px;
+    width: 2%;
 }
-.score {
-    float: right;
+
+td {
+    color: white;
+    text-align: left;
+    padding-top:10px;
+    padding-bottom:10px;
+    font-size: 16px;
+    margin: 5px;
+    width: 10%;
+}
+tr {
+    color: white;
+    padding-top:10px;
+    padding-bottom:10px;
+    font-size: 16px;
+    width: 100%;
+
 }
  
 .table-labels {

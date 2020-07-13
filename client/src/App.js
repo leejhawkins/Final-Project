@@ -8,8 +8,7 @@ import {AuthContext} from "./context/auth";
 import Nav from "./components/Nav/index";
 import User from "./pages/Users";
 import AuthenticatedRoute from "./AuthenticatedRoute";
-// import NavTabs from "./components/NavTabs";
-
+import Footer from "./components/Footer";
 
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
@@ -28,9 +27,12 @@ function App() {
               <NoMatch />
             </Route>
           </Switch>
+          <Footer/>
         </div>
+
       </Router>
     </AuthContext.Provider>
+    
   );
 }
 
