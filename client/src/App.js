@@ -7,6 +7,8 @@ import Gym from "./pages/Gyms"
 import ProtectedRoute from "./ProtectedRoute";
 import {AuthContext} from "./context/auth";
 import Nav from "./components/Nav/index";
+import User from "./pages/Users";
+import AuthenticatedRoute from "./AuthenticatedRoute";
 // import NavTabs from "./components/NavTabs";
 
 
@@ -14,16 +16,14 @@ function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
   return (
     <AuthContext.Provider value={existingTokens}>
-     
-      {/* <NavTabs/> */}
       <Router>
         <div>
           <Nav/>
           <Switch>
-            <Route exact path="/" component={LogIn} />
+            <AuthenticatedRoute exact path="/"/>
             <Route exact path="/new-user" component={NewUser} />
-            <Route exact path="/gyms/:name" component={Gym}/>
-            <ProtectedRoute exact path="/users/:name"/>
+            <ProtectedRoute exact path="/gyms/:name" redirect="/" component={Gym}/>
+            <ProtectedRoute exact path="/users/:name" redirect="/" component={User}/>
 
             <Route path="*">
               <NoMatch />
