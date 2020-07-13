@@ -211,7 +211,6 @@ class User extends Component {
                     if (array[i].scores[j].userName === userName) {
                         
                         sumMinutes += parseInt(array[i].scores[j].score);
-                        // sumMiles += parseInt(array[i].miles);
 
                         console.log("Total Minutes: " + sumMinutes);
 
@@ -486,15 +485,15 @@ class User extends Component {
 
                     <Row>
                         <Col size="md-12">
-                            <div id="workouts">
+                            <div id="workouts" className="fluid">
                                 <h5>Recent Workouts</h5>
                                 <hr></hr>
                                 <Row>
 
                                     {this.state.workouts.length ? (
 
-                                        <div className="table-responsive">
-                                            <table className="table-fluid">
+                                        <div className="fluid">
+                                            <table className="table-responsive table-fluid">
 
                                                 {this.state.workouts.map(workout => (
 
