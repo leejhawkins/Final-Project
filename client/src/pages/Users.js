@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { SaveBtn } from "../components/Buttons/SaveBtn"
 import { DeleteBtn } from "../components/Buttons/DeleteBtn"
 import API from "../utils/API";
@@ -239,6 +240,7 @@ class User extends Component {
                                 <Row>
                                     <Col size="md-4" >
                                         <Card
+                                            style={{ margin:"20px" }}
                                             image={this.state.userInfo.image ? this.state.userInfo.image : "https://4.bp.blogspot.com/_CFGTjIBDv4o/Si08hun6XRI/AAAAAAAAAUg/j1ZqSvAmcIU/s280/Pumping+Iron.jpg"}
                                             name={this.state.userInfo.userName}
                                         />
@@ -352,7 +354,6 @@ class User extends Component {
                                 <div>Date:
                                                 <DatePicker
                                         className="datepicker"
-
                                         selected={this.state.date}
                                         onChange={this.changeDate}
                                     />
@@ -384,7 +385,7 @@ class User extends Component {
                                                     name="rounds"
                                                     placeholder={this.state.workoutType === "For Time" ? "Rounds: " : "Time"}
                                                 />
-                                                <h5>{this.state.workoutType === "For Time" ? "Rounds" : "Minutes"} </h5>
+                                                {this.state.workoutType === "For Time" ? "Rounds" : "Minutes"}
                                             </Row>
 
                                             {this.state.movementArray.length ? (
@@ -425,7 +426,7 @@ class User extends Component {
                                             </Row>
 
                                             {this.state.movementName ? (
-                                                <Row className="div-wod-score">
+                                                <Row>
                                                     <Input className="wod-score-input"
                                                         value={this.state.reps}
                                                         onChange={this.handleInputChange}
@@ -441,11 +442,16 @@ class User extends Component {
 
                                                         />
                                                     ) : ("")}
-
+                                                    
+                                                <Row>
                                                     <SaveBtn class="submit-movement"
                                                         disabled={!(this.state.movementName && this.state.reps)}
                                                         onClick={() => this.addMovement()} />
                                                 </Row>
+
+                                                </Row>
+
+
                                             ) : ("")}
                                             <hr></hr>
 
@@ -457,7 +463,8 @@ class User extends Component {
                                                     name="minutes"
                                                     placeholder={this.state.workoutType === "For Time" ? "Minutes" : "Rounds"}
                                                 />
-                                                <h5>{this.state.workout === "For Time" ? " : " : " + "}</h5>
+                                                <h6>{this.state.workout === "For Time" ? " : " : " + "}</h6>
+
                                                 <Input className="wod-score-input"
                                                     value={this.state.seconds}
                                                     onChange={this.handleInputChange}
@@ -465,6 +472,7 @@ class User extends Component {
                                                     placeholder={this.state.workoutType === "For Time" ? "Seconds" : "Reps"}
                                                 />
                                             </Row>
+
                                             <FormBtn
                                                 className="logscore"
                                                 disabled={!(this.state.workoutType && this.state.rounds && this.state.movementArray && this.state.minutes)}
@@ -487,19 +495,59 @@ class User extends Component {
                                 <h5>Recent Workouts</h5>
                                 <hr></hr>
                                 <Row>
+
                                     {this.state.workouts.length ? (
-                                            <div>
-                                                <table className="table table-hover fluid">
 
-                                                        {this.state.workouts.map(workout => (
-                                                            <Row key={workout._id}>
-                                                                <tr>
-                                                                    <td><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
-                                                                    <td> {workout.workoutType}</td>
-                                                                    <td>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
+                                        <div className="table-responsive">
+                                            <table className="table-fluid">
+
+                                                {this.state.workouts.map(workout => (
+
+                                                    <Row key={workout._id} className="fluid">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Type</th>
+                                                                <th>Duration</th>
+                                                                <th>Movements</th>
+                                                                <th>Score/Time</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr className="fluid">
+
+                                                                <td style={{ textAlign: "center" }}><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
+
+                                                                <td style={{ textAlign: "center" }}> {workout.workoutType}</td>
+
+                                                                <td style={{ textAlign: "center" }}>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
+                                                                </td>
+
+                                                                <td >
+                                                                    {workout.movements.map((movement, i) => (
+
+                                                                        <span> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
+                                                                            {movement.name}
+                                                                            {movement.movementType === "weight" ? ` at ${movement.weight} lbs` : ""}
+                                                                            {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""}
+                                                                            {(workout.movements.length - 1) === i ? "" : ","}
+                                                                        </span>
+                                                                    ))}
+                                                                </td>
+
+                                                                {workout.scores.map(score =>
+                                                                    <td style={{ textAlign: "center" }}>
+                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
+                                                                            <p><span className="table-labels">Time:</span>{Math.floor(score.score / 60)}:{score.score % 60}</p>) : ("")}
+
+
+                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
+
+                                                                            <p><span className="table-labels">Score:</span> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps</p>) : ("")}
                                                                     </td>
-                                                                )}
 
+                                                                )}
                                                                 {workout.scores.map(score =>
                                                                     <td style={{ textAlign: "center" }}>
                                                                         {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? 
@@ -528,12 +576,13 @@ class User extends Component {
                                     ) : ("")}
                                 </Row>
                             </div>
-                       </Col>
+                        </Col>
                     </Row>
 
-                </Container>
-            </div>
-    )
-}};
-    
+                </Container >
+            </div >
+        )
+    }
+};
+
 export default User
