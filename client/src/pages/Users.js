@@ -12,8 +12,6 @@ import moment, { now } from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Sparklines, SparklinesBars, SparklinesLine, SparklinesSpots } from 'react-sparklines';
-import { Aggregate, get } from "mongoose";
-
 
 class User extends Component {
     state = {
@@ -81,16 +79,10 @@ class User extends Component {
                 const date = moment().format("YYYY-MM-DD")
                 this.setState({ wodDate: date })
                 this.getWOD(this.state.userInfo.program, date)
-                this.getCrossFitWOD(moment(date,"YYYY-MM-DD").format('YYMMDD'));
+
             })
             .catch(err => console.log(err));
-        }
-    getCrossFitWOD = date => {
-        API.getCrossFitWOD(date).then(res => {
-            console.log(res.data);
-            this.setState({ CrossFitWOD: res.data });
-        })
-        } 
+    }
     handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({
@@ -173,7 +165,6 @@ class User extends Component {
         const newDate = moment(date, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DD")
         this.setState({ wodDate: newDate })
         this.getWOD(this.state.userInfo.program, newDate)
-        this.getCrossFitWOD(moment(newDate,"YYYY-MM-DD").format('YYMMDD'));
     }
     submitScore = event => {
         event.preventDefault()
@@ -402,12 +393,7 @@ class User extends Component {
                                         </div>
                                     </div>
 
-                                ) : ("")}
-                                {this.state.CrossFitWOD ? (<h6>{this.state.CrossFitWOD.map(item => (
-
-                                    <p>{item}</p>
-                                ))} </h6>):("")}
-
+                                ) : (<h6>There is no workout for: {this.state.wodDate}</h6>)}
                             </div>
                         </Col>
 
@@ -571,10 +557,9 @@ class User extends Component {
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
-
                                                 {this.state.workouts.map(workout => (
-                                                <tbody>
 
+                                                    <tbody>
                                                         <tr key={workout._id} >
                                                             <td style={{ textAlign: "center" }}><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
                                                             <td style={{ textAlign: "center" }}> {workout.workoutType}</td>

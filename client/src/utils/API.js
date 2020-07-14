@@ -1,5 +1,4 @@
 import axios from "axios";
-import cheerio from "cheerio";
 
 export default {
 
@@ -44,9 +43,5 @@ export default {
   },
   getPrograms() {
     return axios.get("api/programs")
-  },
-  getCrossFitWOD(date) {
-    console.log(date);
-    return axios.get("/scrape/" + date )
-     }
+  }
 };
