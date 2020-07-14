@@ -11,7 +11,7 @@ import "./style.css";
 import moment, { now } from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Aggregate } from "mongoose";
+import { Aggregate, get } from "mongoose";
 
 
 class User extends Component {
@@ -75,10 +75,16 @@ class User extends Component {
                 const date = moment().format("YYYY-MM-DD")
                 this.setState({ wodDate: date })
                 this.getWOD(this.state.userInfo.program, date)
-
+                this.getCrossFitWOD(moment(date,"YYYY-MM-DD").format('YYMMDD'));
             })
             .catch(err => console.log(err));
-    }
+        }
+    getCrossFitWOD = date => {
+        API.getCrossFitWOD(date).then(res => {
+            console.log(res.data);
+            this.setState({ CrossFitWOD: res.data });
+        })
+        } 
     handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({
@@ -161,6 +167,7 @@ class User extends Component {
         const newDate = moment(date, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DD")
         this.setState({ wodDate: newDate })
         this.getWOD(this.state.userInfo.program, newDate)
+        this.getCrossFitWOD(moment(newDate,"YYYY-MM-DD").format('YYMMDD'));
     }
     submitScore = event => {
         event.preventDefault()
@@ -330,7 +337,7 @@ class User extends Component {
                                         </div>
                                     </div>
 
-                                ) : (<h6>There is no workout for: {this.state.wodDate}</h6>)}
+                                ) : (<h6>{ this.state.CrossFitWOD } </h6>)}
 
                             </div>
                         </Col>
