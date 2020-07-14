@@ -71,9 +71,10 @@ class Gym extends Component {
   render() {
     return (
       <div className="container">
-        <Chat></Chat>
+        
         <Container fluid>
           <Row>
+            <Chat></Chat>
             <Col size="md-4">
               <div id="wod">
                 <h5>
