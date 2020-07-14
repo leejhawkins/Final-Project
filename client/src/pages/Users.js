@@ -338,7 +338,7 @@ class User extends Component {
                                     </div>
 
                                 ) : ("")}
-                                {this.state.CrossFitWOD ? (<h6>{this.state.CrossFitWOD.map(item => (
+                                {this.state.CrossFitWOD && !this.state.wod ? (<h6>{this.state.CrossFitWOD.map(item => (
 
                                     <p>{item}</p>
                                 ))} </h6>):("")}

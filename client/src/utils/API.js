@@ -1,5 +1,4 @@
 import axios from "axios";
-import cheerio from "cheerio";
 
 export default {
 
@@ -8,6 +7,9 @@ export default {
   },
   getGymUsers: function (gym) {
     return axios.get("/api/programs/"+gym);
+  },
+  saveMessage: function (gym,messageData) {
+    return axios.put("/api/programs/"+gym,messageData)
   },
   getWOD: function (workoutData) {
     console.log(workoutData)
