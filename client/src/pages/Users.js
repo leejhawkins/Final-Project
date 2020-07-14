@@ -11,8 +11,7 @@ import "./style.css";
 import moment, { now } from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Aggregate } from "mongoose";
-
+import { Sparklines, SparklinesBars, SparklinesLine, SparklinesSpots } from 'react-sparklines';
 
 class User extends Component {
     state = {
@@ -59,9 +58,9 @@ class User extends Component {
     loadUser = userName => {
         API.getUser(userName)
             .then(res => {
-                
+
                 const stats = this.stats(res.data.workouts, res.data.userName)
-                
+
                 this.setState({
                     userInfo: res.data, workouts: res.data.workouts, workoutType: "",
                     dateOfBirth: moment(res.data.dateOfBirth, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY"),
@@ -182,23 +181,21 @@ class User extends Component {
 
     stats = (array, userName) => {
         let countWorkout = array.length;
-        var sumMinutes=0;
+        var sumMinutes = 0;
         let stats = {};
-        var sumMiles=0;
-        var countForTime  = array.length;
+        var sumMiles = 0;
+        var countForTime = array.length;
         var countForAMRAP = array.length;
 
         console.log(array);
 
         for (var i = 0; i < array.length; i++) {
-
             if (array[i].workoutType === "AMRAP") {
-                
                 for (var j = 0; j < array[i].scores.length; j++) {
-                    
+
                     if (array[i].scores[j].userName === userName) {
                         sumMinutes += parseInt(array[i].rounds * 60);
-                        
+
                         console.log("Total Minutes: " + sumMinutes);
                     }
                 }
@@ -209,7 +206,7 @@ class User extends Component {
                     console.log("Total Minutes: " + sumMinutes);
 
                     if (array[i].scores[j].userName === userName) {
-                        
+
                         sumMinutes += parseInt(array[i].scores[j].score);
 
                         console.log("Total Minutes: " + sumMinutes);
@@ -217,13 +214,12 @@ class User extends Component {
                     }
                 }
             }
-        } sumMinutes = Math.round(sumMinutes/60)
+        } sumMinutes = Math.round(sumMinutes / 60)
 
-        stats={ countWorkout: countWorkout, sumMinutes: sumMinutes }
-         console.log(stats)
+        stats = { countWorkout: countWorkout, sumMinutes: sumMinutes }
+        console.log(stats)
         return stats;
-    }  
-    
+    }
 
     render() {
         return (
@@ -231,18 +227,20 @@ class User extends Component {
                 <Container fluid>
                     <Row className="container-fluid">
                         <Col size="md-4" className="container-fluid">
-                            <div id="user"className="container-fluid">
+                            <div id="user" className="container-fluid">
                                 <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
                                 <hr></hr>
                                 <Row>
-                                    <Col size="md-4" >
+                                    <Col size="md-5" >
                                         <Card
-                                            style={{ margin:"20px" }}
+                                            style={{ margin: "20px" }}
                                             image={this.state.userInfo.image ? this.state.userInfo.image : "https://4.bp.blogspot.com/_CFGTjIBDv4o/Si08hun6XRI/AAAAAAAAAUg/j1ZqSvAmcIU/s280/Pumping+Iron.jpg"}
                                             name={this.state.userInfo.userName}
                                         />
                                     </Col>
-                                    <Col size="md-8" style="float:right">
+                                    <Col size="md-7" style="float:right">
+                                        <br></br>
+                                        <br></br>
                                         <p>Age: {this.state.age}</p>
                                         <p>Weight: {this.state.userInfo.weight}</p>
                                         <p>Gym: {this.state.userInfo.program}</p>
@@ -250,21 +248,30 @@ class User extends Component {
                                 </Row>
                                 <hr></hr>
                                 <Row>
-
-                            {this.state.stats ? (                                     
-
-                                    <div>
-                                        <p>Workouts: {this.state.stats.countWorkout}</p>
-                                        {/* <p>For Time:</p>
-                                        <p>AMRAP:</p> */}
-                                        <p>Minutes:{this.state.stats.sumMinutes}</p>
-                                        {/* <p>Miles:{this.state.stats.sumMiles}</p> */}
-                                    </div>
+                                    {this.state.stats ? (
+                                        <Col size="md-6">
+                                            <br></br>
+                                            <p>Workouts: {this.state.stats.countWorkout}</p>
+                                            <p>Total Minutes: {this.state.stats.sumMinutes} </p>
+                                        </Col>
                                     ) : ("")
-                                }
-                            
-                                </Row>
+                                    }
+                                    <Col size="md-6" style="float:right">
+                                        <Sparklines data={[10, 5, 6, 3, 1]} limit={5} height={50}>
+                                            <SparklinesLine color="blue" fill="white"/>
+                                            <SparklinesSpots />
+                                        </Sparklines>
 
+                                        <Sparklines data={[10, 5, 6, 2, 40]} limit={5} heigt={50} >
+                                        <SparklinesLine color="blue" fill="white"/>
+                                            <SparklinesSpots />
+                                        </Sparklines>
+                                        <Sparklines data={[10, 5, 6, 2, 40]} limit={5} heigt={50} >
+                                        <SparklinesLine color="blue" fill="white"/>
+                                            <SparklinesSpots />
+                                        </Sparklines>
+                                    </Col>
+                                </Row>
                             </div>
                         </Col>
 
@@ -287,6 +294,9 @@ class User extends Component {
                                     <div className="div-wod-score">
 
                                         <p>{moment(this.state.wod.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</p>
+
+                                        <br></br>
+
                                         {this.state.wod.workoutType === "For Time"
 
                                             ? <p>{this.state.wod.workoutType} {this.state.wod.rounds} Rounds</p>
@@ -306,6 +316,7 @@ class User extends Component {
                                             <div className="div-wod-score">
 
                                                 <Row key={this.state.wod._id}>
+
                                                     <p className="div-wod-title">{this.state.wod.workoutType === "For Time" ? "Time: " : "Score: "}</p>
 
                                                     <Input
@@ -354,7 +365,7 @@ class User extends Component {
                                 </div>
                                 <hr></hr>
 
-                                <form id="log-workouts"className="fluid">
+                                <form id="log-workouts" className="fluid">
                                     <Row>
                                         <Dropdown className="dropdown"
                                             value={this.state.workoutType}
@@ -436,12 +447,12 @@ class User extends Component {
 
                                                         />
                                                     ) : ("")}
-                                                    
-                                                <Row>
-                                                    <SaveBtn className="submit-movement"
-                                                        disabled={!(this.state.movementName && this.state.reps)}
-                                                        onClick={() => this.addMovement()} />
-                                                </Row>
+
+                                                    <Row>
+                                                        <SaveBtn className="submit-movement"
+                                                            disabled={!(this.state.movementName && this.state.reps)}
+                                                            onClick={() => this.addMovement()} />
+                                                    </Row>
 
                                                 </Row>
 
@@ -538,23 +549,23 @@ class User extends Component {
 
                                                                         {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
 
-                                                                            <p><span className="table-labels">Score:</span> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps</p>) : ("")}
+                                                                            <p><span className="table-labels">Score:</span><br></br> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps</p>) : ("")}
                                                                     </td>
 
                                                                 )}
                                                                 {workout.scores.map(score =>
                                                                     <td style={{ textAlign: "center" }}>
-                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? 
-                                                                        
-                                                                        (<DeleteBtn className="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn> 
-                                                                        // <UpdateBtn className="btn btn-submit"></UpdateBtn>
-                                                                        ) : ("")}
+                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ?
 
-                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? 
-                                                                        (
-                                                                        <DeleteBtn className="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn> 
-                                                                        // <UpdateBtn className="btn btn-submit">Update</UpdateBtn>
-                                                                        ) : ("")}
+                                                                            (<DeleteBtn className="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn>
+                                                                                // <UpdateBtn className="btn btn-submit"></UpdateBtn>
+                                                                            ) : ("")}
+
+                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ?
+                                                                            (
+                                                                                <DeleteBtn className="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn>
+                                                                                // <UpdateBtn className="btn btn-submit">Update</UpdateBtn>
+                                                                            ) : ("")}
                                                                     </td>
 
                                                                 )}
