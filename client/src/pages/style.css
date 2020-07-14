@@ -1,5 +1,5 @@
 .container {
-    max-width: 75%;
+    max-width: 85%;
     margin-bottom:25px;
     margin-top:25px;
     background-position: center;
@@ -121,8 +121,7 @@ th {
     font-size: 16px;
     text-align: center;
     margin: 10px;
-    width: 2%;
-    
+    width: 10%;
 }
 td {
     color: white;
@@ -139,7 +138,6 @@ tr {
     padding-bottom:10px;
     font-size: 16px;
     width: 100%;
-
 }
  .table-labels {
     color: rgb(39,79,114);

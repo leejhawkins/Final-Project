@@ -60,6 +60,7 @@ class User extends Component {
             .then(res => {
 
                 const stats = this.stats(res.data.workouts, res.data.userName)
+                console.log(stats);
 
                 this.setState({
                     userInfo: res.data, workouts: res.data.workouts, workoutType: "",
@@ -73,6 +74,7 @@ class User extends Component {
                     minutes: "",
                     seconds: "",
                     stats: stats,
+
                 })
                 const date = moment().format("YYYY-MM-DD")
                 this.setState({ wodDate: date })
@@ -182,10 +184,12 @@ class User extends Component {
     stats = (array, userName) => {
         let countWorkout = array.length;
         var sumMinutes = 0;
+        var sumReps = 0;
+        var sumWeight = 0;
         let stats = {};
-        var sumMiles = 0;
-        var countForTime = array.length;
-        var countForAMRAP = array.length;
+        var roundsArray = array.map(function (rounds) { return (rounds.rounds) })
+        var repsArray = array.map(function (reps) { return (reps.reps) })
+        var minutesArray = array.map(function (minutes) { return (minutes.minutes) })
 
         console.log(array);
 
@@ -195,7 +199,8 @@ class User extends Component {
 
                     if (array[i].scores[j].userName === userName) {
                         sumMinutes += parseInt(array[i].rounds * 60);
-
+                        sumReps += parseInt(array[i].reps);
+                        sumReps += parseInt(array[i].weight);
                         console.log("Total Minutes: " + sumMinutes);
                     }
                 }
@@ -208,6 +213,8 @@ class User extends Component {
                     if (array[i].scores[j].userName === userName) {
 
                         sumMinutes += parseInt(array[i].scores[j].score);
+                        sumReps += parseInt(array[i].reps);
+                        sumReps += parseInt(array[i].weight);
 
                         console.log("Total Minutes: " + sumMinutes);
 
@@ -216,7 +223,7 @@ class User extends Component {
             }
         } sumMinutes = Math.round(sumMinutes / 60)
 
-        stats = { countWorkout: countWorkout, sumMinutes: sumMinutes }
+        stats = { countWorkout: countWorkout, sumMinutes: sumMinutes, sumWeight: sumWeight, sumReps: sumReps, rounds: roundsArray, reps: repsArray, mintues: minutesArray }
         console.log(stats)
         return stats;
     }
@@ -244,36 +251,74 @@ class User extends Component {
                                         <p>Age: {this.state.age}</p>
                                         <p>Weight: {this.state.userInfo.weight}</p>
                                         <p>Gym: {this.state.userInfo.program}</p>
+                                        {this.state.stats ? (
+                                            <p>Workouts: {this.state.stats.countWorkout}</p>
+                                        ) : ("")
+                                        }
                                     </Col>
                                 </Row>
+
                                 <hr></hr>
+
                                 <Row>
                                     {this.state.stats ? (
-                                        <Col size="md-6">
-                                            <br></br>
-                                            <p>Workouts: {this.state.stats.countWorkout}</p>
-                                            <p>Total Minutes: {this.state.stats.sumMinutes} </p>
+
+                                        <Col size="md-8">
+                                            <p>Total Minutes: {this.state.stats.sumMinutes}  Rounds:</p>
                                         </Col>
                                     ) : ("")
                                     }
-                                    <Col size="md-6" style="float:right">
-                                        <Sparklines data={[10, 5, 6, 3, 1]} limit={5} height={50}>
-                                            <SparklinesLine color="blue" fill="white"/>
-                                            <SparklinesSpots />
-                                        </Sparklines>
-
-                                        <Sparklines data={[10, 5, 6, 2, 40]} limit={5} heigt={50} >
-                                        <SparklinesLine color="blue" fill="white"/>
-                                            <SparklinesSpots />
-                                        </Sparklines>
-                                        <Sparklines data={[10, 5, 6, 2, 40]} limit={5} heigt={50} >
-                                        <SparklinesLine color="blue" fill="white"/>
-                                            <SparklinesSpots />
-                                        </Sparklines>
-                                    </Col>
+                                    {this.state.stats ? (
+                                        <Col size="md-4" style="float:right">
+                                            <Sparklines data={this.state.stats.rounds} limit={10} height={40}>
+                                                <SparklinesLine color="blue" fill="white" />
+                                                <SparklinesSpots />
+                                            </Sparklines>
+                                        </Col>
+                                    ) : ("")
+                                    }
                                 </Row>
+                                <br></br>
+                                <Row>
+                                    {this.state.stats ? (
+                                        <Col size="md-8">
+                                            <p>Total Reps: {this.state.stats.sumReps}  Reps:</p>
+                                        </Col>
+                                    ) : ("")
+                                    }
+                                    {this.state.stats ? (
+                                        <Col size="md-4" style="float:right">
+                                            <Sparklines data={this.state.stats.reps} limit={10} height={40}>
+                                                <SparklinesLine color="blue" fill="white" />
+                                                <SparklinesSpots />
+                                            </Sparklines>
+                                        </Col>
+                                    ) : ("")
+                                    }
+                                </Row>
+                                <br></br>
+                                <Row>
+                                    {this.state.stats ? (
+                                        <Col size="md-8">
+                                            <p>Total Weight: {this.state.stats.sumWeight}  Weight:</p>
+                                        </Col>
+                                    ) : ("")
+                                    }
+                                    {this.state.stats ? (
+                                        <Col size="md-4" style="float:right">
+                                            <Sparklines data={this.state.stats.weight} limit={10} height={40}>
+                                                <SparklinesLine color="blue" fill="white" />
+                                                <SparklinesSpots />
+                                            </Sparklines>
+                                        </Col>
+                                    ) : ("")
+                                    }
+                                </Row>
+
                             </div>
+
                         </Col>
+
 
                         <Col size="md-4">
                             <div id="wod" >
@@ -493,87 +538,68 @@ class User extends Component {
                             </div>
                         </Col>
                     </Row>
-
                     <Row>
                         <Col size="md-12">
-                            <div id="workouts" className="fluid">
+                            <div id="workouts">
                                 <h5>Recent Workouts</h5>
                                 <hr></hr>
                                 <Row>
-
                                     {this.state.workouts.length ? (
-
-                                        <div className="fluid">
-                                            <table className="table-responsive table-fluid">
-
+                                        <div className="table-responsive" >
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Type</th>
+                                                        <th>Duration</th>
+                                                        <th>Movements</th>
+                                                        <th>Score/Time</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
                                                 {this.state.workouts.map(workout => (
 
-                                                    <Row key={workout._id} className="fluid">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Date</th>
-                                                                <th>Type</th>
-                                                                <th>Duration</th>
-                                                                <th>Movements</th>
-                                                                <th>Score/Time</th>
-                                                                <th>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr className="fluid">
-
-                                                                <td style={{ textAlign: "center" }}><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
-
-                                                                <td style={{ textAlign: "center" }}> {workout.workoutType}</td>
-
-                                                                <td style={{ textAlign: "center" }}>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
+                                                    <tbody>
+                                                        <tr key={workout._id} >
+                                                            <td style={{ textAlign: "center" }}><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
+                                                            <td style={{ textAlign: "center" }}> {workout.workoutType}</td>
+                                                            <td style={{ textAlign: "center" }}>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
+                                                            </td>
+                                                            <td >
+                                                                {workout.movements.map((movement, i) => (
+                                                                    <span> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
+                                                                        {movement.name}
+                                                                        {movement.movementType === "weight" ? ` at ${movement.weight} lbs` : ""}
+                                                                        {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""}
+                                                                        {(workout.movements.length - 1) === i ? "" : ","}
+                                                                    </span>
+                                                                ))}
+                                                            </td>
+                                                            {workout.scores.map(score =>
+                                                                <td style={{ textAlign: "center" }}>
+                                                                    {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
+                                                                        <p><span className="table-labels">Time:</span><br></br>{Math.floor(score.score / 60)}:{score.score % 60}</p>) : ("")}
+                                                                    {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
+                                                                        <p><span className="table-labels">Score:</span><br></br> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps</p>) : ("")}
                                                                 </td>
+                                                            )}
+                                                            {workout.scores.map(score =>
+                                                                <td style={{ textAlign: "center" }}>
+                                                                    {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ?
 
-                                                                <td >
-                                                                    {workout.movements.map((movement, i) => (
+                                                                        (<DeleteBtn className="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn>
+                                                                            // <UpdateBtn className="btn btn-submit"></UpdateBtn>
+                                                                        ) : ("")}
 
-                                                                        <span> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
-                                                                            {movement.name}
-                                                                            {movement.movementType === "weight" ? ` at ${movement.weight} lbs` : ""}
-                                                                            {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""}
-                                                                            {(workout.movements.length - 1) === i ? "" : ","}
-                                                                        </span>
-                                                                    ))}
+                                                                    {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ?
+                                                                        (
+                                                                            <DeleteBtn className="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn>
+                                                                            // <UpdateBtn className="btn btn-submit">Update</UpdateBtn>
+                                                                        ) : ("")}
                                                                 </td>
-
-                                                                {workout.scores.map(score =>
-                                                                    <td style={{ textAlign: "center" }}>
-                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
-                                                                            <p><span className="table-labels">Time:</span>{Math.floor(score.score / 60)}:{score.score % 60}</p>) : ("")}
-
-
-                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
-
-                                                                            <p><span className="table-labels">Score:</span><br></br> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps</p>) : ("")}
-                                                                    </td>
-
-                                                                )}
-                                                                {workout.scores.map(score =>
-                                                                    <td style={{ textAlign: "center" }}>
-                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ?
-
-                                                                            (<DeleteBtn className="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn>
-                                                                                // <UpdateBtn className="btn btn-submit"></UpdateBtn>
-                                                                            ) : ("")}
-
-                                                                        {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ?
-                                                                            (
-                                                                                <DeleteBtn className="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn>
-                                                                                // <UpdateBtn className="btn btn-submit">Update</UpdateBtn>
-                                                                            ) : ("")}
-                                                                    </td>
-
-                                                                )}
-
-                                                            </tr>
-                                                        </tbody>
-                                                    </Row>
-
+                                                            )}
+                                                        </tr>
+                                                    </tbody>
                                                 ))}
 
                                             </table>
@@ -583,7 +609,6 @@ class User extends Component {
                             </div>
                         </Col>
                     </Row>
-
                 </Container >
             </div >
         )
