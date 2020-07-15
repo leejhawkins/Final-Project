@@ -264,7 +264,7 @@ class User extends Component {
                                     {this.state.stats ? (
 
                                         <Col size="md-6">
-                                            <p className="p-stats">Total Minutes: {this.state.stats.sumMinutes}  </p>
+                                            <p>Total Minutes: {this.state.stats.sumMinutes}  </p>
                                         </Col>
                                     ) : ("")
                                     }
