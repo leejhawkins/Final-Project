@@ -338,6 +338,7 @@ class User extends Component {
                                     </div>
 
                                 ) : ("")}
+
                                 
                                 {this.state.CrossFitWOD && !this.state.wod ? (
                                     <div>
