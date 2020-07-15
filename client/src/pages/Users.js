@@ -192,8 +192,6 @@ class User extends Component {
     stats = (array, userName) => {
         let countWorkout = array.length;
         var sumMinutes = 0;
-        var sumReps = 0;
-        var sumWeight = 0;
         let stats = {};
         var roundsArray = []
         console.log(array);
@@ -207,6 +205,8 @@ class User extends Component {
                     if (array[i].scores[j].userName === userName) {
                         sumMinutes += parseInt(array[i].rounds);
                         roundsArray.push(parseInt(array[i].rounds))
+
+
                         console.log("Total Minutes: " + sumMinutes);
                     }}
             }
@@ -219,7 +219,6 @@ class User extends Component {
                         roundsArray.push(parseInt(array[i].scores[j].score/60))
 
                         console.log("Total Minutes: " + sumMinutes);
-                        console.log("Total Reps: " + sumReps);
                     }
                 }
             }
@@ -278,47 +277,8 @@ class User extends Component {
                                         </Col>
                                     ) : ("")
                                     }
-                                </Row>
-                                <br></br>
-                                <Row>
-                                    {this.state.stats ? (
-                                        <Col size="md-8">
-                                            <p>Total Reps: {this.state.stats.sumReps}</p>
-                                        </Col>
-                                    ) : ("")
-                                    }
-                                    {this.state.stats ? (
-                                        <Col size="md-4" style="float:right">
-                                            <Sparklines data={this.state.stats.reps} limit={10} height={40}>
-                                                <SparklinesLine color="blue" fill="white" />
-                                                <SparklinesSpots />
-                                            </Sparklines>
-                                        </Col>
-                                    ) : ("")
-                                    }
-                                </Row>
-                                <br></br>
-                                <Row>
-                                    {this.state.stats ? (
-                                        <Col size="md-8">
-                                            <p>Total Weight: {this.state.stats.sumWeight}</p>
-                                        </Col>
-                                    ) : ("")
-                                    }
-                                    {this.state.stats ? (
-                                        <Col size="md-4" style="float:right">
-                                            <Sparklines data={this.state.stats.weight} limit={10} height={40}>
-                                                <SparklinesLine color="blue" fill="white" />
-                                                <SparklinesSpots />
-                                            </Sparklines>
-                                        </Col>
-                                    ) : ("")
-                                    
-                                    }
-                                </Row>
-
+                                </Row>                 
                             </div>
-
                         </Col>
 
 
@@ -521,15 +481,15 @@ class User extends Component {
                             </div>
                         </Col>
                     </Row>
-                    <Row className="table-responsive fluid">
+                    <Row>
                         <Col size="md-12" >
-                            <div id="workouts" className="fluid">
+                            <div id="workouts">
                                 <h5>Recent Workouts</h5>
                                 <hr></hr>
-                                <Row className="fluid">
+                                <Row>
                                     {this.state.workouts.length ? (
-                                        <div className="table-responsive fluid" >
-                                            <table className="fluid">
+                                        <div>
+                                            <table className="table-responsive fluid">
                                                 <thead>
                                                     <tr>
                                                         <th>Date</th>
