@@ -348,12 +348,14 @@ class User extends Component {
                                     </div>
                                 ) : ("")}                              
                                 {this.state.CrossFitWOD && !this.state.wod ? (
-                                    <div>
-                                    <h5>CrossFit's WOD for {this.state.wodDate}</h5>
-                                    <h6>{this.state.CrossFitWOD.map(item => (
+                                    <div className="div-wod-score">
+                                    <h6>CrossFit's WOD for {this.state.wodDate}</h6>
+                                    <hr>
+                                    </hr>
+                                    <p>{this.state.CrossFitWOD.map(item => (
 
                                         <p>{item}</p>
-                                    ))}</h6>
+                                    ))}</p>
                                     </div>) : ("")}                               
                             </div>
                         </Col>
@@ -484,15 +486,15 @@ class User extends Component {
                             </div>
                         </Col>
                     </Row>
-                    <Row className="table-responsive fluid">
+                    <Row className=".container-fluid">
                         <Col size="md-12" >
-                            <div id="workouts" className="fluid">
+                            <div id="workouts" >
                                 <h5>Recent Workouts</h5>
                                 <hr></hr>
-                                <Row className="fluid">
+                                <Row>
                                     {this.state.workouts.length ? (
-                                        <div className="table-responsive fluid" >
-                                            <table className="fluid">
+                                        <div>
+                                            <table className="table-responsive">
                                                 <thead>
                                                     <tr>
                                                         <th>Date</th>
