@@ -196,9 +196,9 @@ class User extends Component {
         var sumWeight = 0;
         let stats = {};
         var roundsArray = array.map(function (rounds) { return (rounds.rounds) })
-        var repsArray = array.map(function (reps) { return (reps.reps) })
-        var minutesArray = array.map(function (minutes) { return (minutes.minutes) })
-        var weightArray = array.map(function (weight) { return (weight.weight) })
+        // var repsArray = array.map(function (reps) { return (reps.reps) })
+        // var minutesArray = array.map(function (minutes) { return (minutes.minutes) })
+        // var weightArray = array.map(function (weight) { return (weight.weight) })
 
 
         console.log(array);
@@ -232,7 +232,7 @@ class User extends Component {
         } sumMinutes = Math.round(sumMinutes / 60)
 
         stats = { countWorkout: countWorkout
-                    ,sumMinutes: sumMinutes, sumWeight: sumWeight, sumReps: sumReps, rounds: roundsArray, reps: repsArray, mintues: minutesArray, weight:weightArray }
+                    ,sumMinutes: sumMinutes, sumWeight: sumWeight, sumReps: sumReps, rounds: roundsArray}
         console.log(stats)
         return stats;
     }
