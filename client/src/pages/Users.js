@@ -338,6 +338,7 @@ class User extends Component {
                                     </div>
 
                                 ) : ("")}
+                                Workout Sample
                                 {this.state.CrossFitWOD && !this.state.wod ? (<h6>{this.state.CrossFitWOD.map(item => (
 
                                     <p>{item}</p>
