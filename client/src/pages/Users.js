@@ -198,6 +198,8 @@ class User extends Component {
         var roundsArray = array.map(function (rounds) { return (rounds.rounds) })
         var repsArray = array.map(function (reps) { return (reps.reps) })
         var minutesArray = array.map(function (minutes) { return (minutes.minutes) })
+        var weightArray = array.map(function (weight) { return (weight.weight) })
+
 
         console.log(array);
 
@@ -208,30 +210,29 @@ class User extends Component {
                     if (array[i].scores[j].userName === userName) {
                         sumMinutes += parseInt(array[i].rounds * 60);
                         sumReps += parseInt(array[i].reps);
-                        sumReps += parseInt(array[i].weight);
+                        sumWeight += parseInt(array[i].weight);
                         console.log("Total Minutes: " + sumMinutes);
-                    }
-                }
+                    }}
             }
             else {
                 for (var j = 0; j < array[i].scores.length; j++) {
-
                     console.log("Total Minutes: " + sumMinutes);
-
                     if (array[i].scores[j].userName === userName) {
-
                         sumMinutes += parseInt(array[i].scores[j].score);
                         sumReps += parseInt(array[i].reps);
                         sumReps += parseInt(array[i].weight);
 
                         console.log("Total Minutes: " + sumMinutes);
+                        console.log("Total Reps: " + sumReps);
+                        console.log("Total Weight: " + sumWeight);
 
                     }
                 }
             }
         } sumMinutes = Math.round(sumMinutes / 60)
 
-        stats = { countWorkout: countWorkout, sumMinutes: sumMinutes, sumWeight: sumWeight, sumReps: sumReps, rounds: roundsArray, reps: repsArray, mintues: minutesArray }
+        stats = { countWorkout: countWorkout
+                    ,sumMinutes: sumMinutes, sumWeight: sumWeight, sumReps: sumReps, rounds: roundsArray, reps: repsArray, mintues: minutesArray, weight:weightArray }
         console.log(stats)
         return stats;
     }
@@ -272,7 +273,7 @@ class User extends Component {
                                     {this.state.stats ? (
 
                                         <Col size="md-8">
-                                            <p>Total Minutes: {this.state.stats.sumMinutes}  Rounds:</p>
+                                            <p>Total Minutes: {this.state.stats.sumMinutes}  </p>
                                         </Col>
                                     ) : ("")
                                     }
