@@ -207,16 +207,9 @@ class User extends Component {
             }
             else {
                 for (let j = 0; j < array[i].scores.length; j++) {
-
-                    console.log("Total Minutes: " + sumMinutes);
-
                     if (array[i].scores[j].userName === userName) {
-
                         sumMinutes += parseInt(array[i].scores[j].score/60);
-                        roundsArray.push(parseInt(array[i].scores[j].score/60))
-
-                        console.log("Total Minutes: " + sumMinutes);
-
+                        roundsArray.push(parseInt(array[i].scores[j].score/60));
                     }
                 }
             }
