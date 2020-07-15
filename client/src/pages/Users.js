@@ -56,9 +56,9 @@ class User extends Component {
     loadUser = userName => {
         API.getUser(userName)
             .then(res => {
-                
+
                 const stats = this.stats(res.data.workouts, res.data.userName)
-                
+
                 this.setState({
                     userInfo: res.data, workouts: res.data.workouts, workoutType: "",
                     dateOfBirth: moment(res.data.dateOfBirth, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY"),
@@ -75,16 +75,16 @@ class User extends Component {
                 const date = moment().format("YYYY-MM-DD")
                 this.setState({ wodDate: date })
                 this.getWOD(this.state.userInfo.program, date)
-                this.getCrossFitWOD(moment(date,"YYYY-MM-DD").format('YYMMDD'));
+                this.getCrossFitWOD(moment(date, "YYYY-MM-DD").format('YYMMDD'));
             })
             .catch(err => console.log(err));
-        }
+    }
     getCrossFitWOD = date => {
         API.getCrossFitWOD(date).then(res => {
             console.log(res.data);
             this.setState({ CrossFitWOD: res.data });
         })
-        } 
+    }
     handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({
@@ -167,7 +167,7 @@ class User extends Component {
         const newDate = moment(date, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DD")
         this.setState({ wodDate: newDate })
         this.getWOD(this.state.userInfo.program, newDate)
-        this.getCrossFitWOD(moment(newDate,"YYYY-MM-DD").format('YYMMDD'));
+        this.getCrossFitWOD(moment(newDate, "YYYY-MM-DD").format('YYMMDD'));
     }
     submitScore = event => {
         event.preventDefault()
@@ -186,7 +186,7 @@ class User extends Component {
 
     stats = (array, userName) => {
         let countWorkout = array.length;
-        var sumMinutes=0;
+        var sumMinutes = 0;
         let stats = {};
 
         console.log(array);
@@ -194,12 +194,12 @@ class User extends Component {
         for (let i = 0; i < array.length; i++) {
 
             if (array[i].workoutType === "AMRAP") {
-                
+
                 for (let j = 0; j < array[i].scores.length; j++) {
-                    
+
                     if (array[i].scores[j].userName === userName) {
                         sumMinutes += parseInt(array[i].rounds * 60);
-                        
+
                         console.log("Total Minutes: " + sumMinutes);
                     }
                 }
@@ -210,7 +210,7 @@ class User extends Component {
                     console.log("Total Minutes: " + sumMinutes);
 
                     if (array[i].scores[j].userName === userName) {
-                        
+
                         sumMinutes += parseInt(array[i].scores[j].score);
                         // sumMiles += parseInt(array[i].miles);
 
@@ -219,26 +219,26 @@ class User extends Component {
                     }
                 }
             }
-        } sumMinutes = Math.round(sumMinutes/60)
+        } sumMinutes = Math.round(sumMinutes / 60)
 
-        stats={ countWorkout: countWorkout, sumMinutes: sumMinutes }
-         console.log(stats)
+        stats = { countWorkout: countWorkout, sumMinutes: sumMinutes }
+        console.log(stats)
         return stats;
-    }  
-    
+    }
+
     render() {
         return (
             <div className="container container-fluid">
                 <Container fluid>
                     <Row className="container-fluid">
                         <Col size="md-4" className="container-fluid">
-                            <div id="user"className="container-fluid">
+                            <div id="user" className="container-fluid">
                                 <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
                                 <hr></hr>
                                 <Row>
                                     <Col size="md-4" >
                                         <Card
-                                            style={{ margin:"20px" }}
+                                            style={{ margin: "20px" }}
                                             image={this.state.userInfo.image ? this.state.userInfo.image : "https://4.bp.blogspot.com/_CFGTjIBDv4o/Si08hun6XRI/AAAAAAAAAUg/j1ZqSvAmcIU/s280/Pumping+Iron.jpg"}
                                             name={this.state.userInfo.userName}
                                         />
@@ -252,15 +252,15 @@ class User extends Component {
                                 <hr></hr>
                                 <Row>
 
-                            {this.state.stats ? (                                     
+                                    {this.state.stats ? (
 
-                                    <div>
-                                        <p>Workouts: {this.state.stats.countWorkout}</p>
-                                        <p>Minutes:{this.state.stats.sumMinutes}</p>
-                                    </div>
+                                        <div>
+                                            <p>Workouts: {this.state.stats.countWorkout}</p>
+                                            <p>Minutes:{this.state.stats.sumMinutes}</p>
+                                        </div>
                                     ) : ("")
-                                }
-                            
+                                    }
+
                                 </Row>
 
                             </div>
@@ -338,12 +338,17 @@ class User extends Component {
                                     </div>
 
                                 ) : ("")}
-                                Workout Sample
-                                {this.state.CrossFitWOD && !this.state.wod ? (<h6>{this.state.CrossFitWOD.map(item => (
 
-                                    <p>{item}</p>
-                                ))} </h6>):("")}
+                                
+                                {this.state.CrossFitWOD && !this.state.wod ? (
+                                    <div>
+                                    <h5>CrossFit's WOD for {this.state.wodDate}</h5>
+                                    <h6>{this.state.CrossFitWOD.map(item => (
 
+                                        <p>{item}</p>
+                                    ))}</h6>
+                                    </div>) : ("")}
+                                
                             </div>
                         </Col>
 
@@ -442,12 +447,12 @@ class User extends Component {
 
                                                         />
                                                     ) : ("")}
-                                                    
-                                                <Row>
-                                                    <SaveBtn class="submit-movement"
-                                                        disabled={!(this.state.movementName && this.state.reps)}
-                                                        onClick={() => this.addMovement()} />
-                                                </Row>
+
+                                                    <Row>
+                                                        <SaveBtn class="submit-movement"
+                                                            disabled={!(this.state.movementName && this.state.reps)}
+                                                            onClick={() => this.addMovement()} />
+                                                    </Row>
 
                                                 </Row>
 
@@ -498,58 +503,58 @@ class User extends Component {
 
                                     {this.state.workouts.length ? (
 
-                                       
-                                            <table className="table-fluid">
-    
 
-                                                {this.state.workouts.map(workout => (
+                                        <table className="table-fluid">
 
-                                                    <Row key={workout._id} className="fluid">
-                                                        
-                                                        <tbody>
-                                                            <tr className="fluid">
 
-                                                                <td><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
+                                            {this.state.workouts.map(workout => (
 
-                                                                <td>{workout.workoutType === "AMRAP" ? <p>{workout.workoutType} for {workout.rounds} minutes of: </p> : <p>{workout.workoutType} {workout.rounds} rounds of: </p>}
-                                                                </td>
+                                                <Row key={workout._id} className="fluid">
 
-                                                                <td>
-                                                                    {workout.movements.map((movement, i) => (
+                                                    <tbody>
+                                                        <tr className="fluid">
 
-                                                                        <span> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
-                                                                            {movement.name}
-                                                                            {movement.movementType === "weight" ? ` at ${movement.weight} lbs` : ""}
-                                                                            {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""}
-                                                                            {(workout.movements.length - 1) === i ? "" : ","}
-                                                                        </span>
-                                                                    ))}
-                                                                </td>
-                                                                <td>
+                                                            <td><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
+
+                                                            <td>{workout.workoutType === "AMRAP" ? <p>{workout.workoutType} for {workout.rounds} minutes of: </p> : <p>{workout.workoutType} {workout.rounds} rounds of: </p>}
+                                                            </td>
+
+                                                            <td>
+                                                                {workout.movements.map((movement, i) => (
+
+                                                                    <span> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
+                                                                        {movement.name}
+                                                                        {movement.movementType === "weight" ? ` at ${movement.weight} lbs` : ""}
+                                                                        {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""}
+                                                                        {(workout.movements.length - 1) === i ? "" : ","}
+                                                                    </span>
+                                                                ))}
+                                                            </td>
+                                                            <td>
                                                                 {workout.scores.map(score =>
                                                                     <span>
                                                                         {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
-                                                                            <p className="score"><span className="table-labels">Time:</span>{Math.floor(score.score / 60)}:{score.score % 60}
+                                                                            <p className="score"><span className="table-labels">Time:</span>{Math.floor(score.score / 60)}:{(score.score % 60) < 10 ? "0" + score.score % 60 : score.score % 60}
                                                                                 <DeleteBtn class="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn></p>) : ("")}
 
 
                                                                         {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
 
-                                                                            <p className= "score"><span className="table-labels">Score:</span> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps
+                                                                            <p className="score"><span className="table-labels">Score:</span> {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps
                                                                                 <DeleteBtn class="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn></p>) : ("")}
                                                                     </span>
 
                                                                 )}
-                                                                </td>
+                                                            </td>
 
-                                                            </tr>
-                                                        </tbody>
-                                                    </Row>
+                                                        </tr>
+                                                    </tbody>
+                                                </Row>
 
-                                                ))}
+                                            ))}
 
-                                            </table>
-                                
+                                        </table>
+
                                     ) : ("")}
                                 </Row>
                             </div>

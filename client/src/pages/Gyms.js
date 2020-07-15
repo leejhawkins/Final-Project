@@ -154,7 +154,7 @@ class Gym extends Component {
                           {this.state.wod.workoutType === "For Time" ? (
                             <p>
                               Time: {Math.floor(score.score / 60)}:
-                              {score.score % 60}
+                              {(score.score % 60) < 10 ? "0" + score.score % 60 : score.score % 60}
                             </p>
                           ) : (
                             ""
