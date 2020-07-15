@@ -231,12 +231,11 @@ class User extends Component {
 
     render() {
         return (
-            <div className="container fluid overflow: auto">
-                
-                <Container fluid >
-                    <Row>
-                        <Col size="md-4">
-                            <div id="user">
+            <div className="container container-fluid">
+                <Container fluid>
+                    <Row className="container-fluid">
+                        <Col size="md-4" className="container-fluid">
+                            <div id="user" className="container-fluid">
                                 <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
                                 <hr></hr>
                                 <Row>
@@ -247,7 +246,7 @@ class User extends Component {
                                             name={this.state.userInfo.userName}
                                         />
                                     </Col>
-                                    <Col size="md-7" style="float:right" >
+                                    <Col size="md-7" style="float:right">
                                         <br></br>
                                         <p>Age: {this.state.age}</p>
                                         <p>Weight: {this.state.userInfo.weight}</p>
@@ -281,6 +280,7 @@ class User extends Component {
                                 </Row>                 
                             </div>
                         </Col>
+
 
                         <Col size="md-4">
                             <div id="wod" >
@@ -383,9 +383,9 @@ class User extends Component {
                                     </Row>
 
                                     {this.state.workoutType ? (
-                                        <div className="log-workouts fluid">
+                                        <div className="log-workouts">
                                             <Row>
-                                                <Input className="wod-score-input fluid"
+                                                <Input className="wod-score-input"
                                                     value={this.state.rounds}
                                                     onChange={this.handleInputChange}
                                                     name="rounds"
@@ -489,7 +489,7 @@ class User extends Component {
                                 <Row>
                                     {this.state.workouts.length ? (
                                         <div>
-                                            <table>
+                                            <table className="table-responsive fluid">
                                                 <thead>
                                                     <tr>
                                                         <th>Date</th>
@@ -503,7 +503,7 @@ class User extends Component {
 
                                                 {this.state.workouts.map(workout => (
                                                 <tbody>
-                                                        <tr key={workout._id}>
+                                                        <tr key={workout._id} className="fluid">
                                                             <td style={{ textAlign: "center" }}><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
                                                             <td style={{ textAlign: "center" }}> {workout.workoutType}</td>
                                                             <td style={{ textAlign: "center" }}>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
