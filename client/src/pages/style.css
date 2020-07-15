@@ -161,4 +161,7 @@ tr {
     color: white; 
     padding: 4px;
   }
-  
+.p-stats {
+    font-size: 25px;
+    text-emphasis-position: center;
+}

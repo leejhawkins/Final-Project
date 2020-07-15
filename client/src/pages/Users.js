@@ -234,9 +234,9 @@ class User extends Component {
         return (
             <div className="container container-fluid">
                 <Container fluid>
-                    <Row className="container-fluid">
-                        <Col size="md-4" className="container-fluid">
-                            <div id="user" className="container-fluid">
+                    <Row className="fluid">
+                        <Col size="md-4" className="fluid">
+                            <div id="user" className="fluid">
                                 <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
                                 <hr></hr>
                                 <Row>
@@ -265,7 +265,7 @@ class User extends Component {
                                     {this.state.stats ? (
 
                                         <Col size="md-6">
-                                            <p>Total Minutes: {this.state.stats.sumMinutes}  </p>
+                                            <p className="p-stats">Total Minutes: {this.state.stats.sumMinutes}  </p>
                                         </Col>
                                     ) : ("")
                                     }
@@ -278,44 +278,7 @@ class User extends Component {
                                         </Col>
                                     ) : ("")
                                     }
-                                </Row>
-                                <br></br>
-                                <Row>
-                                    {this.state.stats ? (
-                                        <Col size="md-8">
-                                            <p>Total Reps: {this.state.stats.sumReps}</p>
-                                        </Col>
-                                    ) : ("")
-                                    }
-                                    {this.state.stats ? (
-                                        <Col size="md-4" style="float:right">
-                                            <Sparklines data={this.state.stats.reps} limit={10} height={40}>
-                                                <SparklinesLine color="blue" fill="white" />
-                                                <SparklinesSpots />
-                                            </Sparklines>
-                                        </Col>
-                                    ) : ("")
-                                    }
-                                </Row>
-                                <br></br>
-                                <Row>
-                                    {this.state.stats ? (
-                                        <Col size="md-8">
-                                            <p>Total Weight: {this.state.stats.sumWeight}</p>
-                                        </Col>
-                                    ) : ("")
-                                    }
-                                    {this.state.stats ? (
-                                        <Col size="md-4" style="float:right">
-                                            <Sparklines data={this.state.stats.weight} limit={10} height={40}>
-                                                <SparklinesLine color="blue" fill="white" />
-                                                <SparklinesSpots />
-                                            </Sparklines>
-                                        </Col>
-                                    ) : ("")
-                                    
-                                    }
-                                </Row>
+                                </Row>                        
 
                             </div>
 
