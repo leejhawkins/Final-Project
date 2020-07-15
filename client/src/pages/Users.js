@@ -4,6 +4,7 @@ import { SaveBtn } from "../components/Buttons/SaveBtn"
 import { DeleteBtn } from "../components/Buttons/DeleteBtn"
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
+import { Sparklines, SparklinesBars, SparklinesLine, SparklinesSpots } from 'react-sparklines';
 import Card from "../components/Card"
 import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
@@ -188,7 +189,7 @@ class User extends Component {
         let countWorkout = array.length;
         var sumMinutes = 0;
         let stats = {};
-
+        var roundsArray = []
         console.log(array);
 
         for (let i = 0; i < array.length; i++) {
@@ -198,8 +199,8 @@ class User extends Component {
                 for (let j = 0; j < array[i].scores.length; j++) {
 
                     if (array[i].scores[j].userName === userName) {
-                        sumMinutes += parseInt(array[i].rounds * 60);
-
+                        sumMinutes += parseInt(array[i].rounds);
+                        roundsArray.push(parseInt(array[i].rounds))
                         console.log("Total Minutes: " + sumMinutes);
                     }
                 }
@@ -211,17 +212,17 @@ class User extends Component {
 
                     if (array[i].scores[j].userName === userName) {
 
-                        sumMinutes += parseInt(array[i].scores[j].score);
-                        // sumMiles += parseInt(array[i].miles);
+                        sumMinutes += parseInt(array[i].scores[j].score/60);
+                        roundsArray.push(parseInt(array[i].scores[j].score/60))
 
                         console.log("Total Minutes: " + sumMinutes);
 
                     }
                 }
             }
-        } sumMinutes = Math.round(sumMinutes / 60)
+        } 
 
-        stats = { countWorkout: countWorkout, sumMinutes: sumMinutes }
+        stats = { countWorkout: countWorkout, sumMinutes: sumMinutes, rounds:roundsArray }
         console.log(stats)
         return stats;
     }
@@ -250,18 +251,27 @@ class User extends Component {
                                     </Col>
                                 </Row>
                                 <hr></hr>
-                                <Row>
+                                
 
                                     {this.state.stats ? (
 
-                                        <div>
-                                            <p>Workouts: {this.state.stats.countWorkout}</p>
-                                            <p>Minutes:{this.state.stats.sumMinutes}</p>
-                                        </div>
+                                    <Row>
+                                            <Col size="md-6">
+                                                <p>Workouts: {this.state.stats.countWorkout}</p>
+                                                <p>Minutes:{this.state.stats.sumMinutes}</p>
+                                            </Col>
+                                            <Col size="md-6" style="float:right">
+                                                <Sparklines data={this.state.stats.rounds} limit={10} height={40}>
+                                                    <SparklinesLine color="blue" fill="white" />
+                                                    <SparklinesSpots />
+                                                </Sparklines>
+                                            </Col>
+                                          </Row>  
+                                    
                                     ) : ("")
+                                    
                                     }
-
-                                </Row>
+                               
 
                             </div>
                         </Col>
