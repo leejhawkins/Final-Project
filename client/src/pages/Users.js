@@ -62,7 +62,6 @@ class User extends Component {
             .then(res => {
 
                 const stats = this.stats(res.data.workouts, res.data.userName)
-                console.log(stats);
 
                 this.setState({
                     userInfo: res.data, workouts: res.data.workouts, workoutType: "",
@@ -81,16 +80,16 @@ class User extends Component {
                 const date = moment().format("YYYY-MM-DD")
                 this.setState({ wodDate: date })
                 this.getWOD(this.state.userInfo.program, date)
-                this.getCrossFitWOD(moment(date,"YYYY-MM-DD").format('YYMMDD'));
+                this.getCrossFitWOD(moment(date, "YYYY-MM-DD").format('YYMMDD'));
             })
             .catch(err => console.log(err));
-        }
+    }
     getCrossFitWOD = date => {
         API.getCrossFitWOD(date).then(res => {
             console.log(res.data);
             this.setState({ CrossFitWOD: res.data });
         })
-        } 
+    }
     handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({
@@ -173,7 +172,7 @@ class User extends Component {
         const newDate = moment(date, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DD")
         this.setState({ wodDate: newDate })
         this.getWOD(this.state.userInfo.program, newDate)
-        this.getCrossFitWOD(moment(newDate,"YYYY-MM-DD").format('YYMMDD'));
+        this.getCrossFitWOD(moment(newDate, "YYYY-MM-DD").format('YYMMDD'));
     }
     submitScore = event => {
         event.preventDefault()
@@ -322,6 +321,15 @@ class User extends Component {
                                         </Col>
                                     ) : ("")
                                     }
+                                    {this.state.stats ? (
+
+                                        <div>
+                                            <p>Workouts: {this.state.stats.countWorkout}</p>
+                                            <p>Minutes:{this.state.stats.sumMinutes}</p>
+                                        </div>
+                                    ) : ("")
+                                    }
+
                                 </Row>
 
                             </div>
@@ -403,11 +411,17 @@ class User extends Component {
                                     </div>
 
                                 ) : ("")}
-                                {this.state.CrossFitWOD ? (<h6>{this.state.CrossFitWOD.map(item => (
 
-                                    <p>{item}</p>
-                                ))} </h6>):("")}
+                                
+                                {this.state.CrossFitWOD && !this.state.wod ? (
+                                    <div>
+                                    <h5>CrossFit's WOD for {this.state.wodDate}</h5>
+                                    <h6>{this.state.CrossFitWOD.map(item => (
 
+                                        <p>{item}</p>
+                                    ))}</h6>
+                                    </div>) : ("")}
+                                
                             </div>
                         </Col>
 

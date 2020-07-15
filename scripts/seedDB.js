@@ -75,7 +75,6 @@ db.Movement
         process.exit(1);
     });
 db.Program
-    .remove({})
     .then(() => db.Program.collection.insertMany(programSeed))
     .then(data => {
         console.log(data.result.n + " records inserted!");

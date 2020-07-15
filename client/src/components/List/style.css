@@ -11,6 +11,8 @@
 }
 
 .list-overflow-container li {
+  color: black;
+  font-size: 12px;
   border-radius: 0px;
   border-left: none;
   border-right: none;

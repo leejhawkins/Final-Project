@@ -5,5 +5,6 @@ router.route("/")
     .get(programsController.findAll);
 router.route("/:program")
     .get(programsController.findOne)
+    .put(programsController.saveMessage)
 
 module.exports = router;

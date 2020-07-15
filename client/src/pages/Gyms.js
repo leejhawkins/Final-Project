@@ -6,13 +6,17 @@ import {Col, Row, Container} from "../components/Grid";
 import "./style.css";
 import moment from "moment";
 import DatePicker from "react-datepicker";
+import { Input, FormBtn } from "../components/Form";
+import { List, ListItem} from "../components/List"
 import "react-datepicker/dist/react-datepicker.css";
 
 class Gym extends Component {
   state = {
     gym: "",
-    userInfo: [],
+    members: [],
     workouts: [],
+    messages: [],
+    newMessage: ""
   };
 
   componentDidMount() {
@@ -28,8 +32,20 @@ class Gym extends Component {
   loadUsers = (gym) => {
     API.getGymUsers(gym)
       .then((res) => {
+        const isAuthenticated= JSON.parse(localStorage.getItem("tokens"));
+        let user = {}
+        for (let i=0;i<res.data.users.length;i++) {
+          if (isAuthenticated.userName===res.data.users[i].userName) {
+            user = res.data.users[i]
+          }
+        }
+        if (!res.data.messages.length) {
+          res.data.messages.sort((a, b) => a.date - b.date);
+        }
         this.setState({
-          userInfo: res.data.users,
+          messages: res.data.messages,
+          members: res.data.users,
+          user: user
         });
       })
       .catch((err) => console.log(err));
@@ -56,6 +72,17 @@ class Gym extends Component {
       [name]: value,
     });
   };
+  sendNewMessage = () => {
+    let messageObject = {
+      message: this.state.newMessage,
+      userName: this.state.user.userName,
+      firstName: this.state.user.firstName,
+      lastName: this.state.user.lastName,
+      date: new Date().toString(),
+    };
+    this.setState({newMessage:""})
+    API.saveMessage(this.state.gym,messageObject).then(res =>this.loadUsers(this.state.gym))
+  };
   getRoundLength = (array) => {
     var roundLength = 0;
     for (let i = 0; i < array.length; i++) {
@@ -74,7 +101,7 @@ class Gym extends Component {
         
         <Container fluid>
           <Row>
-            <Chat></Chat>
+      
             <Col size="md-4">
               <div id="wod">
                 <h5>
@@ -91,10 +118,10 @@ class Gym extends Component {
                 <hr></hr>
 
                 {this.state.wod ? (
-                  <div>
+                  <div className="div-wod-score">
                     {this.state.wod.workoutType} {this.state.wod.rounds} Rounds
                     {this.state.wod.movements.map((movement) => (
-                      <p>
+                      <p key={movement._id}>
                         {movement.reps}{" "}
                         {movement.movementType === "cardio" ? "m" : "x"}{" "}
                         {movement.name}{" "}
@@ -127,7 +154,7 @@ class Gym extends Component {
                           {this.state.wod.workoutType === "For Time" ? (
                             <p>
                               Time: {Math.floor(score.score / 60)}:
-                              {score.score % 60}
+                              {(score.score % 60) < 10 ? "0" + score.score % 60 : score.score % 60}
                             </p>
                           ) : (
                             ""
@@ -160,13 +187,27 @@ class Gym extends Component {
             </Col>
             <Col size="md-4">
               <div id="members">
-                <h5>Members:</h5>
+                <h5>Message Board:</h5>
                 <hr></hr>
-                {this.state.userInfo.map((member) => (
-                  <p>
-                    {member.firstName} {member.lastName}
-                  </p>
-                ))}
+                {this.state.messages ? (
+                  <List>
+                    {this.state.messages.map(message =>(
+                      <ListItem >
+                        <span>{message.firstName} {message.lastName}: {message.message} <p className="float-right">{moment(message.date, "YYYY-MM-DDTHH:mm").format("MM/DD HH:mm")}</p></span>
+                      </ListItem>
+                    ))}
+                  </List>
+                ):("")}
+                <div>
+                <Input
+                  onChange={this.updateNewMessage}
+                  value={this.state.newMessage}
+                  onChange={this.handleInputChange}
+                  name="newMessage"
+                />
+                <FormBtn className="submit" type="button" value="send" onClick={this.sendNewMessage}>
+                Post Message</FormBtn>
+                </div>
               </div>
             </Col>
           </Row>

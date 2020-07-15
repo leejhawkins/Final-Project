@@ -15,6 +15,15 @@ const programSchema = new Schema({
             ref: "Workout"
         },
     ],
+    messages: [ {
+        message: String,
+        userName: String,
+        firstName: String,
+        lastName: String,
+        date: Date
+    }
+
+    ]
 });
 
 const Program = mongoose.model("Program", programSchema);

@@ -4,15 +4,10 @@ import "./style.css";
 class Chat extends React.Component {
   constructor(props) {
     super(props);
+    const isAuthenticated = JSON.parse(localStorage.getItem("tokens"))
     this.state = {
-      chat: [
-        {
-          _id: "5f0cd55d8d58e5f1c0d16472",
-          message: "founded",
-          user: "joe newsome",
-          date: "1982-07-14 06:00:00.000Z",
-        },
-      ],
+      user: isAuthenticated.userName,
+      chat: [],
       newMessage: "",
       chatIsOpen: false,
     };
@@ -24,22 +19,18 @@ class Chat extends React.Component {
     this.setState(newState);
   };
   updateNewMessage = (event) => {
-    let newState = {...this.state};
-    newState.newMessage = event.target.value;
-    console.log(newState);
-    this.setState(newState);
+    let newMessage = event.target.value;
+    this.setState({newMessage:newMessage});
   };
   sendNewMessage = () => {
-    let newState = {...this.state};
+    let chat = this.state.chat
     let messageObject = {
       message: this.state.newMessage,
-      user: "joe newsome",
+      user: this.state.user,
       date: new Date().toString(),
     };
-    newState.chat.push(messageObject);
-    newState.newMessage="";
-    console.log(newState);
-    this.setState(newState);
+    chat.push(messageObject);
+    this.setState({chat:chat,newMessage:""});
   };
 
   render() {
