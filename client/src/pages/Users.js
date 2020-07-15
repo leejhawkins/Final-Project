@@ -321,15 +321,6 @@ class User extends Component {
                                         </Col>
                                     ) : ("")
                                     }
-                                    {this.state.stats ? (
-
-                                        <div>
-                                            <p>Workouts: {this.state.stats.countWorkout}</p>
-                                            <p>Minutes:{this.state.stats.sumMinutes}</p>
-                                        </div>
-                                    ) : ("")
-                                    }
-
                                 </Row>
 
                             </div>
