@@ -4,7 +4,6 @@ import { SaveBtn } from "../components/Buttons/SaveBtn"
 import { DeleteBtn } from "../components/Buttons/DeleteBtn"
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
-import { Sparklines, SparklinesBars, SparklinesLine, SparklinesSpots } from 'react-sparklines';
 import Card from "../components/Card"
 import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
@@ -265,13 +264,13 @@ class User extends Component {
                                 <Row>
                                     {this.state.stats ? (
 
-                                        <Col size="md-4">
+                                        <Col size="md-6">
                                             <p>Total Minutes: {this.state.stats.sumMinutes}  </p>
                                         </Col>
                                     ) : ("")
                                     }
                                     {this.state.stats ? (
-                                        <Col size="md-8" style="float:right">
+                                        <Col size="md-6" style="float:right">
                                             <Sparklines data={this.state.stats.rounds} limit={10} height={50}>
                                                 <SparklinesLine color="blue" fill="white" />
                                                 <SparklinesSpots />
@@ -284,7 +283,7 @@ class User extends Component {
                                 <Row>
                                     {this.state.stats ? (
                                         <Col size="md-8">
-                                            <p>Total Reps: {this.state.stats.sumReps}  Reps:</p>
+                                            <p>Total Reps: {this.state.stats.sumReps}</p>
                                         </Col>
                                     ) : ("")
                                     }
@@ -302,7 +301,7 @@ class User extends Component {
                                 <Row>
                                     {this.state.stats ? (
                                         <Col size="md-8">
-                                            <p>Total Weight: {this.state.stats.sumWeight}  Weight:</p>
+                                            <p>Total Weight: {this.state.stats.sumWeight}</p>
                                         </Col>
                                     ) : ("")
                                     }
@@ -328,9 +327,9 @@ class User extends Component {
                                 <h5>{this.state.userInfo.program}'s Workout of the Day</h5>
                                 <hr></hr>
                                 <div>
-                                    <div>Date:
+                                    <div>Date:   
                                         <DatePicker
-                                            className="datepicker"
+                                            className="datepicker btn"
                                             onChange={this.changeWODDate}
                                             name="select date"
                                         />
@@ -400,8 +399,9 @@ class User extends Component {
                                 <h5>Log a Workout </h5>
                                 <hr></hr>
                                 <div>Date:
+                                  
                                                 <DatePicker
-                                        className="datepicker"
+                                        className="datepicker-fill"
                                         selected={this.state.date}
                                         onChange={this.changeDate}
                                     />

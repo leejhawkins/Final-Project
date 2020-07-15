@@ -109,10 +109,8 @@ class Gym extends Component {
                   {this.state.gym}'s Workout of the Day: {this.state.date}
                 </h5>
                 <hr></hr>
-                <div>
-                  Change WOD Date:
-                  <DatePicker
-                    className="datepicker"
+                <div>Select Date: <DatePicker
+                    className="datepicker btn"
                     onChange={this.changeWODDate}
                   />
                 </div>
