@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import API from "../utils/API";
 import {Col, Row, Container} from "../components/Grid";
+import { Sparklines, SparklinesBars, SparklinesLine, SparklinesSpots } from 'react-sparklines';
 import "./style.css";
 import moment from "moment";
 import DatePicker from "react-datepicker";

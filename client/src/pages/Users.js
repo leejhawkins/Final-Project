@@ -4,6 +4,7 @@ import { SaveBtn } from "../components/Buttons/SaveBtn"
 import { DeleteBtn } from "../components/Buttons/DeleteBtn"
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
+import { Sparklines, SparklinesBars, SparklinesLine, SparklinesSpots } from 'react-sparklines';
 import Card from "../components/Card"
 import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
@@ -195,9 +196,8 @@ class User extends Component {
         var sumReps = 0;
         var sumWeight = 0;
         let stats = {};
-        var roundsArray = array.map(function (rounds) { return (rounds.rounds) })
-        var repsArray = array.map(function (reps) { return (reps.reps) })
-
+        var roundsArray = []
+        console.log(array);
 
         console.log(array);
 
@@ -206,9 +206,8 @@ class User extends Component {
                 for (var j = 0; j < array[i].scores.length; j++) {
 
                     if (array[i].scores[j].userName === userName) {
-                        sumMinutes += parseInt(array[i].rounds * 60);
-                        sumReps += parseInt(array[i].reps);
-                        
+                        sumMinutes += parseInt(array[i].rounds);
+                        roundsArray.push(parseInt(array[i].rounds))
                         console.log("Total Minutes: " + sumMinutes);
                     }}
             }
@@ -216,18 +215,18 @@ class User extends Component {
                 for (var j = 0; j < array[i].scores.length; j++) {
                     console.log("Total Minutes: " + sumMinutes);
                     if (array[i].scores[j].userName === userName) {
-                        sumMinutes += parseInt(array[i].scores[j].score);
-                        sumReps += parseInt(array[i].reps);
+
+                        sumMinutes += parseInt(array[i].scores[j].score/60);
+                        roundsArray.push(parseInt(array[i].scores[j].score/60))
 
                         console.log("Total Minutes: " + sumMinutes);
                         console.log("Total Reps: " + sumReps);
                     }
                 }
             }
-        } sumMinutes = Math.round(sumMinutes / 60)
+        } 
 
-        stats = { countWorkout: countWorkout
-                    ,sumMinutes: sumMinutes, sumWeight: sumWeight, sumReps: sumReps, rounds: roundsArray}
+        stats = { countWorkout: countWorkout, sumMinutes: sumMinutes, rounds:roundsArray }
         console.log(stats)
         return stats;
     }
@@ -315,6 +314,7 @@ class User extends Component {
                                             </Sparklines>
                                         </Col>
                                     ) : ("")
+                                    
                                     }
                                 </Row>
 
