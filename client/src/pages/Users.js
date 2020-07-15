@@ -196,9 +196,7 @@ class User extends Component {
         var sumWeight = 0;
         let stats = {};
         var roundsArray = array.map(function (rounds) { return (rounds.rounds) })
-        // var repsArray = array.map(function (reps) { return (reps.reps) })
-        // var minutesArray = array.map(function (minutes) { return (minutes.minutes) })
-        // var weightArray = array.map(function (weight) { return (weight.weight) })
+        var repsArray = array.map(function (reps) { return (reps.reps) })
 
 
         console.log(array);
@@ -210,7 +208,7 @@ class User extends Component {
                     if (array[i].scores[j].userName === userName) {
                         sumMinutes += parseInt(array[i].rounds * 60);
                         sumReps += parseInt(array[i].reps);
-                        sumWeight += parseInt(array[i].weight);
+                        
                         console.log("Total Minutes: " + sumMinutes);
                     }}
             }
@@ -220,12 +218,9 @@ class User extends Component {
                     if (array[i].scores[j].userName === userName) {
                         sumMinutes += parseInt(array[i].scores[j].score);
                         sumReps += parseInt(array[i].reps);
-                        sumReps += parseInt(array[i].weight);
 
                         console.log("Total Minutes: " + sumMinutes);
                         console.log("Total Reps: " + sumReps);
-                        console.log("Total Weight: " + sumWeight);
-
                     }
                 }
             }
@@ -256,7 +251,6 @@ class User extends Component {
                                     </Col>
                                     <Col size="md-7" style="float:right">
                                         <br></br>
-                                        <br></br>
                                         <p>Age: {this.state.age}</p>
                                         <p>Weight: {this.state.userInfo.weight}</p>
                                         <p>Gym: {this.state.userInfo.program}</p>
@@ -272,14 +266,14 @@ class User extends Component {
                                 <Row>
                                     {this.state.stats ? (
 
-                                        <Col size="md-8">
+                                        <Col size="md-4">
                                             <p>Total Minutes: {this.state.stats.sumMinutes}  </p>
                                         </Col>
                                     ) : ("")
                                     }
                                     {this.state.stats ? (
-                                        <Col size="md-4" style="float:right">
-                                            <Sparklines data={this.state.stats.rounds} limit={10} height={40}>
+                                        <Col size="md-8" style="float:right">
+                                            <Sparklines data={this.state.stats.rounds} limit={10} height={50}>
                                                 <SparklinesLine color="blue" fill="white" />
                                                 <SparklinesSpots />
                                             </Sparklines>
@@ -346,15 +340,10 @@ class User extends Component {
 
                                 {this.state.wod ? (
                                     <div className="div-wod-score">
-
                                         <p>{moment(this.state.wod.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</p>
-
                                         <br></br>
-
                                         {this.state.wod.workoutType === "For Time"
-
                                             ? <p>{this.state.wod.workoutType} {this.state.wod.rounds} Rounds</p>
-
                                             : <p>{this.state.wod.workoutType} for {this.state.wod.rounds} minutes</p>}
 
                                         {this.state.wod.movements.map(movement => (
@@ -362,17 +351,12 @@ class User extends Component {
                                                 {movement.reps} {movement.movementType === "cardio" ? "m" : "x"} {movement.name}  {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}{movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
                                             </p>
                                         ))}
-
                                         <div>
 
                                             <hr></hr>
-
                                             <div className="div-wod-score">
-
                                                 <Row key={this.state.wod._id}>
-
                                                     <p className="div-wod-title">{this.state.wod.workoutType === "For Time" ? "Time: " : "Score: "}</p>
-
                                                     <Input
                                                         className="wod-score-input"
                                                         value={this.state.minutes}
@@ -380,7 +364,6 @@ class User extends Component {
                                                         name="minutes"
                                                         placeholder={this.state.wod.workoutType === "For Time" ? "Minutes" : "Rounds"}
                                                     />
-
                                                     <h5>{this.state.wod.workoutType === "For Time" ? " : " : " + "}</h5>
                                                     <Input
                                                         className="wod-score-input"
@@ -401,10 +384,7 @@ class User extends Component {
                                             </div>
                                         </div>
                                     </div>
-
-                                ) : ("")}
-
-                                
+                                ) : ("")}                              
                                 {this.state.CrossFitWOD && !this.state.wod ? (
                                     <div>
                                     <h5>CrossFit's WOD for {this.state.wodDate}</h5>
@@ -412,11 +392,9 @@ class User extends Component {
 
                                         <p>{item}</p>
                                     ))}</h6>
-                                    </div>) : ("")}
-                                
+                                    </div>) : ("")}                               
                             </div>
                         </Col>
-
                         <Col size="md-4">
                             <div id="logworkout" className="fluid">
                                 <h5>Log a Workout </h5>
@@ -428,8 +406,8 @@ class User extends Component {
                                         onChange={this.changeDate}
                                     />
                                 </div>
-                                <hr></hr>
 
+                                <hr></hr>
                                 <form id="log-workouts" className="fluid">
                                     <Row>
                                         <Dropdown className="dropdown"
@@ -445,9 +423,7 @@ class User extends Component {
                                     </Row>
 
                                     {this.state.workoutType ? (
-
                                         <div className="log-workouts">
-
                                             <Row>
                                                 <Input className="wod-score-input"
                                                     value={this.state.rounds}
@@ -457,10 +433,8 @@ class User extends Component {
                                                 />
                                                 {this.state.workoutType === "For Time" ? "Rounds" : "Minutes"}
                                             </Row>
-
                                             {this.state.movementArray.length ? (
                                                 <List>
-
                                                     {this.state.movementArray.map(movement => (
                                                         <Row>
                                                             <Col size="md-4">
@@ -478,7 +452,6 @@ class User extends Component {
                                                     ))}
                                                 </List>
                                             ) : ("")}
-
                                             <hr></hr>
                                             <Row>
                                                 <Dropdown
@@ -494,7 +467,6 @@ class User extends Component {
                                                     ))}
                                                 </Dropdown>
                                             </Row>
-
                                             {this.state.movementName ? (
                                                 <Row>
                                                     <Input className="wod-score-input"
@@ -509,22 +481,17 @@ class User extends Component {
                                                             onChange={this.handleInputChange}
                                                             name="weight"
                                                             placeholder={this.state.movementType === "weight" ? "Weight" : "Height"}
-
                                                         />
                                                     ) : ("")}
-
                                                     <Row>
                                                         <SaveBtn className="submit-movement"
                                                             disabled={!(this.state.movementName && this.state.reps)}
                                                             onClick={() => this.addMovement()} />
-                                                    </Row>
-
+                                                   </Row>
                                                 </Row>
-
-
                                             ) : ("")}
-                                            <hr></hr>
 
+                                            <hr></hr>
                                             <Row className="div-wod-score">
                                                 <div className="div-wod-title">{this.state.workoutType === "For Time" ? "Time: " : "Score: "}</div>
                                                 <Input className="wod-score-input"
@@ -534,7 +501,6 @@ class User extends Component {
                                                     placeholder={this.state.workoutType === "For Time" ? "Minutes" : "Rounds"}
                                                 />
                                                 <h6>{this.state.workout === "For Time" ? " : " : " + "}</h6>
-
                                                 <Input className="wod-score-input"
                                                     value={this.state.seconds}
                                                     onChange={this.handleInputChange}
@@ -542,7 +508,6 @@ class User extends Component {
                                                     placeholder={this.state.workoutType === "For Time" ? "Seconds" : "Reps"}
                                                 />
                                             </Row>
-
                                             <FormBtn
                                                 className="logscore"
                                                 disabled={!(this.state.workoutType && this.state.rounds && this.state.movementArray && this.state.minutes)}
@@ -551,22 +516,20 @@ class User extends Component {
                                                 Log Workout
                                          </FormBtn>
                                         </div>
-
                                     ) : ("")}
-
                                 </form>
                             </div>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col size="md-12">
-                            <div id="workouts">
+                    <Row className="table-responsive fluid">
+                        <Col size="md-12" >
+                            <div id="workouts" className="fluid">
                                 <h5>Recent Workouts</h5>
                                 <hr></hr>
-                                <Row>
+                                <Row className="fluid">
                                     {this.state.workouts.length ? (
-                                        <div className="table-responsive" >
-                                            <table>
+                                        <div className="table-responsive fluid" >
+                                            <table className="fluid">
                                                 <thead>
                                                     <tr>
                                                         <th>Date</th>
@@ -580,8 +543,7 @@ class User extends Component {
 
                                                 {this.state.workouts.map(workout => (
                                                 <tbody>
-
-                                                        <tr key={workout._id} >
+                                                        <tr key={workout._id} className="fluid">
                                                             <td style={{ textAlign: "center" }}><span className="table-labels">{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</span></td>
                                                             <td style={{ textAlign: "center" }}> {workout.workoutType}</td>
                                                             <td style={{ textAlign: "center" }}>{workout.workoutType === "AMRAP" ? <p> for {workout.rounds} minutes of: </p> : <p>{workout.rounds} rounds of: </p>}
