@@ -142,6 +142,9 @@ class Gym extends Component {
               <div id="scores">
                 <h5>WOD Scores:</h5>
                 <hr></hr>
+                <h7>Leader of the Day:</h7>
+                <p>insert here</p>
+                <hr></hr>
                 {this.state.wod ? (
                   <div className="div-wod-score">
                     {this.state.wod.scores.map((score) => (
@@ -188,17 +191,9 @@ class Gym extends Component {
               <div id="members" className="internal-container">
                 <h5>Message Board:</h5>
                 <hr></hr>
-                {this.state.messages ? (
-                  <List>
-                    {this.state.messages.map(message =>(
-                      <ListItem >
-                        <span>{message.firstName} {message.lastName}: {message.message} <p className="float-right">{moment(message.date, "YYYY-MM-DDTHH:mm").format("MM/DD HH:mm")}</p></span>
-                      </ListItem>
-                    ))}
-                  </List>
-                ):("")}
-                <div>
+                <div className="message-input">
                 <Input
+                  
                   onChange={this.updateNewMessage}
                   value={this.state.newMessage}
                   onChange={this.handleInputChange}
@@ -207,6 +202,17 @@ class Gym extends Component {
                 <FormBtn className="submit" type="button" value="send" onClick={this.sendNewMessage}>
                 Post Message</FormBtn>
                 </div>
+                <hr></hr>
+                {this.state.messages ? (
+                  <List>
+                    {this.state.messages.map(message =>(
+                      <ListItem>
+                        <span>{message.firstName} {message.lastName}: {message.message} <p className="float-right">{moment(message.date, "YYYY-MM-DDTHH:mm").format("MM/DD HH:mm")}</p></span>
+                      </ListItem>
+                    ))}
+                  </List>
+                ):("")}
+
               </div>
             </Col>
           </Row>

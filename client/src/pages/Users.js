@@ -317,7 +317,7 @@ class User extends Component {
                                         <div>
 
                                             <hr></hr>
-                                            <div className="div-wod-score">
+                                            <div>
                                                 <Row key={this.state.wod._id}>
                                                     <p className="div-wod-title">{this.state.wod.workoutType === "For Time" ? "Time: " : "Score: "}</p>
                                                     <Input
@@ -349,7 +349,7 @@ class User extends Component {
                                     </div>
                                 ) : ("")}                              
                                 {this.state.CrossFitWOD && !this.state.wod ? (
-                                    <div className="div-wod-score">
+                                    <div className="div-wod-score fluid">
                                     <h6>CrossFit's WOD for {this.state.wodDate}</h6>
                                     <hr>
                                     </hr>
@@ -487,12 +487,12 @@ class User extends Component {
                             </div>
                         </Col>
                     </Row>
-                    <Row className="container-fluid">
+                    <Row className=".container-fluid">
                         <Col size="md-12" >
                             <div id="workouts" >
                                 <h5>Recent Workouts</h5>
                                 <hr></hr>
-                                <Row className="container">
+                                <Row>
                                     {this.state.workouts.length ? (
                                         <div>
                                             <table className="table-responsive">
