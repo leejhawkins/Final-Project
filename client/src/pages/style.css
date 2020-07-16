@@ -4,6 +4,9 @@
     margin-top:25px;
     background-position: center;
 }
+.internal-container{
+    height: 400px;
+}
 .user-input {
     width: 100%;
     margin-top: 5px;
@@ -19,6 +22,9 @@
     padding: 20px;
     border-radius: 5px;
     height: 500px;
+}
+.internal-container{
+    height: 450px;
 }
 .recent-workout-column {
     text-align: center;

@@ -236,6 +236,7 @@ class User extends Component {
                 <Container fluid>
                     <Row className="fluid">
                         <Col size="md-4" className="fluid">
+                            <div></div>
                             <div id="user" className="fluid">
                                 <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
                                 <hr></hr>
@@ -486,12 +487,12 @@ class User extends Component {
                             </div>
                         </Col>
                     </Row>
-                    <Row className=".container-fluid">
+                    <Row className="container-fluid">
                         <Col size="md-12" >
                             <div id="workouts" >
                                 <h5>Recent Workouts</h5>
                                 <hr></hr>
-                                <Row>
+                                <Row className="container">
                                     {this.state.workouts.length ? (
                                         <div>
                                             <table className="table-responsive">

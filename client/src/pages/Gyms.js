@@ -143,10 +143,10 @@ class Gym extends Component {
                 <h5>WOD Scores:</h5>
                 <hr></hr>
                 {this.state.wod ? (
-                  <div>
+                  <div className="div-wod-score">
                     {this.state.wod.scores.map((score) => (
                       <Row>
-                        <Col size="md-6">
+                        <Col size="md-6" >
                           {score.firstName} {score.lastName}
                         </Col>
                         <Col size="md-6">
@@ -185,7 +185,7 @@ class Gym extends Component {
               </div>
             </Col>
             <Col size="md-4">
-              <div id="members">
+              <div id="members" className="internal-container">
                 <h5>Message Board:</h5>
                 <hr></hr>
                 {this.state.messages ? (
