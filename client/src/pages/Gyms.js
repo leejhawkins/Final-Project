@@ -142,8 +142,7 @@ class Gym extends Component {
               <div id="scores">
                 <h5>WOD Scores:</h5>
                 <hr></hr>
-                <h7>Leader of the Day:</h7>
-                <p>insert here</p>
+                <h7>Leader of the Day:<p>insert here</p></h7>
                 <hr></hr>
                 {this.state.wod ? (
                   <div className="div-wod-score">
