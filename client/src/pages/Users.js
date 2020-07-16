@@ -30,7 +30,12 @@ class User extends Component {
         repsArray: [],
         weightsArray: [],
         minutes: "",
-        seconds: ""
+        seconds: "",
+        week: {
+            beginWeek: moment().weekday(0).format("YYYY-MM-DD"),
+            endWeek: moment().weekday(6).format("YYYY-MM-DD"),
+            week: 0,
+        }
     };
 
     componentDidMount() {
@@ -54,14 +59,25 @@ class User extends Component {
             })
             .catch(err => console.log(err));
     }
+    getWeekWorkouts = (workouts,beginWeek,endWeek) => {
+        let weekWorkouts = [];
+        workouts.forEach(workout => {
+            
+            if (workout.date > beginWeek && workout.date < endWeek) {
+                weekWorkouts.push(workout)
+                console.log(workout)
+            }
+        })
+        return weekWorkouts
+    }
     loadUser = userName => {
         API.getUser(userName)
             .then(res => {
-
+                const weekWorkouts = this.getWeekWorkouts(res.data.workouts,this.state.week.beginWeek,this.state.week.endWeek)
+                console.log(weekWorkouts)
                 const stats = this.stats(res.data.workouts, res.data.userName)
-
                 this.setState({
-                    userInfo: res.data, workouts: res.data.workouts, workoutType: "",
+                    userInfo: res.data, workouts: weekWorkouts, workoutType: "",
                     dateOfBirth: moment(res.data.dateOfBirth, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY"),
                     age: moment(Date()).diff(res.data.dateOfBirth, 'years', true).toFixed(0),
                     rounds: "",
@@ -218,6 +234,14 @@ class User extends Component {
         stats = { countWorkout: countWorkout, sumMinutes: sumMinutes, rounds:roundsArray }
         console.log(stats)
         return stats;
+    }
+    changeWeek= event => {
+        const week = this.state.week.week + parseInt(event.target.value)
+        const beginWeek = moment().weekday(week*7).format("YYYY-MM-DD")
+        const endWeek = moment().weekday(week*7+6).format("YYYY-MM-DD")
+        const weekWorkouts = this.getWeekWorkouts(this.state.userInfo.workouts,beginWeek,endWeek)
+        this.setState({ week: { beginWeek: beginWeek, endWeek: endWeek, week: week },workouts: weekWorkouts})
+       
     }
 
     render() {
@@ -500,7 +524,7 @@ class User extends Component {
                     <Row>
                         <Col size="md-12">
                             <div id="workouts">
-                                <h5>Recent Workouts</h5>
+                                <h5><button type="button"  value="-1" onClick={this.changeWeek} >-</button>  Workouts {moment(this.state.week.beginWeek).format("MM/DD/YYYY")} - {moment(this.state.week.endWeek).format("MM/DD/YYYY")}<button type="button" value="1" onClick={this.changeWeek}>+</button></h5>
                                 <hr></hr>
                                 <Row>
 
