@@ -300,7 +300,7 @@ class User extends Component {
                                 <div>
                                     <div>Date:
                                         <DatePicker
-                                            className="datepicker"
+                                            className="datepicker btn"
                                             onChange={this.changeWODDate}
                                             name="select date"
                                         />

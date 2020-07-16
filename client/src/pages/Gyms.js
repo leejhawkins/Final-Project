@@ -112,7 +112,7 @@ class Gym extends Component {
                 <div>
                   Change WOD Date:
                   <DatePicker
-                    className="datepicker"
+                    className="datepicker btn"
                     onChange={this.changeWODDate}
                   />
                 </div>

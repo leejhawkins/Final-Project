@@ -4,7 +4,12 @@ import { Route, Redirect } from "react-router-dom";
 
 function ProtectedRoute(props) {
     const isAuthenticated = JSON.parse(localStorage.getItem("tokens"));
-    const userLink = "/users/"+isAuthenticated.userName
+    if (isAuthenticated) {
+        var userLink = "/users/" + isAuthenticated.userName
+    } else {
+        var userLink = ""
+    }
+  
     
     return (
         <div>

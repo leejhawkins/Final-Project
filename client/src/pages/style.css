@@ -154,4 +154,11 @@ tr {
     color: white; 
     padding: 4px;
   }
+  .datepicker {
+    border-radius: 5px;
+    margin-left: 10px;
+    width: 15%;
+    background-image: url(https://img.icons8.com/ios-filled/50/ffffff/calendar.png);
+}
+
   
