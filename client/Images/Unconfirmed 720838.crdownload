@@ -1,0 +1,30 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Calendly//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+DTSTAMP:20200717T163237Z
+UID:calendly-138551270
+DTSTART:20200811T150000Z
+DTEND:20200811T153000Z
+CLASS:PRIVATE
+DESCRIPTION:Event Name: Career Services Coaching \nEvent Description: Zoom 
+ Call: 30 Min ZOOM SESSION | Coaching Calls | Camera Requiredhttps://zoom.u
+ s/j/5696634665Phone Call: At the designated time\, I will call you at the 
+ phone number you provide. Please be sure to double-check the phone number 
+ you provide.\nDate & Time: 09:00am - 09:30am (Mountain Time - US & Canada)
+  on Tuesday\, August 11\, 2020\nLocation: This is a Zoom web conference.\n
+ \nYou can join this meeting from your computer\, tablet\, or smartphone.\n
+ https://zoom.us/j/96705411888\n\nYou can also dial in using your phone.\nU
+ S: +1 301 715 8592\, +1 312 626 6799\, +1 646 558 8656\, +1 253 215 8782\,
+  +1 346 248 7799\, +1 669 900 6833\nMeeting ID: 967-054-11888\n\nFind your
+  local number: https://zoom.us/u/apGcO1YvC\n\nPhone Number: +1 720-581-901
+ 5\nWhat Bootcamp did you attend?: DU Full Stack\n\nNeed to make changes to
+  this event?\nCancel: https://calendly.com/cancellations/GAWHKEESHI444SMV\
+ nReschedule: https://calendly.com/reschedulings/GAWHKEESHI444SMV\n
+LOCATION:https://zoom.us/j/96705411888
+SUMMARY:Career Services Coaching  with Manny Golden
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
