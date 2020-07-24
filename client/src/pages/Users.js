@@ -9,10 +9,9 @@ import Card from "../components/Card"
 import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
-import moment, { now } from 'moment';
+import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Aggregate, get } from "mongoose";
 
 
 class User extends Component {
@@ -524,9 +523,9 @@ class User extends Component {
                                         <div>
                                             {this.state.workouts.map(workout => (
 
-                                                <Row key={workout._id}>
-                                                    <Col size="md-6">
-                                                    <p>{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</p>
+                                                <div className="row workout-row" key={workout._id}>
+                                                    <Col size="md-6" >
+                                                        <p>{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</p>
 
                                                     {workout.workoutType === "AMRAP" ? <p>{workout.workoutType} for {workout.rounds} minutes of: </p> : <p>{workout.workoutType} {workout.rounds} rounds of: </p>}
                                                    
@@ -544,28 +543,30 @@ class User extends Component {
                                                     <Col size="md-6">
                                                 
                                                     
-                                                        {workout.scores.map(score =>
+                                                        {workout.scores.map(score => 
                                                             <p>
                                                                 {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
-                                                                    <p className="score">Time:{Math.floor(score.score / 60)}:{(score.score % 60) < 10 ? "0" + score.score % 60 : score.score % 60}
-                                                                        <DeleteBtn class="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn></p>) : ("")}
-
+                                                                    
+                                                                    <p>Time:{Math.floor(score.score / 60)}:{(score.score % 60) < 10 ? "0" + score.score % 60 : score.score % 60}
+                                                                        <DeleteBtn onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)} ></DeleteBtn></p>) : ("")}
+                                                                    
 
                                                                 {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
-
-                                                                    <p className="score">Score: {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps
-                                                                        <DeleteBtn class="btn btn-submit" onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}>Delete</DeleteBtn></p>) : ("")}
+                                                                    
+                                                                    <p>Score: {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps 
+                                                                        <DeleteBtn onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}></DeleteBtn></p>) : ("")}
                                                             </p>
 
                                                         )}
                                                     </Col>
 
-
-                                                </Row>
+                                                    
+                                                </div>
+                                                
 
                                             ))}
                                         </div>
-
+                                    
 
                                     ) : ("")}
                                 

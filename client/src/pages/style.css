@@ -4,6 +4,7 @@
     margin-top:25px;
     background-position: center;
 }
+
 .user-input {
     width: 100%;
     margin-top: 5px;
@@ -20,9 +21,8 @@
     border-radius: 5px;
     font-size: 12px;
 }
-.recent-workout-column {
-    text-align: center;
-}
+
+
 .nav-link {
     color: white;
 }
@@ -93,6 +93,7 @@ p {
     margin-left: 5px;
     margin-right: 5px;
     width: 100%;
+    
 }
 .datepicker {
     border-radius: 5px;
@@ -107,58 +108,17 @@ p {
     border-color: white;
     color: white; 
 }  
-table, tbody, thead {
-    width: 100%;
-}
-th {
-    color: white;
-    background-color:rgb(39,79,114);
-    padding: 4px;
-    font-size: 14px;
-    text-align: center;
-    margin: 10px;
-    width: 2%;
-}
 
-td {
-    color: white;
-    text-align: left;
-    padding-top:10px;
-    padding-bottom:10px;
-    font-size: 16px;
-    margin: 5px;
-    width: 10%;
-}
-tr {
-    color: white;
-    padding-top:10px;
-    padding-bottom:10px;
-    font-size: 16px;
-    width: 100%;
-
-}
- 
-.table-labels {
-    color: rgb(39,79,114);
-    font-size: 20px;
-    font-weight: bolder;
-    margin-right: 5px;
-    margin-left: 5px;
-}
-.btn-submit {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    background-color: rgb(39,79,114);
-    border-radius: 5px;
-    border-color: white;
-    color: white; 
-    padding: 4px;
-  }
   .datepicker {
     border-radius: 5px;
     margin-left: 10px;
     width: 15%;
     background-image: url(https://img.icons8.com/ios-filled/50/ffffff/calendar.png);
-}
+  }
+  .workout-row {
+    border-bottom: solid white 2px;
+  }
+  
+ 
 
   
