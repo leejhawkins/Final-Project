@@ -234,8 +234,9 @@ class User extends Component {
         console.log(stats)
         return stats;
     }
-    changeWeek = event => {
-        const week = this.state.week.week + parseInt(event.target.value)
+    changeWeek = value => {
+        console.log(value)
+        const week = this.state.week.week + parseInt(value)
         const beginWeek = moment().weekday(week * 7).format("YYYY-MM-DD")
         const endWeek = moment().weekday(week * 7 + 6).format("YYYY-MM-DD")
         const weekWorkouts = this.getWeekWorkouts(this.state.userInfo.workouts, beginWeek, endWeek)
@@ -260,13 +261,13 @@ class User extends Component {
                                             name={this.state.userInfo.userName}
                                         />
                                     </Col>
-                                    <Col size="md-8" style="float:right">
+                                    <Col size="md-8">
                                         <p>Age: {this.state.age}</p>
                                         <p>Weight: {this.state.userInfo.weight}</p>
                                         <p>Gym: {this.state.userInfo.program}</p>
                                         {this.state.stats ? (
 
-                                            <Row>
+                                            <div>
                                                 <Col size="md-6">
                                                     <p>Workouts: {this.state.stats.countWorkout}</p>
                                                     <p>Minutes:{this.state.stats.sumMinutes}</p>
@@ -277,12 +278,13 @@ class User extends Component {
                                                         <SparklinesSpots />
                                                     </Sparklines>
                                                 </Col>
-                                            </Row>
+                                            </div>
 
                                         ) : ("")
 
                                         }
                                     </Col>
+                                </Row>
                                     <div>
                                         <h5>Log a Workout </h5>
                                         <hr></hr>
@@ -421,7 +423,7 @@ class User extends Component {
 
                                         </form>
                                     </div>
-                                </Row>
+                                
 
                             </div>
 
@@ -492,7 +494,7 @@ class User extends Component {
                                                         >Submit Score
                                                         </FormBtn>
                                                     </div>
-
+ 
                                                 </Row>
                                             </div>
                                         </div>
@@ -503,7 +505,7 @@ class User extends Component {
 
                                 {this.state.CrossFitWOD && !this.state.wod ? (
                                     <div>
-                                        <h5>CrossFit's WOD for {this.state.wodDate}</h5>
+                                        <h5>CrossFit's WOD for {moment(this.state.wodDate).format("MM/DD/YYYY")}</h5>
                                         <h6>{this.state.CrossFitWOD.map(item => (
 
                                             <p>{item}</p>
@@ -515,7 +517,9 @@ class User extends Component {
 
                         <Col size="md-4">
                             <div id="workouts">
-                                <h5><button type="button" value="-1" onClick={this.changeWeek} >-</button>  Workouts {moment(this.state.week.beginWeek).format("MM/DD/YYYY")} - {moment(this.state.week.endWeek).format("MM/DD/YYYY")}<button type="button" value="1" onClick={this.changeWeek}>+</button></h5>
+                                <h5><i className="material-icons" role="button" onClick={() => this.changeWeek(-1)}>fast_rewind</i>
+                                <i className="material-icons">date_range</i>  Workouts {moment(this.state.week.beginWeek).format("MM/DD/YYYY")} - {moment(this.state.week.endWeek).format("MM/DD/YYYY")}
+                                <i className="material-icons" role="button" onClick={()=>this.changeWeek(1)}>fast_forward</i></h5>
                                 <hr></hr>
                                 
 
@@ -544,18 +548,28 @@ class User extends Component {
                                                 
                                                     
                                                         {workout.scores.map(score => 
-                                                            <p>
+                                                            <div>
                                                                 {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
+                                                                <Row>
+                                                                    <Col size="md-6"><p>Time:{Math.floor(score.score / 60)}:{(score.score % 60) < 10 ? "0" + score.score % 60 : score.score % 60}</p> 
+                                                                    </Col>
+                                                                    <Col size="md-6">   <DeleteBtn onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)} workout="Time">
+                                                                    Delete<i className="material-icons">cancel</i></DeleteBtn>
+                                                                    </Col>
+                                                                </Row>
+                                                                    ) : ("")}
                                                                     
-                                                                    <p>Time:{Math.floor(score.score / 60)}:{(score.score % 60) < 10 ? "0" + score.score % 60 : score.score % 60}
-                                                                        <DeleteBtn onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)} ></DeleteBtn></p>) : ("")}
-                                                                    
-
+                                                                
                                                                 {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
-                                                                    
-                                                                    <p>Score: {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps 
-                                                                        <DeleteBtn onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)}></DeleteBtn></p>) : ("")}
-                                                            </p>
+                                                                <Row>
+                                                                    <Col size="md-6">
+                                                                        <p>Score: {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps</p>
+                                                                    </Col>
+                                                                    <Col size="md-6">
+                                                                            <DeleteBtn onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)} workout="Score">Delete<i className="material-icons">cancel</i></DeleteBtn>
+                                                                    </Col>
+                                                                </Row>) : ("")}
+                                                            </div>
 
                                                         )}
                                                     </Col>

@@ -1,25 +1,22 @@
 .nav-item {
-  font-size: 30px;
   color: white;
   background-color: rgb(39,79,114);
   text-align: center;
 }
-.img {outline-color: white
-  ;}
+.img {outline-color: white;
+  height: 40px;
+}
 .navbar {
-  font-size: 30px;
   background-color: rgb(39,79,114);
   text-align: center;
   color: white;
 }
 .navbar-brand {
-  font-size: 30px;
   background-color: rgb(39,79,114);
   text-align: center;
   color: white;
 }
 .nav {
-  font-size: 30px;
   background-color: rgb(39,79,114);
   text-align: center;
   color: white;
