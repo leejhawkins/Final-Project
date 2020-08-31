@@ -15,10 +15,10 @@
 #user,#members,#wod,#scores,#workouts,#logworkout {
     margin-top: 25px;
     margin-bottom: 20px;
-    color: white; 
-    background-color: rgb(104,183,76);
     padding: 20px;
     border-radius: 5px;
+    border: solid 2px;
+    box-shadow: 0 3px 6px #999, 0 3px 6px #999;
     font-size: 12px;
 }
 
@@ -75,8 +75,6 @@ p {
     background-color: rgb(39,79,114);
 }
 .log-workouts {
-    color: white; 
-    background-color: rgb(104,183,76);
     border-radius: 5px;
 }
 .submit-movement {
@@ -113,10 +111,11 @@ p {
     border-radius: 5px;
     margin-left: 10px;
     width: 15%;
+    background-color: black;
     background-image: url(https://img.icons8.com/ios-filled/50/ffffff/calendar.png);
   }
   .workout-row {
-    border-bottom: solid white 2px;
+    border-bottom: solid black 2px;
   }
   
  
