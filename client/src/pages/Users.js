@@ -252,15 +252,12 @@ class User extends Component {
                             <div id="user" className="container-fluid">
                                 <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
                                 <hr></hr>
-                                <Row>
-                                    <Col size="md-4" >
-                                        <Card
-                                            style={{ margin: "20px" }}
-                                            image={this.state.userInfo.image ? this.state.userInfo.image : "https://4.bp.blogspot.com/_CFGTjIBDv4o/Si08hun6XRI/AAAAAAAAAUg/j1ZqSvAmcIU/s280/Pumping+Iron.jpg"}
-                                            name={this.state.userInfo.userName}
-                                        />
-                                    </Col>
-                                    <Col size="md-8">
+                                <div className="media d-flex align-items-center">
+                                    <img className="rounded-circle mr-3"
+                                        src={this.state.userInfo.image ? this.state.userInfo.image : "https://4.bp.blogspot.com/_CFGTjIBDv4o/Si08hun6XRI/AAAAAAAAAUg/j1ZqSvAmcIU/s280/Pumping+Iron.jpg"}
+                                        alt="No Photo Available"
+                                    />
+                                    <div className="media-body">
                                         <p>Age: {this.state.age}</p>
                                         <p>Weight: {this.state.userInfo.weight}</p>
                                         <p>Gym: {this.state.userInfo.program}</p>
@@ -282,8 +279,12 @@ class User extends Component {
                                         ) : ("")
 
                                         }
-                                    </Col>
-                                </Row>
+                                    </div>
+                                </div>
+                                        
+                                   
+                                   
+                               
                                     <div>
                                         <h5>Log a Workout </h5>
                                         <hr></hr>
@@ -425,7 +426,7 @@ class User extends Component {
                                 
 
                             </div>
-
+ 
                         </Col>
 
                         <Col size="md-4">

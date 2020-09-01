@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import Jumbotron from "../components/Jumbotron";
-import API from "../utils/API";
-import { Col, Row, Container } from "../components/Grid";
+import API from "../utils/API"; 
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
 
@@ -57,19 +55,10 @@ class LogIn extends Component {
 
     render() {
         return (
-           <div className="container">
-                <Container fluid>
-                    <Row>
-                        <Col size="md-12">
-                            <Jumbotron>
-                                <h1>
-                                    New User Setup
-                        </h1>
-                            </Jumbotron>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col size="md-10 md-offset-1">
+            <div className="card">
+                <div class="textintro">
+                    <h1>Register</h1>
+                </div>
                             <form>
                                 <Input
                                     className="user-input"
@@ -135,9 +124,7 @@ class LogIn extends Component {
                                     Create New User
                             </FormBtn>
                             </form>
-                        </Col>
-                    </Row>
-                </Container>
+            
             </div>
         )
     }

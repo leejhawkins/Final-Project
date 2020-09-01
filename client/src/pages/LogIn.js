@@ -55,19 +55,13 @@ class LogIn extends Component {
 
     render() {
         return (
-            <div className= "container">
-            <Container fluid>
-                <Row>
-                    <Col size="md-12">
-                        <Jumbotron>
-                            <h1>
-                                User Login
-                        </h1>
-                        </Jumbotron>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col size="md-12 md-offset-5">
+            <div className= "card">
+                <div class="textintro">
+                    <h1>Log In</h1>
+                </div>
+                
+                
+                    
                         <form>
                             <Input
                                 className="user-input"
@@ -92,14 +86,12 @@ class LogIn extends Component {
                             Log In
                             </FormBtn>
                         </form>
-                    </Col>
-                </Row>
+                   
                 <Row>
                     <Col size="md-3">
                         <Link to="/new-user">← New User Sign Up</Link>
                     </Col>
                 </Row>
-            </Container>
             </div>
         )
     }

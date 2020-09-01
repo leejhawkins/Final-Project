@@ -4,13 +4,22 @@
     margin-top:25px;
     background-position: center;
 }
+header {
+  margin-bottom: 20px;
+}
 
 .user-input {
-    width: 100%;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-radius: 5px;
-    padding: 2px;
+   width: 100%;
+  display: inline-block;
+  font-weight: 100;
+  padding: 15px;
+  margin: 5px 0;
+  font-size: 1rem;
+  font-weight: 100;
+  color: #475B62;
+  border: 1px solid #C5C5C5;
+  border-radius: 4px;
+  outline: 0;
 }
 #user,#members,#wod,#scores,#workouts,#logworkout {
     margin-top: 25px;
@@ -20,6 +29,20 @@
     border: solid 2px;
     box-shadow: 0 3px 6px #999, 0 3px 6px #999;
     font-size: 12px;
+}
+.card {
+  background: white;
+  width: 100%;
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px 40px;
+  text-align: center;
+  position: relative;
+  opacity: .95;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 1px 0 rgba(0,0,0,.25);
 }
 
 
@@ -101,7 +124,7 @@ p {
 .login {
     margin-top: 10px;
     margin-bottom: 10px;
-    background-color: rgb(104,183,76);
+    background-color: rgb(39,79,114);
     border-radius: 5px;
     border-color: white;
     color: white; 
@@ -116,6 +139,14 @@ p {
   }
   .workout-row {
     border-bottom: solid black 2px;
+  }
+
+  .rounded-circle {
+    border: solid 2px;
+    box-shadow: 0 3px 6px #999, 0 3px 6px #999;
+    height: 100px;
+    width: 100px;
+
   }
   
  
