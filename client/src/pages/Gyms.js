@@ -1,14 +1,11 @@
-import Chat from "../components/Chat/index";
+import MessageBoard from "../components/MessageBoard/MessageBoard";
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
 import API from "../utils/API";
 import {Col, Row, Container} from "../components/Grid";
-import { Sparklines, SparklinesBars, SparklinesLine, SparklinesSpots } from 'react-sparklines';
 import "./style.css";
 import moment from "moment";
 import DatePicker from "react-datepicker";
-import { Input, FormBtn } from "../components/Form";
-import { List, ListItem} from "../components/List"
+
 import "react-datepicker/dist/react-datepicker.css";
 
 class Gym extends Component {
@@ -16,8 +13,7 @@ class Gym extends Component {
     gym: "",
     members: [],
     workouts: [],
-    messages: [],
-    newMessage: ""
+    messages: []
   };
 
   componentDidMount() {
@@ -73,9 +69,9 @@ class Gym extends Component {
       [name]: value,
     });
   };
-  sendNewMessage = () => {
+  sendNewMessage = (message) => {
     let messageObject = {
-      message: this.state.newMessage,
+      message: message,
       userName: this.state.user.userName,
       firstName: this.state.user.firstName,
       lastName: this.state.user.lastName,
@@ -99,7 +95,6 @@ class Gym extends Component {
   render() {
     return (
       <div className="container">
-        
         <Container fluid>
           <Row>
       
@@ -187,29 +182,11 @@ class Gym extends Component {
               </div>
             </Col>
             <Col size="md-4">
-              <div id="members">
-                <h5>Message Board:</h5>
-                <hr></hr>
-                {this.state.messages ? (
-                  <List>
-                    {this.state.messages.map(message =>(
-                      <ListItem >
-                        <span>{message.firstName} {message.lastName}: {message.message} <p className="float-right">{moment(message.date, "YYYY-MM-DDTHH:mm").format("MM/DD HH:mm")}</p></span>
-                      </ListItem>
-                    ))}
-                  </List>
-                ):("")}
-                <div>
-                <Input
-                  onChange={this.updateNewMessage}
-                  value={this.state.newMessage}
-                  onChange={this.handleInputChange}
-                  name="newMessage"
-                />
-                <FormBtn className="submit" type="button" value="send" onClick={this.sendNewMessage}>
-                Post Message</FormBtn>
-                </div>
-              </div>
+              <MessageBoard
+                user = {this.state.user}
+                messages = {this.state.messages ? this.state.messages:""}
+                sendNewMessage = {this.sendNewMessage}
+              />
             </Col>
           </Row>
         </Container>

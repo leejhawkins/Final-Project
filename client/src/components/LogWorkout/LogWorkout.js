@@ -1,0 +1,195 @@
+import React from "react";
+import { Input, FormBtn, Dropdown, Option } from "../Form";
+import { SaveBtn } from "../Buttons/SaveBtn"
+import { List, ListItem } from "../List"
+import { Col, Row, Container } from "../Grid";
+
+class LogWorkout extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            workoutType: "",
+            rounds: "",
+            movementName: "",
+            reps: "",
+            weight: "",
+            movementType: "",
+            movementArray: [],
+            minutes: "",
+            seconds: "",
+        };
+    }
+    handleInputChange = (event) => {
+        const { name, value } = event.target;
+        this.setState({
+            [name]: value,
+        });
+    };
+    handleMovementChange = event => {
+        const { name, value } = event.target;
+        let index;
+        this.props.movements.forEach((movement, i) => {
+            if (movement.name === value) {
+                index = i
+            }
+        })
+        const movementType = this.props.movements[index].type
+        console.log(index)
+        console.log(movementType)
+        this.setState({
+            [name]: value,
+            movementType: movementType
+        });
+    };
+    addMovement = () => {
+        if (this.state.movementName && this.state.reps) {
+            const movement = { name: this.state.movementName, reps: this.state.reps, weight: this.state.weight, movementType: this.state.movementType }
+            const movementArray = this.state.movementArray
+            movementArray.push(movement)
+            console.log(movementArray)
+            this.setState({ movementArray: movementArray, movementName: "", reps: "", weight: "", movementType: "" })
+        }
+    }
+
+    render() {
+        return (
+            <form id="log-workouts">
+                <Row>
+                    <Dropdown className="dropdown"
+                        value={this.state.workoutType}
+                        onChange={this.handleInputChange}
+                        name="workoutType"
+                        placeholder="Workout"
+                    >
+                        <Option selected disabled value="" name="Workout Type" />
+                        <Option name="For Time" />
+                        <Option name="AMRAP" />
+                    </Dropdown>
+                </Row>
+                {this.state.workoutType ? (
+                    <div className="log-workouts">
+                        <Row>
+                            <Input className="wod-score-input"
+                                value={this.state.rounds}
+                                onChange={this.handleInputChange}
+                                name="rounds"
+                                placeholder={this.state.workoutType === "For Time" ? "Rounds: " : "Time"}
+                            />
+                            {this.state.workoutType === "For Time" ? "Rounds" : "Minutes"}
+                        </Row>
+                        {this.state.movementArray.length ? (
+                            <List>
+
+                                {this.state.movementArray.map(movement => (
+                                    <Row>
+                                        <Col size="md-4">
+                                            <p>{movement.reps} {movement.movementType === "cardio" ? "m" : "x"} </p>
+                                        </Col>
+                                        <Col size="md-4">
+                                            <p>{movement.name}</p>
+                                        </Col>
+                                        {movement.movementType === "weight" || movement.movementType === "to height" ? (
+                                            <Col size="md-4">
+                                                {movement.movementType === "weight" ? <p>at {movement.weight} lbs</p> : <p>to {movement.weight} inches</p>}
+                                            </Col>
+                                        ) : ("")}
+                                    </Row>
+                                ))}
+                            </List>
+                        ) : ("")}
+                        <hr></hr>
+                        <Row>
+                            <Dropdown
+                                className="dropdown"
+                                value={this.state.movementName}
+                                onChange={this.handleMovementChange}
+                                name="movementName"
+                                placeholder="Movement"
+                            >
+                                <Option selected disabled value="" name="Add Movement" />
+                                {this.props.movements.map(movement => (
+                                    <Option name={movement.name} key={movement._id} />
+                                ))}
+                            </Dropdown>
+                        </Row>
+                        {this.state.movementName ? (
+                            <Row>
+                                <Input className="wod-score-input"
+                                    value={this.state.reps}
+                                    onChange={this.handleInputChange}
+                                    name="reps"
+                                    placeholder={this.state.movementType === "cardio" ? "Distance" : "Reps"}
+                                />
+                                {this.state.movementType === "weight" || this.state.movementType === "to height" ? (
+                                    <Input className="wod-score-input"
+                                        value={this.state.weight}
+                                        onChange={this.handleInputChange}
+                                        name="weight"
+                                        placeholder={this.state.movementType === "weight" ? "Weight" : "Height"}
+
+                                    />
+                                ) : ("")}
+                                <Row>
+                                    <SaveBtn class="submit-movement"
+                                        disabled={!(this.state.movementName && this.state.reps)}
+                                        onClick={() => this.addMovement()} />
+                                </Row>
+                            </Row>
+
+
+                        ) : ("")}
+                        <hr></hr>
+                        <Row className="div-wod-score">
+                            <div className="div-wod-title">{this.state.workoutType === "For Time" ? "Time: " : "Score: "}</div>
+                            <Input className="wod-score-input"
+                                value={this.state.minutes}
+                                onChange={this.handleInputChange}
+                                name="minutes"
+                                placeholder={this.state.workoutType === "For Time" ? "Minutes" : "Rounds"}
+                            />
+                            <h6>{this.state.workout === "For Time" ? " : " : " + "}</h6>
+
+                            <Input className="wod-score-input"
+                                value={this.state.seconds}
+                                onChange={this.handleInputChange}
+                                name="seconds"
+                                placeholder={this.state.workoutType === "For Time" ? "Seconds" : "Reps"}
+                            />
+                        </Row>
+                        <FormBtn
+                            className="logscore"
+                            disabled={!(this.state.workoutType && this.state.rounds && this.state.movementArray && this.state.minutes)}
+                            onClick={()=> {this.props.handleFormSubmit(
+                                this.state.workoutType,
+                                this.state.rounds,
+                                this.state.movementArray,
+                                this.state.minutes,
+                                this.state.seconds,
+                            )
+                            this.setState({
+                                workoutType: "",
+                                rounds: "",
+                                movementName: "",
+                                reps: "",
+                                weight: "",
+                                movementType: "",
+                                movementArray: [],
+                                repsArray: [],
+                                weightsArray: [],
+                                minutes: "",
+                                seconds: "",
+                            })}
+                        }
+                        >
+                            Log Workout
+                                         </FormBtn>
+                    </div>
+
+                ) : ("")}
+
+            </form>
+        );
+    }
+}
+
+export default LogWorkout;

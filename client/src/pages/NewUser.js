@@ -56,7 +56,7 @@ class LogIn extends Component {
     render() {
         return (
             <div className="card">
-                <div class="textintro">
+                <div className="textintro">
                     <h1>Register</h1>
                 </div>
                             <form>

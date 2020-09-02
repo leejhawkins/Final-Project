@@ -8,9 +8,11 @@ import Card from "../components/Card"
 import { List } from "../components/List";
 import { Input, FormBtn, Dropdown, Option } from "../components/Form";
 import "./style.css";
+import "../components/LogWorkout/LogWorkout"
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import LogWorkout from "../components/LogWorkout/LogWorkout";
 
 
 class User extends Component {
@@ -18,17 +20,6 @@ class User extends Component {
         userInfo: {},
         workouts: [],
         movements: [],
-        workoutType: "",
-        rounds: "",
-        movementName: "",
-        reps: "",
-        weight: "",
-        movementType: "",
-        movementArray: [],
-        repsArray: [],
-        weightsArray: [],
-        minutes: "",
-        seconds: "",
         week: {
             beginWeek: moment().weekday(0).format("YYYY-MM-DD"),
             endWeek: moment().weekday(6).format("YYYY-MM-DD"),
@@ -106,33 +97,6 @@ class User extends Component {
             [name]: value
         });
     };
-    addMovement = () => {
-        if (this.state.movementName && this.state.reps) {
-            const movement = { name: this.state.movementName, reps: this.state.reps, weight: this.state.weight, movementType: this.state.movementType }
-            const movementArray = this.state.movementArray
-            movementArray.push(movement)
-            console.log(movementArray)
-            this.setState({ movementArray: movementArray, movementName: "", reps: "", weight: "", movementType: "" })
-        }
-    }
-    handleMovementChange = event => {
-        console.log(this.state.movements)
-        const { name, value } = event.target;
-        let index;
-        this.state.movements.forEach((movement, i) => {
-            if (movement.name === value) {
-                index = i
-            }
-        })
-        const movementType = this.state.movements[index].type
-        console.log(index)
-        console.log(movementType)
-        this.setState({
-            [name]: value,
-            movementType: movementType
-        });
-    };
-
     deleteWorkout = (id, createdBy, scoreId) => {
         console.log(createdBy)
         if (createdBy === this.state.userInfo.userName) {
@@ -145,7 +109,6 @@ class User extends Component {
                 .catch(err => console.log(err));
         }
     };
-
     getRoundLength = array => {
         var roundLength = 0;
         for (let i = 0; i < array.length; i++) {
@@ -153,21 +116,20 @@ class User extends Component {
         }
         return roundLength
     }
-    handleFormSubmit = event => {
-        event.preventDefault();
+    handleFormSubmit = (workoutType,rounds,movementArray,minutes,seconds) => {
         let rawScore;
-        if (this.state.workoutType === "For Time") {
-            rawScore = parseInt(this.state.minutes) * 60 + parseInt(this.state.seconds);
+        if (workoutType === "For Time") {
+            rawScore = parseInt(minutes) * 60 + parseInt(seconds);
         } else {
-            let roundLength = this.getRoundLength(this.state.movementArray)
-            rawScore = parseInt(this.state.minutes) * roundLength + parseInt(this.state.seconds)
+            let roundLength = this.getRoundLength(movementArray)
+            rawScore = parseInt(minutes) * roundLength + parseInt(seconds)
         }
         console.log(this.state.userInfo.userName)
 
         API.saveWorkoutsByUser({
-            workoutType: this.state.workoutType,
-            rounds: this.state.rounds,
-            movements: this.state.movementArray,
+            workoutType: workoutType,
+            rounds: rounds,
+            movements: movementArray,
             scores: { userName: this.state.userInfo.userName, firstName: this.state.userInfo.firstName, lastName: this.state.userInfo.lastName, score: rawScore },
             date: this.state.date,
             createdBy: this.state.userInfo.userName
@@ -262,171 +224,35 @@ class User extends Component {
                                         <p>Weight: {this.state.userInfo.weight}</p>
                                         <p>Gym: {this.state.userInfo.program}</p>
                                         {this.state.stats ? (
-
                                             <div>
-                                                <Col size="md-6">
                                                     <p>Workouts: {this.state.stats.countWorkout}</p>
                                                     <p>Minutes:{this.state.stats.sumMinutes}</p>
-                                                </Col>
-                                                <Col size="md-6" style="float:right">
-                                                    <Sparklines data={this.state.stats.rounds} limit={10} height={40}>
-                                                        <SparklinesLine color="blue" fill="white" />
-                                                        <SparklinesSpots />
-                                                    </Sparklines>
-                                                </Col>
                                             </div>
-
                                         ) : ("")
-
                                         }
-                                    </div>
+                                    </div>   
                                 </div>
+                                <hr></hr>
+                                <div>
+                                    <h5>Log a Workout </h5>
+                                    <hr></hr>
+                                    <div>Date:
+                                        <DatePicker
+                                            className="datepicker btn"
+                                            onChange={this.changeDate}
+                                        />
+                                        {this.state.date ? moment(this.state.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY"):"Pick Date"}
                                         
-                                   
-                                   
-                               
-                                    <div>
-                                        <h5>Log a Workout </h5>
-                                        <hr></hr>
-                                        <div>Date:
-                                                <DatePicker
-                                                className="datepicker"
-                                                selected={this.state.date}
-                                                onChange={this.changeDate}
-                                            />
-                                        </div>
-                                        <hr></hr>
-
-                                        <form id="log-workouts">
-                                            <Row>
-                                                <Dropdown className="dropdown"
-                                                    value={this.state.workoutType}
-                                                    onChange={this.handleInputChange}
-                                                    name="workoutType"
-                                                    placeholder="Workout"
-                                                >
-                                                    <Option selected disabled value="" name="Workout Type" />
-                                                    <Option name="For Time" />
-                                                    <Option name="AMRAP" />
-                                                </Dropdown>
-                                            </Row>
-
-                                            {this.state.workoutType ? (
-
-                                                <div className="log-workouts">
-
-                                                    <Row>
-                                                        <Input className="wod-score-input"
-                                                            value={this.state.rounds}
-                                                            onChange={this.handleInputChange}
-                                                            name="rounds"
-                                                            placeholder={this.state.workoutType === "For Time" ? "Rounds: " : "Time"}
-                                                        />
-                                                        {this.state.workoutType === "For Time" ? "Rounds" : "Minutes"}
-                                                    </Row>
-
-                                                    {this.state.movementArray.length ? (
-                                                        <List>
-
-                                                            {this.state.movementArray.map(movement => (
-                                                                <Row>
-                                                                    <Col size="md-4">
-                                                                        <p>{movement.reps} {movement.movementType === "cardio" ? "m" : "x"} </p>
-                                                                    </Col>
-                                                                    <Col size="md-4">
-                                                                        <p>{movement.name}</p>
-                                                                    </Col>
-                                                                    {movement.movementType === "weight" || movement.movementType === "to height" ? (
-                                                                        <Col size="md-4">
-                                                                            {movement.movementType === "weight" ? <p>at {movement.weight} lbs</p> : <p>to {movement.weight} inches</p>}
-                                                                        </Col>
-                                                                    ) : ("")}
-                                                                </Row>
-                                                            ))}
-                                                        </List>
-                                                    ) : ("")}
-
-                                                    <hr></hr>
-                                                    <Row>
-                                                        <Dropdown
-                                                            className="dropdown"
-                                                            value={this.state.movementName}
-                                                            onChange={this.handleMovementChange}
-                                                            name="movementName"
-                                                            placeholder="Movement"
-                                                        >
-                                                            <Option selected disabled value="" name="Add Movement" />
-                                                            {this.state.movements.map(movement => (
-                                                                <Option name={movement.name} key={movement._id} />
-                                                            ))}
-                                                        </Dropdown>
-                                                    </Row>
-
-                                                    {this.state.movementName ? (
-                                                        <Row>
-                                                            <Input className="wod-score-input"
-                                                                value={this.state.reps}
-                                                                onChange={this.handleInputChange}
-                                                                name="reps"
-                                                                placeholder={this.state.movementType === "cardio" ? "Distance" : "Reps"}
-                                                            />
-                                                            {this.state.movementType === "weight" || this.state.movementType === "to height" ? (
-                                                                <Input className="wod-score-input"
-                                                                    value={this.state.weight}
-                                                                    onChange={this.handleInputChange}
-                                                                    name="weight"
-                                                                    placeholder={this.state.movementType === "weight" ? "Weight" : "Height"}
-
-                                                                />
-                                                            ) : ("")}
-
-                                                            <Row>
-                                                                <SaveBtn class="submit-movement"
-                                                                    disabled={!(this.state.movementName && this.state.reps)}
-                                                                    onClick={() => this.addMovement()} />
-                                                            </Row>
-
-                                                        </Row>
-
-
-                                                    ) : ("")}
-                                                    <hr></hr>
-
-                                                    <Row className="div-wod-score">
-                                                        <div className="div-wod-title">{this.state.workoutType === "For Time" ? "Time: " : "Score: "}</div>
-                                                        <Input className="wod-score-input"
-                                                            value={this.state.minutes}
-                                                            onChange={this.handleInputChange}
-                                                            name="minutes"
-                                                            placeholder={this.state.workoutType === "For Time" ? "Minutes" : "Rounds"}
-                                                        />
-                                                        <h6>{this.state.workout === "For Time" ? " : " : " + "}</h6>
-
-                                                        <Input className="wod-score-input"
-                                                            value={this.state.seconds}
-                                                            onChange={this.handleInputChange}
-                                                            name="seconds"
-                                                            placeholder={this.state.workoutType === "For Time" ? "Seconds" : "Reps"}
-                                                        />
-                                                    </Row>
-
-                                                    <FormBtn
-                                                        className="logscore"
-                                                        disabled={!(this.state.workoutType && this.state.rounds && this.state.movementArray && this.state.minutes)}
-                                                        onClick={this.handleFormSubmit}
-                                                    >
-                                                        Log Workout
-                                         </FormBtn>
-                                                </div>
-
-                                            ) : ("")}
-
-                                        </form>
                                     </div>
-                                
-
+                                    
+                                    <hr></hr>
+                                    <LogWorkout
+                                        movements = {this.state.movements}
+                                        handleFormSubmit = {this.handleFormSubmit}
+                                    />
+                                </div>
                             </div>
- 
+
                         </Col>
 
                         <Col size="md-4">
@@ -494,7 +320,7 @@ class User extends Component {
                                                         >Submit Score
                                                         </FormBtn>
                                                     </div>
- 
+
                                                 </Row>
                                             </div>
                                         </div>
@@ -518,77 +344,68 @@ class User extends Component {
                         <Col size="md-4">
                             <div id="workouts">
                                 <h5><i className="material-icons" role="button" onClick={() => this.changeWeek(-1)}>fast_rewind</i>
-                                <i className="material-icons">date_range</i>  Workouts {moment(this.state.week.beginWeek).format("MM/DD/YYYY")} - {moment(this.state.week.endWeek).format("MM/DD/YYYY")}
-                                <i className="material-icons" role="button" onClick={()=>this.changeWeek(1)}>fast_forward</i></h5>
+                                    <i className="material-icons">date_range</i>  Workouts {moment(this.state.week.beginWeek).format("MM/DD/YYYY")} - {moment(this.state.week.endWeek).format("MM/DD/YYYY")}
+                                    <i className="material-icons" role="button" onClick={() => this.changeWeek(1)}>fast_forward</i></h5>
                                 <hr></hr>
-                                
 
-                                    {this.state.workouts.length ? (
-                                        <div>
-                                            {this.state.workouts.map(workout => (
 
-                                                <div className="row workout-row" key={workout._id}>
-                                                    <Col size="md-6" >
-                                                        <p>{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</p>
+                                {this.state.workouts.length ? (
+                                    <div>
+                                        {this.state.workouts.map(workout => (
+
+                                            <div className="row workout-row" key={workout._id}>
+                                                <Col size="md-6" >
+                                                    <p>{moment(workout.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}</p>
 
                                                     {workout.workoutType === "AMRAP" ? <p>{workout.workoutType} for {workout.rounds} minutes of: </p> : <p>{workout.workoutType} {workout.rounds} rounds of: </p>}
-                                                   
-                                                    
-                                                        {workout.movements.map((movement, i) => (
 
-                                                            <p> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
-                                                                {movement.name}
-                                                                {movement.movementType === "weight" ? ` at ${movement.weight} lbs` : ""}
-                                                                {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""}
-                                                                {(workout.movements.length - 1) === i ? "" : ","}
-                                                            </p>
-                                                        ))}
-                                                    </Col>
-                                                    <Col size="md-6">
-                                                
-                                                    
-                                                        {workout.scores.map(score => 
-                                                            <div>
-                                                                {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
+
+                                                    {workout.movements.map((movement, i) => (
+
+                                                        <p> {movement.reps} {movement.movementType === "cardio" ? " m " : " x "}
+                                                            {movement.name}
+                                                            {movement.movementType === "weight" ? ` at ${movement.weight} lbs` : ""}
+                                                            {movement.movementType === "to height" ? ` at ${movement.weight} inches` : ""}
+                                                            {(workout.movements.length - 1) === i ? "" : ","}
+                                                        </p>
+                                                    ))}
+                                                </Col>
+                                                <Col size="md-6">
+
+
+                                                    {workout.scores.map(score =>
+                                                        <div>
+                                                            {score.userName === this.state.userInfo.userName && workout.workoutType === "For Time" ? (
                                                                 <Row>
-                                                                    <Col size="md-6"><p>Time:{Math.floor(score.score / 60)}:{(score.score % 60) < 10 ? "0" + score.score % 60 : score.score % 60}</p> 
+                                                                    <Col size="md-6"><p>Time:{Math.floor(score.score / 60)}:{(score.score % 60) < 10 ? "0" + score.score % 60 : score.score % 60}</p>
                                                                     </Col>
                                                                     <Col size="md-6">   <DeleteBtn onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)} workout="Time">
-                                                                    Delete<i className="material-icons">cancel</i></DeleteBtn>
+                                                                        Delete<i className="material-icons">cancel</i></DeleteBtn>
                                                                     </Col>
                                                                 </Row>
-                                                                    ) : ("")}
-                                                                    
-                                                                
-                                                                {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
+                                                            ) : ("")}
+
+
+                                                            {score.userName === this.state.userInfo.userName && workout.workoutType === "AMRAP" ? (
                                                                 <Row>
                                                                     <Col size="md-6">
                                                                         <p>Score: {Math.floor(score.score / this.getRoundLength(workout.movements))} Rounds + {score.score % this.getRoundLength(workout.movements)} Reps</p>
                                                                     </Col>
                                                                     <Col size="md-6">
-                                                                            <DeleteBtn onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)} workout="Score">Delete<i className="material-icons">cancel</i></DeleteBtn>
+                                                                        <DeleteBtn onClick={() => this.deleteWorkout(workout._id, workout.createdBy, score._id)} workout="Score">Delete<i className="material-icons">cancel</i></DeleteBtn>
                                                                     </Col>
                                                                 </Row>) : ("")}
-                                                            </div>
+                                                        </div>
 
-                                                        )}
-                                                    </Col>
-
-                                                    
-                                                </div>
-                                                
-
-                                            ))}
-                                        </div>
-                                    
-
-                                    ) : ("")}
-                                
+                                                    )}
+                                                </Col>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : ("")}
                             </div>
                         </Col>
                     </Row>
-
-
                 </Container >
             </div >
         )
