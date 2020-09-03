@@ -13,6 +13,7 @@ import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LogWorkout from "../components/LogWorkout/LogWorkout";
+import UserWorkouts from "../components/UserWorkouts"
 
 
 class User extends Component {
@@ -116,7 +117,7 @@ class User extends Component {
         }
         return roundLength
     }
-    handleFormSubmit = (workoutType,rounds,movementArray,minutes,seconds) => {
+    handleFormSubmit = (date,workoutType,rounds,movementArray,minutes,seconds) => {
         let rawScore;
         if (workoutType === "For Time") {
             rawScore = parseInt(minutes) * 60 + parseInt(seconds);
@@ -126,18 +127,19 @@ class User extends Component {
         }
         console.log(this.state.userInfo.userName)
 
-        API.saveWorkoutsByUser({
+        API.saveWorkoutsByUser({  
             workoutType: workoutType,
             rounds: rounds,
-            movements: movementArray,
+            movements: movementArray, 
             scores: { userName: this.state.userInfo.userName, firstName: this.state.userInfo.firstName, lastName: this.state.userInfo.lastName, score: rawScore },
-            date: this.state.date,
+            date: date ,
             createdBy: this.state.userInfo.userName
         }
         ).then(res => this.loadUser(this.state.userInfo.userName))
             .catch(err => console.log(err));
     }
     changeDate = date => {
+        console.log(date)
         this.setState({ date })
     }
     changeWODDate = date => {
@@ -234,21 +236,12 @@ class User extends Component {
                                 </div>
                                 <hr></hr>
                                 <div>
-                                    <h5>Log a Workout </h5>
-                                    <hr></hr>
-                                    <div>Date:
-                                        <DatePicker
-                                            className="datepicker btn"
-                                            onChange={this.changeDate}
-                                        />
-                                        {this.state.date ? moment(this.state.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY"):"Pick Date"}
-                                        
-                                    </div>
                                     
-                                    <hr></hr>
                                     <LogWorkout
                                         movements = {this.state.movements}
                                         handleFormSubmit = {this.handleFormSubmit}
+                                        date = {this.state.date}
+                                        changeDate = {this.changeDate}
                                     />
                                 </div>
                             </div>
@@ -347,9 +340,14 @@ class User extends Component {
                                     <i className="material-icons">date_range</i>  Workouts {moment(this.state.week.beginWeek).format("MM/DD/YYYY")} - {moment(this.state.week.endWeek).format("MM/DD/YYYY")}
                                     <i className="material-icons" role="button" onClick={() => this.changeWeek(1)}>fast_forward</i></h5>
                                 <hr></hr>
+                                <UserWorkouts 
+                                    user={this.state.userInfo}
+                                    workouts={this.state.workouts ? this.state.workouts:""}
+                                    deleteWorkout = {this.deleteWorkout}
+                                    getRoundLength = {this.getRoundLength}
 
-
-                                {this.state.workouts.length ? (
+                                />
+                                {/* {this.state.workouts.length ? (
                                     <div>
                                         {this.state.workouts.map(workout => (
 
@@ -402,7 +400,7 @@ class User extends Component {
                                             </div>
                                         ))}
                                     </div>
-                                ) : ("")}
+                                ) : ("")} */}
                             </div>
                         </Col>
                     </Row>

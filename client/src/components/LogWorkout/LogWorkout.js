@@ -3,6 +3,9 @@ import { Input, FormBtn, Dropdown, Option } from "../Form";
 import { SaveBtn } from "../Buttons/SaveBtn"
 import { List, ListItem } from "../List"
 import { Col, Row, Container } from "../Grid";
+import moment from 'moment';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class LogWorkout extends React.Component {
     constructor(props) {
@@ -27,18 +30,11 @@ class LogWorkout extends React.Component {
     };
     handleMovementChange = event => {
         const { name, value } = event.target;
-        let index;
-        this.props.movements.forEach((movement, i) => {
-            if (movement.name === value) {
-                index = i
-            }
-        })
-        const movementType = this.props.movements[index].type
-        console.log(index)
-        console.log(movementType)
+        let movement = this.props.movements.find(movement => movement.name === value )
+        console.log(movement)
         this.setState({
             [name]: value,
-            movementType: movementType
+            movementType: movement.type
         });
     };
     addMovement = () => {
@@ -50,10 +46,26 @@ class LogWorkout extends React.Component {
             this.setState({ movementArray: movementArray, movementName: "", reps: "", weight: "", movementType: "" })
         }
     }
+    changeDate = date => {
+        console.log(date)
+        this.setState({ date })
+    }
 
     render() {
         return (
             <form id="log-workouts">
+                <h5>Log a Workout </h5>
+                <hr></hr>
+                <div>Date:
+                        <DatePicker
+                        className="datepicker btn"
+                        onChange={this.changeDate}
+                    />
+                    {this.state.date ? moment(this.state.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY") : "Pick Date"}
+
+                </div>
+
+                <hr></hr>
                 <Row>
                     <Dropdown className="dropdown"
                         value={this.state.workoutType}
@@ -160,6 +172,7 @@ class LogWorkout extends React.Component {
                             className="logscore"
                             disabled={!(this.state.workoutType && this.state.rounds && this.state.movementArray && this.state.minutes)}
                             onClick={()=> {this.props.handleFormSubmit(
+                                this.state.date,
                                 this.state.workoutType,
                                 this.state.rounds,
                                 this.state.movementArray,
@@ -167,6 +180,7 @@ class LogWorkout extends React.Component {
                                 this.state.seconds,
                             )
                             this.setState({
+                                date: "",
                                 workoutType: "",
                                 rounds: "",
                                 movementName: "",
@@ -191,5 +205,4 @@ class LogWorkout extends React.Component {
         );
     }
 }
-
 export default LogWorkout;
