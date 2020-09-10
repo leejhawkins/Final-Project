@@ -37,7 +37,7 @@ return (
                                         <Row>
                                             <Col size="md-6"><p>Time:{Math.floor(score.score / 60)}:{(score.score % 60) < 10 ? "0" + score.score % 60 : score.score % 60}</p>
                                             </Col>
-                                            <Col size="md-6">   <DeleteBtn onClick={() => this.props.deleteWorkout(workout._id, workout.createdBy, score._id)} workout="Time">
+                                            <Col size="md-6">   <DeleteBtn onClick={() => props.deleteWorkout(workout._id, workout.createdBy, score._id)} workout="Time">
                                                 Delete<i className="material-icons">cancel</i></DeleteBtn>
                                             </Col>
                                         </Row>

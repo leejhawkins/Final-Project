@@ -1,8 +1,8 @@
 import React from "react";
 import { Input, FormBtn, Dropdown, Option } from "../Form";
 import { SaveBtn } from "../Buttons/SaveBtn"
-import { List, ListItem } from "../List"
-import { Col, Row, Container } from "../Grid";
+import { List } from "../List"
+import { Col, Row } from "../Grid";
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,6 +11,7 @@ class LogWorkout extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            date: moment(),
             workoutType: "",
             rounds: "",
             movementName: "",
@@ -56,16 +57,6 @@ class LogWorkout extends React.Component {
             <form id="log-workouts">
                 <h5>Log a Workout </h5>
                 <hr></hr>
-                <div>Date:
-                        <DatePicker
-                        className="datepicker btn"
-                        onChange={this.changeDate}
-                    />
-                    {this.state.date ? moment(this.state.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY") : "Pick Date"}
-
-                </div>
-
-                <hr></hr>
                 <Row>
                     <Dropdown className="dropdown"
                         value={this.state.workoutType}
@@ -80,6 +71,15 @@ class LogWorkout extends React.Component {
                 </Row>
                 {this.state.workoutType ? (
                     <div className="log-workouts">
+                        <div> Change Date:
+                        <DatePicker
+                                className="datepicker btn"
+                                onChange={this.changeDate}
+                            />
+                            {moment(this.state.date, "YYYY-MM-DDTHH:mm").format("MM/DD/YYYY")}
+
+                        </div>
+                        <hr></hr>
                         <Row>
                             <Input className="wod-score-input"
                                 value={this.state.rounds}

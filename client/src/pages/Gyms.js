@@ -5,6 +5,7 @@ import {Col, Row, Container} from "../components/Grid";
 import "./style.css";
 import moment from "moment";
 import DatePicker from "react-datepicker";
+import WOD from "../components/WOD"
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -113,23 +114,11 @@ class Gym extends Component {
                 </div>
                 <hr></hr>
 
-                {this.state.wod ? (
-                  <div className="div-wod-score">
-                    {this.state.wod.workoutType} {this.state.wod.rounds} Rounds
-                    {this.state.wod.movements.map((movement) => (
-                      <p key={movement._id}>
-                        {movement.reps}{" "}
-                        {movement.movementType === "cardio" ? "m" : "x"}{" "}
-                        {movement.name}{" "}
-                        {movement.movementType === "weight"
-                          ? `at ${movement.weight} lbs`
-                          : ""}
-                        {movement.movementType === "to height"
-                          ? `at ${movement.weight} inches`
-                          : ""}
-                      </p>
-                    ))}
-                  </div>
+                {this.state.wod ? (<WOD
+                  wod={this.state.wod}
+                  wodDate={this.state.wodDate}
+                />
+                  
                 ) : (
                   <h6>There is no workout for: {this.state.date}</h6>
                 )}

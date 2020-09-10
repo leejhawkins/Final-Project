@@ -16,7 +16,7 @@ function Nav(props) {
   return (
   
     <header className="navbar navbar-expand-lg flex-column flex-md-row">
-      <a className="navbar-brand mr-0 mr-md-2" href="/"><img src="https://img.icons8.com/ios-filled/150/ffffff/deadlift.png" style={{height:40}} />{props.title} </a>
+      <a className="navbar-brand mr-0 mr-md-2" href="/">{props.title} </a>
       FITNESS TRAINER {userLink && gymLink ? (
         
         <ul className="navbar-nav ml-md-auto" >
