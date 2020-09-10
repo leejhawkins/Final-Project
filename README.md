@@ -12,7 +12,7 @@ The user can also navigate to their gym's page using the navbar.  There they wil
 
 ## Registration
 
-![Screen shot](client/Images/register)
+![Screen shot](client/Images/register.jpg)
 
 ## Log In
 
