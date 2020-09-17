@@ -5,8 +5,7 @@ const mongoose = require("mongoose");
 const routes = require("./routes");
 const PORT = process.env.PORT || 3001;
 const app = express();
-// const sparklines = require("react-sparklines")
-// const calendar = require("calendar")
+
 
 // Define middleware here
 app.use(express.urlencoded({extended: true}));

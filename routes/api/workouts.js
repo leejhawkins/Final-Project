@@ -18,6 +18,7 @@ router
 
 router.route("/:createdBy/:date")
     .get(workoutsController.getWOD)
+    .post(workoutsController.createWOD)
 
 
 

@@ -11,7 +11,7 @@ class LogWorkout extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            date: moment(),
+            date: moment().format("YYYY-MM-DD"),
             workoutType: "",
             rounds: "",
             movementName: "",

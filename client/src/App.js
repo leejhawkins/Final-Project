@@ -1,5 +1,4 @@
 import React from "react";
-
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import NoMatch from "./pages/NoMatch";
 import NewUser from "./pages/NewUser";
@@ -7,10 +6,8 @@ import Gym from "./pages/Gyms";
 import ProtectedRoute from "./ProtectedRoute";
 import {AuthContext} from "./context/auth";
 import Nav from "./components/Nav/index";
-
 import User from "./pages/Users";
 import AuthenticatedRoute from "./AuthenticatedRoute";
-
 import Footer from "./components/Footer";
 
 

@@ -25,7 +25,7 @@ class MessageBoard extends React.Component {
                 {this.props.messages ? (
                     <List>
                         {this.props.messages.map(message => (
-                            <ListItem >
+                            <ListItem key={message._id}>
                                 <span>{message.firstName} {message.lastName}: {message.message} <p className="float-right">{moment(message.date, "YYYY-MM-DDTHH:mm").format("MM/DD HH:mm")}</p></span>
                             </ListItem>
                         ))}

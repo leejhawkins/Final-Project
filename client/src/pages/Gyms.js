@@ -6,6 +6,7 @@ import "./style.css";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import WOD from "../components/WOD"
+import LogWorkout from "../components/LogWorkout/LogWorkout";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -14,13 +15,16 @@ class Gym extends Component {
     gym: "",
     members: [],
     workouts: [],
-    messages: []
+    messages: [],
+    movements: [],
+    isAuthenticated :JSON.parse(localStorage.getItem("tokens"))
   };
 
   componentDidMount() {
     const gym = this.props.match.params.name;
     const date = moment().format("YYYY-MM-DD");
     console.log(date);
+    this.getMovements()
 
     this.setState({gym: gym, date: date});
     this.loadUsers(gym);
@@ -30,11 +34,19 @@ class Gym extends Component {
   loadUsers = (gym) => {
     API.getGymUsers(gym)
       .then((res) => {
-        const isAuthenticated= JSON.parse(localStorage.getItem("tokens"));
+        
         let user = {}
-        for (let i=0;i<res.data.users.length;i++) {
-          if (isAuthenticated.userName===res.data.users[i].userName) {
-            user = res.data.users[i]
+        if (this.state.isAuthenticated.admin) {
+          user ={
+            userName:this.state.isAuthenticated.name,
+            firstName: this.state.isAuthenticated.name,
+            lastName: "(admin)"
+          }
+        } else {
+          for (let i = 0; i < res.data.users.length; i++) {
+            if (this.state.isAuthenticated.userName === res.data.users[i].userName) {
+              user = res.data.users[i]
+            }
           }
         }
         if (!res.data.messages.length) {
@@ -48,6 +60,26 @@ class Gym extends Component {
       })
       .catch((err) => console.log(err));
   };
+  handleFormSubmit = (date, workoutType, rounds, movementArray) => {
+
+    API.createWOD({
+      workoutType: workoutType,
+      rounds: rounds,
+      movements: movementArray,
+      date: date,
+      createdBy: this.state.user.userName
+    }
+    ).then(res => this.getWOD(this.state.user.userName,this.state.date))
+      .catch(err => console.log(err));
+  }
+  getMovements = () => {
+    API.getMovements()
+      .then(res => {
+        console.log(res.data)
+        this.setState({ movements: res.data })
+      })
+      .catch(err => console.log(err));
+  }
   getWOD = (gym, date) => {
     console.log(date);
     API.getWOD({createdBy: gym, date: date})
@@ -70,7 +102,12 @@ class Gym extends Component {
       [name]: value,
     });
   };
+  changeDate = date => {
+    console.log(date)
+    this.setState({ date })
+  }
   sendNewMessage = (message) => {
+    console.log(this.state.user.userName)
     let messageObject = {
       message: message,
       userName: this.state.user.userName,
@@ -122,6 +159,16 @@ class Gym extends Component {
                 ) : (
                   <h6>There is no workout for: {this.state.date}</h6>
                 )}
+                <div>
+                  {this.state.isAuthenticated.admin ? (
+                    <LogWorkout
+                      movements={this.state.movements}
+                      handleFormSubmit={this.handleFormSubmit}
+                      changeDate={this.changeDate}
+                    />
+                  ):""}
+                  
+                </div>
               </div>
             </Col>
             <Col size="md-4">

@@ -12,9 +12,12 @@ export default {
     return axios.put("/api/programs/"+gym,messageData)
   },
   getWOD: function (workoutData) {
-    console.log(workoutData)
     return axios.get("/api/workouts/"+workoutData.createdBy+"/"+ workoutData.date)
 
+  },
+  createWOD: function(workoutData) {
+    console.log(workoutData)
+    return axios.post("/api/workouts/" + workoutData.createdBy + "/" + workoutData.date,workoutData)
   },
   submitScore: function (id,workoutData) {
     return axios.put("/api/workouts/"+id._id,workoutData)
@@ -30,7 +33,8 @@ export default {
     return axios.delete("/api/workouts/" + id);
   },
   saveWorkoutsByUser: function (workoutData) {
-    return axios.post("/api/workouts/" + workoutData.scores.userName, workoutData);
+    console.log(workoutData.createdBy)
+    return axios.post("/api/workouts/" + workoutData.createdBy, workoutData);
   },
   getUsers: function () {
     return axios.get("/api/users")
@@ -41,8 +45,14 @@ export default {
   checkPassword: function (userData) {
     return axios.get("/api/users/" + userData.userName + "/" + userData.password);
   },
+  checkGymPassword: function (programData) {
+    return axios.get("/api/programs/" + programData.userName + "/" + programData.password);
+  },
   createUser: function (userData) {
     return axios.post("/api/users", userData)
+  },
+  createProgram: function(programData) {
+    return axios.post("/api/programs",programData)
   },
   getPrograms() {
     return axios.get("api/programs")

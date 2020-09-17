@@ -18,6 +18,17 @@ module.exports = {
             })
             .catch(err => res.status(422).json(err));
     },
+    createWOD: function (req, res) {
+        db.Workout
+            .create(req.body)
+            .then(dbWorkout => {
+                return db.Program.findOneAndUpdate({ name: req.params.name }, { $push: { workouts: dbWorkout._id } }, { new: true });
+            })
+            .then(dbProgram => {
+                res.json(dbProgram)
+            })
+            .catch(err => res.status(422).json(err));
+    },
     create: function (req, res) {
         db.Workout
             .create(req.body)
