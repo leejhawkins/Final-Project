@@ -28,14 +28,14 @@ class Gym extends Component {
 
     this.setState({gym: gym, date: date});
     this.loadUsers(gym);
-    this.getWOD(gym, date);
   }
 
   loadUsers = (gym) => {
     API.getGymUsers(gym)
       .then((res) => {
-        
+        console.log(res.data.workouts)
         let user = {}
+        let WOD = this.getWOD(res.data.workouts,this.state.date)
         if (this.state.isAuthenticated.admin) {
           user ={
             userName:this.state.isAuthenticated.name,
@@ -53,9 +53,12 @@ class Gym extends Component {
           res.data.messages.sort((a, b) => a.date - b.date);
         }
         this.setState({
+          workouts:res.data.workouts,
           messages: res.data.messages,
           members: res.data.users,
-          user: user
+          user: user,
+          wod: WOD
+
         });
       })
       .catch((err) => console.log(err));
@@ -80,22 +83,18 @@ class Gym extends Component {
       })
       .catch(err => console.log(err));
   }
-  getWOD = (gym, date) => {
-    console.log(date);
-    API.getWOD({createdBy: gym, date: date})
-    .then((res) => {
-      if (!(res.data === null)) {
-        if (res.data.workoutType === "For Time") {
-          res.data.scores.sort((a, b) => a.score - b.score);
-        } else {
-          res.data.scores.sort((a, b) => b.score - a.score);
-        }
+  getWOD = (workouts, date) => {
+    let WOD = workouts.filter(workout => moment(workout.date).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD")) || []
+    if (!(WOD[0].scores.length===0)) {
+      if (WOD[0].workoutType === "For Time") {
+        WOD[0].scores.sort((a, b) => a.score - b.score);
+      } else {
+          WOD[0].scores.sort((a, b) => b.score - a.score);
       }
-      this.setState({
-        wod: res.data,
-      });
-    });
-  };
+    }
+    return WOD[0]
+      
+    };
   handleInputChange = (event) => {
     const {name, value} = event.target;
     this.setState({
@@ -127,8 +126,9 @@ class Gym extends Component {
   };
   changeWODDate = (date) => {
     const newDate = moment(date, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DD");
-    this.setState({date: newDate});
-    this.getWOD(this.state.gym, newDate);
+    let WOD = this.getWOD(this.state.workouts, newDate);
+    this.setState({date: newDate,wod:WOD });
+    
   };
   render() {
     return (

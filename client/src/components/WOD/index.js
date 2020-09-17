@@ -9,7 +9,7 @@ function WOD(props) {
                 ? <p>{props.wod.workoutType} {props.wod.rounds} Rounds</p>
                 : <p>{props.wod.workoutType} for {props.wod.rounds} minutes</p>}
             {props.wod.movements.map(movement => (
-                <p>
+                <p key={movement._id}>
                     {movement.reps} {movement.movementType === "cardio" ? "m" : "x"} {movement.name}  {movement.movementType === "weight" ? `at ${movement.weight} lbs` : ""}{movement.movementType === "to height" ? `at ${movement.weight} inches` : ""}
                 </p>
             ))}

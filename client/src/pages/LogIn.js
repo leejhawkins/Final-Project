@@ -67,7 +67,7 @@ const LogIn = () => {
 
     return (
         <div className="card">
-            <div class="textintro">
+            <div className="textintro">
                 <h1>{logInType === "user" ? "User " : "Gym Administrator "}Log In</h1>
             </div>
             <form>

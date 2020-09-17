@@ -17,7 +17,7 @@ function Nav(props) {
   
     <header className="navbar navbar-expand-lg flex-column flex-md-row">
       <a className="navbar-brand mr-0 mr-md-2" href="/">{props.title} </a>
-      FITNESS TRAINER {userLink && gymLink ? (
+        {userLink && gymLink ? (
         
         <ul className="navbar-nav ml-md-auto" >
            

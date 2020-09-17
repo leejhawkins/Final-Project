@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-import { SaveBtn } from "../components/Buttons/SaveBtn"
-import { DeleteBtn } from "../components/Buttons/DeleteBtn"
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
-import { Sparklines, SparklinesBars, SparklinesLine, SparklinesSpots } from 'react-sparklines';
-import { List } from "../components/List";
-import { Input, FormBtn, Dropdown, Option } from "../components/Form";
+import { Input, FormBtn} from "../components/Form";
 import "./style.css";
 import "../components/LogWorkout/LogWorkout"
 import moment from 'moment';
@@ -118,8 +114,6 @@ class User extends Component {
             let roundLength = this.getRoundLength(movementArray)
             rawScore = parseInt(minutes) * roundLength + parseInt(seconds)
         }
-        console.log(this.state.userInfo.userName)
-
         API.saveWorkoutsByUser({
             workoutType: workoutType,
             rounds: rounds,
@@ -161,14 +155,9 @@ class User extends Component {
         var sumMinutes = 0;
         let stats = {};
         var roundsArray = []
-        console.log(array);
-
         for (let i = 0; i < array.length; i++) {
-
             if (array[i].workoutType === "AMRAP") {
-
                 for (let j = 0; j < array[i].scores.length; j++) {
-
                     if (array[i].scores[j].userName === userName) {
                         sumMinutes += parseInt(array[i].rounds);
                         roundsArray.push(parseInt(array[i].rounds))
@@ -185,13 +174,10 @@ class User extends Component {
                 }
             }
         }
-
         stats = { countWorkout: countWorkout, sumMinutes: sumMinutes, rounds: roundsArray }
-        console.log(stats)
         return stats;
     }
     changeWeek = value => {
-        console.log(value)
         const week = this.state.week.week + parseInt(value)
         const beginWeek = moment().weekday(week * 7).format("YYYY-MM-DD")
         const endWeek = moment().weekday(week * 7 + 6).format("YYYY-MM-DD")
@@ -210,10 +196,15 @@ class User extends Component {
                                 <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
                                 <hr></hr>
                                 <div className="media d-flex align-items-center">
-                                    <img className="rounded-circle mr-3"
-                                        src={this.state.userInfo.image ? this.state.userInfo.image : "https://4.bp.blogspot.com/_CFGTjIBDv4o/Si08hun6XRI/AAAAAAAAAUg/j1ZqSvAmcIU/s280/Pumping+Iron.jpg"}
-                                        alt="No Photo Available"
-                                    />
+                                    {this.state.userInfo.image ? (
+                                        <img className="rounded-circle mr-3"
+                                            src={this.state.userInfo.image}
+                                            alt="User"
+                                        />
+                                    ):(
+                                        <i className="large material-icons" style={{fontSize:80}}>account_circle</i>
+                                    )}
+                                    
                                     <div className="media-body">
                                         <p>Age: {this.state.age}</p>
                                         <p>Weight: {this.state.userInfo.weight}</p>
@@ -254,14 +245,13 @@ class User extends Component {
                                 </div> 
                                 <hr></hr>
                                 {this.state.wod ? (
-                                    <div className="div-wod-score">
+                                    <div>
                                         <WOD
                                             wod={this.state.wod}
                                             wodDate={this.state.wodDate}
                                         />
                                         <div>
                                             <hr></hr>
-
                                             <div className="div-wod-score">
 
                                                 <Row key={this.state.wod._id}>
