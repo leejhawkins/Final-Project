@@ -13,59 +13,24 @@ mongoose.connect(
 
 const movementSeed = [
     {
-        name: "Thruster",
-        type: "weight"
-    },
-    {
-        name: "Pull Up",
+        name: "C2B Pull Ups",
         type: "body weight"
     },
     {
-        name: "Run",
-        type: "cardio"
+        name: "Row - Calories",
+        type: "cal cardio"
     },
     {
-        name: "Box Jump",
-        type: "to height"
+        name: "Hang Power Clean",
+        type: "weight"
+    },
+    {
+        name: "Squat Snatch",
+        type: "weight"
     }
 ];
-const programSeed = [
-    {
-        name:"Omnia"
-    },
-    {
-        name:"Crossfit/general"
-    },
-    {
-        name: "Other/Stay at home dad"
-    }
-]
-const workoutSeed = [
-    {
-        workoutType:"For Time",
-        rounds: 3,
-        movements: [
-            {
-                name:"Thruster",
-                reps: 21,
-                weight: 95,
-                movementType: "weight"
-            },
-            {
-                name:"Pull Up",
-                reps: 15,
-                movementType: "body weight"
-            }
-        ],
-        date: Date.now()
 
-    }
-
-]
-
-db.Movement
-    .remove({})
-    .then(() => db.Movement.collection.insertMany(movementSeed))
+db.Movement.collection.insertMany(movementSeed)
     .then(data => {
         console.log(data.result.n + " records inserted!");
         process.exit(0);
@@ -74,13 +39,4 @@ db.Movement
         console.error(err);
         process.exit(1);
     });
-db.Program
-    .then(() => db.Program.collection.insertMany(programSeed))
-    .then(data => {
-        console.log(data.result.n + " records inserted!");
-        process.exit(0);
-    })
-    .catch(err => {
-        console.error(err);
-        process.exit(1);
-    });
+

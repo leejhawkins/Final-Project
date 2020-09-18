@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
-import { Input, FormBtn} from "../components/Form";
+import { Input, FormBtn } from "../components/Form";
 import "./style.css";
 import "../components/LogWorkout/LogWorkout"
 import moment from 'moment';
@@ -17,6 +17,7 @@ class User extends Component {
         userInfo: {},
         workouts: [],
         movements: [],
+        scoreSubmitted: [],
         week: {
             beginWeek: moment().weekday(0).format("YYYY-MM-DD"),
             endWeek: moment().weekday(6).format("YYYY-MM-DD"),
@@ -32,9 +33,13 @@ class User extends Component {
     getWOD = (gym, date) => {
         API.getWOD({ createdBy: gym, date: date })
             .then(res => {
-
+                var scoreSubmitted = []
+                if (res.data) {
+                     scoreSubmitted =res.data.scores.filter(score => score.userName === this.state.userInfo.userName)
+                }
                 this.setState({
-                    wod: res.data
+                    wod: res.data,
+                    scoreSubmitted: scoreSubmitted
                 })
             })
     }
@@ -88,7 +93,7 @@ class User extends Component {
         });
     };
     deleteWorkout = (id, createdBy, scoreId) => {
-        console.log(createdBy)
+        console.log(id)
         if (createdBy === this.state.userInfo.userName) {
             API.deleteWorkout(id)
                 .then(res => this.loadUser(this.state.userInfo.userName))
@@ -137,6 +142,7 @@ class User extends Component {
     }
     submitScore = event => {
         event.preventDefault()
+        console.log(this.state.wod._id)
         let rawScore;
         if (this.state.wod.workoutType === "For Time") {
             rawScore = parseInt(this.state.minutes) * 60 + parseInt(this.state.seconds);
@@ -146,7 +152,11 @@ class User extends Component {
         }
         API.submitScore({ _id: this.state.wod._id },
             { scores: { userName: this.state.userInfo.userName, firstName: this.state.userInfo.firstName, lastName: this.state.userInfo.lastName, score: rawScore } }
-        ).then(res => this.loadUser(this.state.userInfo.userName))
+        ).then(res => {
+            this.setState({ seconds: "", minutes: "" })
+            this.loadUser(this.state.userInfo.userName)
+        })
+
             .catch(err => console.log(err));
     }
 
@@ -201,10 +211,10 @@ class User extends Component {
                                             src={this.state.userInfo.image}
                                             alt="User"
                                         />
-                                    ):(
-                                        <i className="large material-icons" style={{fontSize:80}}>account_circle</i>
-                                    )}
-                                    
+                                    ) : (
+                                            <i className="large material-icons" style={{ fontSize: 80 }}>account_circle</i>
+                                        )}
+
                                     <div className="media-body">
                                         <p>Age: {this.state.age}</p>
                                         <p>Weight: {this.state.userInfo.weight}</p>
@@ -218,16 +228,19 @@ class User extends Component {
                                         }
                                     </div>
                                 </div>
-                                <hr></hr>
-                                <div>
-                                    <LogWorkout
-                                        movements={this.state.movements}
-                                        handleFormSubmit={this.handleFormSubmit}
-                                        date={this.state.date}
-                                        changeDate={this.changeDate}
-                                    />
-                                </div>
                             </div>
+
+                            <div className="log-workout">
+                                <h5>Log a Workout </h5>
+                                <hr></hr>
+                                <LogWorkout
+                                    movements={this.state.movements}
+                                    handleFormSubmit={this.handleFormSubmit}
+                                    date={this.state.date}
+                                    changeDate={this.changeDate}
+                                />
+                            </div>
+
                         </Col>
 
                         <Col size="md-4">
@@ -237,12 +250,13 @@ class User extends Component {
                                 <div>
                                     <div>Date:
                                         <DatePicker
+                                            type="button"
                                             className="datepicker btn"
                                             onChange={this.changeWODDate}
                                             name="select date"
                                         />
                                     </div>
-                                </div> 
+                                </div>
                                 <hr></hr>
                                 {this.state.wod ? (
                                     <div>
@@ -253,34 +267,46 @@ class User extends Component {
                                         <div>
                                             <hr></hr>
                                             <div className="div-wod-score">
-
                                                 <Row key={this.state.wod._id}>
-                                                    <p className="div-wod-title">{this.state.wod.workoutType === "For Time" ? "Time: " : "Score: "}</p>
-
-                                                    <Input
-                                                        className="wod-score-input"
-                                                        value={this.state.minutes}
-                                                        onChange={this.handleInputChange}
-                                                        name="minutes"
-                                                        placeholder={this.state.wod.workoutType === "For Time" ? "Minutes" : "Rounds"}
-                                                    />
-
-                                                    <h5>{this.state.wod.workoutType === "For Time" ? " : " : " + "}</h5>
-                                                    <Input
-                                                        className="wod-score-input"
-                                                        value={this.state.seconds}
-                                                        onChange={this.handleInputChange}
-                                                        name="seconds"
-                                                        placeholder={this.state.wod.workoutType === "For Time" ? "Seconds" : "Reps"}
-                                                    />
-                                                    <div>
-                                                        <FormBtn
-                                                            className="submit"
-                                                            disabled={!(this.state.seconds && this.state.minutes)}
-                                                            onClick={this.submitScore}
-                                                        >Submit Score
+                                                    {this.state.scoreSubmitted.length ===0 ? (
+                                                        <>
+                                                            <p className="div-wod-title">{this.state.wod.workoutType === "For Time" ? "Time: " : "Score: "}</p>
+                                                            <Input
+                                                                className="wod-score-input"
+                                                                value={this.state.minutes}
+                                                                onChange={this.handleInputChange}
+                                                                name="minutes"
+                                                                placeholder={this.state.wod.workoutType === "For Time" ? "Minutes" : "Rounds"}
+                                                            />
+                                                            <h5>{this.state.wod.workoutType === "For Time" ? " : " : " + "}</h5>
+                                                            <Input
+                                                                className="wod-score-input"
+                                                                value={this.state.seconds}
+                                                                onChange={this.handleInputChange}
+                                                                name="seconds"
+                                                                placeholder={this.state.wod.workoutType === "For Time" ? "Seconds" : "Reps"}
+                                                            />
+                                                            <div>
+                                                                <FormBtn
+                                                                    className="submit"
+                                                                    disabled={!(this.state.seconds && this.state.minutes)}
+                                                                    onClick={this.submitScore}
+                                                                >Submit Score
                                                         </FormBtn>
-                                                    </div>
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <h5>Your Score</h5>
+                                                            <UserWorkouts
+                                                                user={this.state.userInfo}
+                                                                workout={this.state.wod}
+                                                                deleteWorkout={this.deleteWorkout}
+                                                                getRoundLength={this.getRoundLength}
+                                                            />
+                                                        </>
+                                                    )}
+
                                                 </Row>
                                             </div>
                                         </div>
@@ -302,12 +328,20 @@ class User extends Component {
                                     <i className="material-icons">date_range</i>  Workouts {moment(this.state.week.beginWeek).format("MM/DD/YYYY")} - {moment(this.state.week.endWeek).format("MM/DD/YYYY")}
                                     <i className="material-icons" role="button" onClick={() => this.changeWeek(1)}>fast_forward</i></h5>
                                 <hr></hr>
-                                <UserWorkouts
-                                    user={this.state.userInfo}
-                                    workouts={this.state.workouts ? this.state.workouts : ""}
-                                    deleteWorkout={this.deleteWorkout}
-                                    getRoundLength={this.getRoundLength}
-                                />
+                                {this.state.workouts.length ? (
+                                    <div>
+                                        {this.state.workouts.map(workout => (
+                                            <UserWorkouts
+                                                user={this.state.userInfo}
+                                                workout={workout}
+                                                deleteWorkout={this.deleteWorkout}
+                                                getRoundLength={this.getRoundLength}
+                                            />
+                                        ))} 
+                                        
+                                    </div>
+                                ):""}
+                                
                             </div>
                         </Col>
                     </Row>

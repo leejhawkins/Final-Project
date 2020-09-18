@@ -72,20 +72,23 @@ class Gym extends Component {
       date: date,
       createdBy: this.state.user.userName
     }
-    ).then(res => this.getWOD(this.state.user.userName,this.state.date))
+    ).then(res => {
+      var workouts = this.state.workouts
+      workouts.push(res.data)
+      this.setState({workouts:workouts})
+    })
       .catch(err => console.log(err));
   }
   getMovements = () => {
     API.getMovements()
       .then(res => {
-        console.log(res.data)
         this.setState({ movements: res.data })
       })
       .catch(err => console.log(err));
   }
   getWOD = (workouts, date) => {
     let WOD = workouts.filter(workout => moment(workout.date).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD")) || []
-    if (!(WOD[0].scores.length===0)) {
+    if (!(WOD.length===0)) {
       if (WOD[0].workoutType === "For Time") {
         WOD[0].scores.sort((a, b) => a.score - b.score);
       } else {
@@ -159,17 +162,21 @@ class Gym extends Component {
                 ) : (
                   <h6>There is no workout for: {this.state.date}</h6>
                 )}
-                <div>
+              </div>
+              <>
                   {this.state.isAuthenticated.admin ? (
+                <div className="log-workout">
+                    <h5>Add Workout of the Day</h5>
+                    <hr></hr>
                     <LogWorkout
                       movements={this.state.movements}
                       handleFormSubmit={this.handleFormSubmit}
                       changeDate={this.changeDate}
                     />
-                  ):""}
-                  
                 </div>
-              </div>
+                  ):""}
+                </>  
+                
             </Col>
             <Col size="md-4">
               <div id="scores">
@@ -179,10 +186,14 @@ class Gym extends Component {
                   <div>
                     {this.state.wod.scores.map((score) => (
                       <Row>
-                        <Col size="md-6">
+                        <Col size="md-4">
+                          
+                              <i className="large material-icons" style={{ fontSize: 40 }}>account_circle</i>
+                        </Col>
+                        <Col size="md-4">
                           {score.firstName} {score.lastName}
                         </Col>
-                        <Col size="md-6">
+                        <Col size="md-4">
                           {this.state.wod.workoutType === "For Time" ? (
                             <p>
                               Time: {Math.floor(score.score / 60)}:

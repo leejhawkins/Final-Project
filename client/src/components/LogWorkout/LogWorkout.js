@@ -55,8 +55,7 @@ class LogWorkout extends React.Component {
     render() {
         return (
             <form id="log-workouts">
-                <h5>Log a Workout </h5>
-                <hr></hr>
+                
                 <Row>
                     <Dropdown className="dropdown"
                         value={this.state.workoutType}

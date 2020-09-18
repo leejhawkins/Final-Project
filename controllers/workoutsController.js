@@ -19,13 +19,15 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
     createWOD: function (req, res) {
+        var workout = {}
         db.Workout
             .create(req.body)
             .then(dbWorkout => {
-                return db.Program.findOneAndUpdate({ name: req.params.name }, { $push: { workouts: dbWorkout._id } }, { new: true });
+                workout = dbWorkout
+                return db.Program.findOneAndUpdate({ name: req.params.createdBy }, { $push: { workouts: dbWorkout._id } }, { new: true });
             })
             .then(dbProgram => {
-                res.json(dbProgram)
+                res.json(workout)
             })
             .catch(err => res.status(422).json(err));
     },
@@ -47,7 +49,6 @@ module.exports = {
         db.Workout
             .findOneAndUpdate({ _id: req.params.id }, { $push: { scores: { userName: userName,firstName:req.body.scores.firstName,lastName:req.body.scores.lastName, score: req.body.scores.score } } })
             .then(dbWorkout => {
-                console.log(userName)
                 return db.User.findOneAndUpdate({ userName: userName }, { $push: { workouts: dbWorkout._id } }, { new: true });
             })
             .then(dbUser => {
