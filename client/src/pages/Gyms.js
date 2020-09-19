@@ -188,7 +188,14 @@ class Gym extends Component {
                       <Row>
                         <Col size="md-4">
                           
-                              <i className="large material-icons" style={{ fontSize: 40 }}>account_circle</i>
+                          {score.image ? (
+                            <img className="rounded-circle mr-3"
+                              src={score.image}
+                              alt="User"
+                            />
+                          ) : (
+                              <i className="large material-icons" style={{ fontSize: 80 }}>account_circle</i>
+                            )}
                         </Col>
                         <Col size="md-4">
                           {score.firstName} {score.lastName}

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
-import { Input, FormBtn } from "../components/Form";
+import { FormBtn } from "../components/Form";
+import UserDiv from "../components/UserDiv/UserDiv"
 import "./style.css";
-import "../components/LogWorkout/LogWorkout"
+import WorkoutScore from "../components/LogWorkout/WorkoutScore"
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -18,6 +19,16 @@ class User extends Component {
         workouts: [],
         movements: [],
         scoreSubmitted: [],
+        date: moment().format("YYYY-MM-DD"),
+        workoutType: "",
+        rounds: "",
+        movementName: "",
+        reps: "",
+        weight: "",
+        movementType: "",
+        movementArray: [],
+        minutes: "",
+        seconds: "",
         week: {
             beginWeek: moment().weekday(0).format("YYYY-MM-DD"),
             endWeek: moment().weekday(6).format("YYYY-MM-DD"),
@@ -130,6 +141,24 @@ class User extends Component {
         ).then(res => this.loadUser(this.state.userInfo.userName))
             .catch(err => console.log(err));
     }
+    handleMovementChange = event => {
+        const { name, value } = event.target;
+        let movement = this.state.movements.find(movement => movement.name === value)
+        console.log(movement)
+        this.setState({
+            [name]: value,
+            movementType: movement.type
+        });
+    };
+    addMovement = () => {
+        if (this.state.movementName && this.state.reps) {
+            const movement = { name: this.state.movementName, reps: this.state.reps, weight: this.state.weight, movementType: this.state.movementType }
+            const movementArray = this.state.movementArray
+            movementArray.push(movement)
+            console.log(movementArray)
+            this.setState({ movementArray: movementArray, movementName: "", reps: "", weight: "", movementType: "" })
+        }
+    }
     changeDate = date => {
         console.log(date)
         this.setState({ date })
@@ -202,47 +231,34 @@ class User extends Component {
                 <Container fluid>
                     <Row className="container-fluid">
                         <Col size="md-4" className="container-fluid">
-                            <div id="user" className="container-fluid">
-                                <h5>{this.state.userInfo.firstName} {this.state.userInfo.lastName}</h5>
-                                <hr></hr>
-                                <div className="media d-flex align-items-center">
-                                    {this.state.userInfo.image ? (
-                                        <img className="rounded-circle mr-3"
-                                            src={this.state.userInfo.image}
-                                            alt="User"
-                                        />
-                                    ) : (
-                                            <i className="large material-icons" style={{ fontSize: 80 }}>account_circle</i>
-                                        )}
-
-                                    <div className="media-body">
-                                        <p>Age: {this.state.age}</p>
-                                        <p>Weight: {this.state.userInfo.weight}</p>
-                                        <p>Gym: {this.state.userInfo.program}</p>
-                                        {this.state.stats ? (
-                                            <div>
-                                                <p>Workouts: {this.state.stats.countWorkout}</p>
-                                                <p>Minutes:{this.state.stats.sumMinutes}</p>
-                                            </div>
-                                        ) : ("")
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-
+                            <UserDiv 
+                                userInfo = {this.state.userInfo}
+                                stats = {this.state.stats}
+                                age ={this.state.age}
+                            />
                             <div className="log-workout">
                                 <h5>Log a Workout </h5>
                                 <hr></hr>
                                 <LogWorkout
+                                    workoutType= {this.state.workoutType}
+                                    rounds= {this.state.rounds}
+                                    movementName= {this.state.movementName}
+                                    reps={this.state.reps}
+                                    weight= {this.state.weight}
+                                    movementType= {this.state.movementType}
+                                    movementArray= {this.state.movementArray}
+                                    minutes= {this.state.minutes}
+                                    seconds = {this.state.seconds}
                                     movements={this.state.movements}
-                                    handleFormSubmit={this.handleFormSubmit}
                                     date={this.state.date}
+                                    handleFormSubmit={this.handleFormSubmit}
+                                    handleInputChange ={this.handleInputChange}
+                                    handleMovementChange ={this.handleMovementChange}
+                                    addMovement={this.addMovement}
                                     changeDate={this.changeDate}
                                 />
                             </div>
-
                         </Col>
-
                         <Col size="md-4">
                             <div id="wod" >
                                 <h5>{this.state.userInfo.program}'s Workout of the Day</h5>
@@ -271,20 +287,11 @@ class User extends Component {
                                                     {this.state.scoreSubmitted.length ===0 ? (
                                                         <>
                                                             <p className="div-wod-title">{this.state.wod.workoutType === "For Time" ? "Time: " : "Score: "}</p>
-                                                            <Input
-                                                                className="wod-score-input"
-                                                                value={this.state.minutes}
-                                                                onChange={this.handleInputChange}
-                                                                name="minutes"
-                                                                placeholder={this.state.wod.workoutType === "For Time" ? "Minutes" : "Rounds"}
-                                                            />
-                                                            <h5>{this.state.wod.workoutType === "For Time" ? " : " : " + "}</h5>
-                                                            <Input
-                                                                className="wod-score-input"
-                                                                value={this.state.seconds}
-                                                                onChange={this.handleInputChange}
-                                                                name="seconds"
-                                                                placeholder={this.state.wod.workoutType === "For Time" ? "Seconds" : "Reps"}
+                                                            <WorkoutScore
+                                                                workoutType={this.state.wod.workoutType}
+                                                                seconds={this.state.seconds}
+                                                                minutes={this.state.minutes}
+                                                                handleChange={this.handleInputChange}
                                                             />
                                                             <div>
                                                                 <FormBtn
@@ -306,7 +313,6 @@ class User extends Component {
                                                             />
                                                         </>
                                                     )}
-
                                                 </Row>
                                             </div>
                                         </div>
