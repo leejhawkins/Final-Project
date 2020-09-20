@@ -64,8 +64,8 @@ class User extends Component {
     getWeekWorkouts = (workouts, beginWeek, endWeek) => {
         let weekWorkouts = [];
         workouts.forEach(workout => {
-
-            if (workout.date > beginWeek && workout.date < endWeek) {
+            console.log(workout.date)
+            if (moment(workout.date).format("YYYY-MM-DD") >= beginWeek && moment(workout.date).format("YYYY-MM-DD") <= endWeek) {
                 weekWorkouts.push(workout)
                 console.log(workout)
             }
@@ -76,7 +76,7 @@ class User extends Component {
         API.getUser(userName)
             .then(res => {
                 const weekWorkouts = this.getWeekWorkouts(res.data.workouts, this.state.week.beginWeek, this.state.week.endWeek)
-                console.log(weekWorkouts)
+                console.log(res.data.workouts)
                 const stats = this.stats(res.data.workouts, res.data.userName)
                 this.setState({
                     userInfo: res.data, workouts: weekWorkouts, workoutType: "",
@@ -143,7 +143,7 @@ class User extends Component {
     }
     handleMovementChange = event => {
         const { name, value } = event.target;
-        let movement = this.state.movements.find(movement => movement.name === value)
+        let movement = this.props.movements.find(movement => movement.name === value )
         console.log(movement)
         this.setState({
             [name]: value,
@@ -220,6 +220,7 @@ class User extends Component {
         const week = this.state.week.week + parseInt(value)
         const beginWeek = moment().weekday(week * 7).format("YYYY-MM-DD")
         const endWeek = moment().weekday(week * 7 + 6).format("YYYY-MM-DD")
+        console.log(endWeek)
         const weekWorkouts = this.getWeekWorkouts(this.state.userInfo.workouts, beginWeek, endWeek)
         this.setState({ week: { beginWeek: beginWeek, endWeek: endWeek, week: week }, workouts: weekWorkouts })
 
@@ -240,21 +241,10 @@ class User extends Component {
                                 <h5>Log a Workout </h5>
                                 <hr></hr>
                                 <LogWorkout
-                                    workoutType= {this.state.workoutType}
-                                    rounds= {this.state.rounds}
-                                    movementName= {this.state.movementName}
-                                    reps={this.state.reps}
-                                    weight= {this.state.weight}
-                                    movementType= {this.state.movementType}
-                                    movementArray= {this.state.movementArray}
-                                    minutes= {this.state.minutes}
-                                    seconds = {this.state.seconds}
                                     movements={this.state.movements}
-                                    date={this.state.date}
                                     handleFormSubmit={this.handleFormSubmit}
                                     handleInputChange ={this.handleInputChange}
-                                    handleMovementChange ={this.handleMovementChange}
-                                    addMovement={this.addMovement}
+                                    date={this.state.date}
                                     changeDate={this.changeDate}
                                 />
                             </div>

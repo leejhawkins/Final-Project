@@ -88,6 +88,7 @@ class Gym extends Component {
   }
   getWOD = (workouts, date) => {
     let WOD = workouts.filter(workout => moment(workout.date).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD")) || []
+    console.log(WOD)
     if (!(WOD.length===0)) {
       if (WOD[0].workoutType === "For Time") {
         WOD[0].scores.sort((a, b) => a.score - b.score);
