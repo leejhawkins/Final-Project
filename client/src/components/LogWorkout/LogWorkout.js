@@ -1,6 +1,7 @@
 import React from "react";
 import { Input, FormBtn, Dropdown, Option } from "../Form";
 import { SaveBtn } from "../Buttons/SaveBtn"
+import { DeleteBtn } from "../Buttons/DeleteBtn"
 import { List } from "../List"
 import { Col, Row } from "../Grid";
 import WorkoutScore from "./WorkoutScore"
@@ -48,6 +49,11 @@ class LogWorkout extends React.Component {
             this.setState({ movementArray: movementArray, movementName: "", reps: "", weight: "", movementType: "" })
         }
     }
+    deleteMovement = (key) => {
+        const movementArray = this.state.movementArray
+        movementArray.splice(key,1)
+        this.setState({movementArray:movementArray})
+    }
     changeDate = date => {
         console.log(date)
         this.setState({ date })
@@ -91,19 +97,27 @@ class LogWorkout extends React.Component {
                         {this.state.movementArray.length ? (
                             <List>
 
-                                {this.state.movementArray.map(movement => (
-                                    <Row>
-                                        <Col size="md-4">
+                                {this.state.movementArray.map((movement,i) => (
+                                    <Row key={i}>
+                                        <Col size="md-3">
                                             <p>{movement.reps} {movement.movementType === "cardio" ? "m" : "x"} </p>
                                         </Col>
                                         <Col size="md-4">
                                             <p>{movement.name}</p>
                                         </Col>
                                         {movement.movementType === "weight" || movement.movementType === "to height" ? (
-                                            <Col size="md-4">
+                                            <Col size="md-3">
                                                 {movement.movementType === "weight" ? <p>at {movement.weight} lbs</p> : <p>to {movement.weight} inches</p>}
                                             </Col>
-                                        ) : ("")}
+                                        ) : (
+                                            <Col size="md-3">
+                                                
+                                            </Col>
+                                        )}
+                                        <Col size="md-2">
+                                            <DeleteBtn onClick={() => this.deleteMovement(i)}>
+                                                <i className="material-icons">cancel</i></DeleteBtn>
+                                        </Col>
                                     </Row>
                                 ))}
                             </List>
@@ -150,15 +164,18 @@ class LogWorkout extends React.Component {
 
                         ) : ("")}
                         <hr></hr>
-                        <WorkoutScore
-                            workoutType={this.state.workoutType}
-                            seconds = {this.state.seconds}
-                            minutes = {this.state.minutes}
-                            handleChange = {this.handleInputChange}
-                        />
+                        {!this.props.admin ? (
+                            <WorkoutScore
+                                workoutType={this.state.workoutType}
+                                seconds={this.state.seconds}
+                                minutes={this.state.minutes}
+                                handleChange={this.handleInputChange}
+                            />
+                        ):""}
+                       
                         <FormBtn
                             className="logscore"
-                            disabled={!(this.state.workoutType && this.state.rounds && this.state.movementArray && this.state.minutes)}
+                            disabled={!(this.state.workoutType && this.state.rounds && this.state.movementArray)}
                             onClick={()=> {this.props.handleFormSubmit(
                                 this.state.date,
                                 this.state.workoutType,

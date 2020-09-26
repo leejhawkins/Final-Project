@@ -3,6 +3,7 @@ import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
 import { FormBtn } from "../components/Form";
 import UserDiv from "../components/UserDiv/UserDiv"
+import Div from "../components/Div/Div"
 import "./style.css";
 import WorkoutScore from "../components/LogWorkout/WorkoutScore"
 import moment from 'moment';
@@ -20,13 +21,6 @@ class User extends Component {
         movements: [],
         scoreSubmitted: [],
         date: moment().format("YYYY-MM-DD"),
-        workoutType: "",
-        rounds: "",
-        movementName: "",
-        reps: "",
-        weight: "",
-        movementType: "",
-        movementArray: [],
         minutes: "",
         seconds: "",
         week: {
@@ -46,7 +40,7 @@ class User extends Component {
             .then(res => {
                 var scoreSubmitted = []
                 if (res.data) {
-                     scoreSubmitted =res.data.scores.filter(score => score.userName === this.state.userInfo.userName)
+                    scoreSubmitted = res.data.scores.filter(score => score.userName === this.state.userInfo.userName)
                 }
                 this.setState({
                     wod: res.data,
@@ -64,10 +58,9 @@ class User extends Component {
     getWeekWorkouts = (workouts, beginWeek, endWeek) => {
         let weekWorkouts = [];
         workouts.forEach(workout => {
-            console.log(workout.date)
+
             if (moment(workout.date).format("YYYY-MM-DD") >= beginWeek && moment(workout.date).format("YYYY-MM-DD") <= endWeek) {
                 weekWorkouts.push(workout)
-                console.log(workout)
             }
         })
         return weekWorkouts
@@ -76,7 +69,6 @@ class User extends Component {
         API.getUser(userName)
             .then(res => {
                 const weekWorkouts = this.getWeekWorkouts(res.data.workouts, this.state.week.beginWeek, this.state.week.endWeek)
-                console.log(res.data.workouts)
                 const stats = this.stats(res.data.workouts, res.data.userName)
                 this.setState({
                     userInfo: res.data, workouts: weekWorkouts, workoutType: "",
@@ -93,7 +85,6 @@ class User extends Component {
     }
     getCrossFitWOD = date => {
         API.getCrossFitWOD(date).then(res => {
-            console.log(res.data);
             this.setState({ CrossFitWOD: res.data });
         })
     }
@@ -122,6 +113,14 @@ class User extends Component {
         }
         return roundLength
     }
+    getUserScore = (workout,score) => {
+        console.log(score)
+        if (workout.workoutType === "For Time") {
+            return <p>Time:{Math.floor(score / 60)}:{(score % 60) < 10 ? "0" + score % 60 : score % 60}</p>
+        } else {
+            return <p>Score: {Math.floor(score / this.getRoundLength(workout.movements))} Rounds + {score % this.getRoundLength(workout.movements)} Reps</p>
+        }
+    }
     handleFormSubmit = (date, workoutType, rounds, movementArray, minutes, seconds) => {
         let rawScore;
         if (workoutType === "For Time") {
@@ -143,7 +142,7 @@ class User extends Component {
     }
     handleMovementChange = event => {
         const { name, value } = event.target;
-        let movement = this.props.movements.find(movement => movement.name === value )
+        let movement = this.props.movements.find(movement => movement.name === value)
         console.log(movement)
         this.setState({
             [name]: value,
@@ -200,7 +199,6 @@ class User extends Component {
                     if (array[i].scores[j].userName === userName) {
                         sumMinutes += parseInt(array[i].rounds);
                         roundsArray.push(parseInt(array[i].rounds))
-                        console.log("Total Minutes: " + sumMinutes);
                     }
                 }
             }
@@ -220,7 +218,6 @@ class User extends Component {
         const week = this.state.week.week + parseInt(value)
         const beginWeek = moment().weekday(week * 7).format("YYYY-MM-DD")
         const endWeek = moment().weekday(week * 7 + 6).format("YYYY-MM-DD")
-        console.log(endWeek)
         const weekWorkouts = this.getWeekWorkouts(this.state.userInfo.workouts, beginWeek, endWeek)
         this.setState({ week: { beginWeek: beginWeek, endWeek: endWeek, week: week }, workouts: weekWorkouts })
 
@@ -228,121 +225,104 @@ class User extends Component {
 
     render() {
         return (
-            <div className="container container-fluid">
-                <Container fluid>
-                    <Row className="container-fluid">
-                        <Col size="md-4" className="container-fluid">
-                            <UserDiv 
-                                userInfo = {this.state.userInfo}
-                                stats = {this.state.stats}
-                                age ={this.state.age}
+            <Container fluid>
+                <Row className="container-fluid">
+                    <Col size="md-4" className="container-fluid">
+                        <UserDiv
+                            userInfo={this.state.userInfo}
+                            stats={this.state.stats}
+                            age={this.state.age}
+                        />
+                        <Div title="Log a Workout">
+                            <LogWorkout
+                                movements={this.state.movements}
+                                handleFormSubmit={this.handleFormSubmit}
+                                handleInputChange={this.handleInputChange}
+                                date={this.state.date}
+                                changeDate={this.changeDate}
                             />
-                            <div className="log-workout">
-                                <h5>Log a Workout </h5>
-                                <hr></hr>
-                                <LogWorkout
-                                    movements={this.state.movements}
-                                    handleFormSubmit={this.handleFormSubmit}
-                                    handleInputChange ={this.handleInputChange}
-                                    date={this.state.date}
-                                    changeDate={this.changeDate}
+                        </Div>
+                    </Col>
+                    <Col size="md-4">
+                        <Div title={this.state.userInfo.program ? this.state.userInfo.program + "'s Workout of the Day" : ""} >
+                            <div>Date:
+                                        <DatePicker
+                                    type="button"
+                                    className="datepicker btn"
+                                    onChange={this.changeWODDate}
+                                    name="select date"
                                 />
                             </div>
-                        </Col>
-                        <Col size="md-4">
-                            <div id="wod" >
-                                <h5>{this.state.userInfo.program}'s Workout of the Day</h5>
-                                <hr></hr>
+                            <hr></hr>
+                            {this.state.wod ? (
                                 <div>
-                                    <div>Date:
-                                        <DatePicker
-                                            type="button"
-                                            className="datepicker btn"
-                                            onChange={this.changeWODDate}
-                                            name="select date"
-                                        />
-                                    </div>
-                                </div>
-                                <hr></hr>
-                                {this.state.wod ? (
-                                    <div>
-                                        <WOD
-                                            wod={this.state.wod}
-                                            wodDate={this.state.wodDate}
-                                        />
-                                        <div>
-                                            <hr></hr>
-                                            <div className="div-wod-score">
-                                                <Row key={this.state.wod._id}>
-                                                    {this.state.scoreSubmitted.length ===0 ? (
-                                                        <>
-                                                            <p className="div-wod-title">{this.state.wod.workoutType === "For Time" ? "Time: " : "Score: "}</p>
-                                                            <WorkoutScore
-                                                                workoutType={this.state.wod.workoutType}
-                                                                seconds={this.state.seconds}
-                                                                minutes={this.state.minutes}
-                                                                handleChange={this.handleInputChange}
-                                                            />
-                                                            <div>
-                                                                <FormBtn
-                                                                    className="submit"
-                                                                    disabled={!(this.state.seconds && this.state.minutes)}
-                                                                    onClick={this.submitScore}
-                                                                >Submit Score
+                                    <WOD
+                                        wod={this.state.wod}
+                                        wodDate={this.state.wodDate}
+                                    />
+                                    <hr></hr>
+                                    <Div title={this.state.scoreSubmitted === 0 ? ("Submit Score") : "" }>
+                                        <Row key={this.state.wod._id}>
+                                            {this.state.scoreSubmitted.length === 0 ? (
+                                                <>
+                                                    <p className="div-wod-title">{this.state.wod.workoutType === "For Time" ? "Time: " : "Score: "}</p>
+                                                    <WorkoutScore
+                                                        workoutType={this.state.wod.workoutType}
+                                                        seconds={this.state.seconds}
+                                                        minutes={this.state.minutes}
+                                                        handleChange={this.handleInputChange}
+                                                    />
+                                                    <div>
+                                                        <FormBtn
+                                                            className="submit"
+                                                            disabled={!(this.state.seconds && this.state.minutes)}
+                                                            onClick={this.submitScore}
+                                                        >Submit Score
                                                         </FormBtn>
-                                                            </div>
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <h5>Your Score</h5>
-                                                            <UserWorkouts
-                                                                user={this.state.userInfo}
-                                                                workout={this.state.wod}
-                                                                deleteWorkout={this.deleteWorkout}
-                                                                getRoundLength={this.getRoundLength}
-                                                            />
-                                                        </>
-                                                    )}
-                                                </Row>
+                                                    </div>
+                                                </>
+                                            ) : (<div>
+                                                    <h5> {this.getUserScore(this.state.wod, this.state.wod.scores.filter(score => this.state.userInfo.userName === score.userName)[0].score)}</h5>
                                             </div>
-                                        </div>
-                                    </div>
-                                ) : ("")}
-                                {this.state.CrossFitWOD && !this.state.wod ? (
-                                    <div>
-                                        <h5>CrossFit's WOD for {moment(this.state.wodDate).format("MM/DD/YYYY")}</h5>
-                                        <h6>{this.state.CrossFitWOD.map(item => (
+                                            )}
+                                        </Row>
+                                    </Div>
+                                </div>
 
-                                            <p>{item}</p>
-                                        ))}</h6>
-                                    </div>) : ("")}
-                            </div>
-                        </Col>
-                        <Col size="md-4">
-                            <div id="workouts">
-                                <h5><i className="material-icons" role="button" onClick={() => this.changeWeek(-1)}>fast_rewind</i>
-                                    <i className="material-icons">date_range</i>  Workouts {moment(this.state.week.beginWeek).format("MM/DD/YYYY")} - {moment(this.state.week.endWeek).format("MM/DD/YYYY")}
-                                    <i className="material-icons" role="button" onClick={() => this.changeWeek(1)}>fast_forward</i></h5>
-                                <hr></hr>
-                                {this.state.workouts.length ? (
-                                    <div>
-                                        {this.state.workouts.map(workout => (
-                                            <UserWorkouts
-                                                user={this.state.userInfo}
-                                                workout={workout}
-                                                deleteWorkout={this.deleteWorkout}
-                                                getRoundLength={this.getRoundLength}
-                                            />
-                                        ))} 
-                                        
-                                    </div>
-                                ):""}
-                                
-                            </div>
-                        </Col>
-                    </Row>
-                </Container >
-            </div >
+                            ) : (this.state.CrossFitWOD ? (
+                                <Div title={"CrossFit's WOD for" + moment(this.state.wodDate).format("MM/DD/YYYY")}>
+                                    <h6>{this.state.CrossFitWOD.map(item => (
+                                        <p>{item}</p>
+                                    ))}</h6>
+                                </Div>) : (""))}
+                            {}
+                        </Div>
+                    </Col>
+                    <Col size="md-4">
+                        <div id="workouts">
+                            <h5><i className="material-icons" role="button" onClick={() => this.changeWeek(-1)}>fast_rewind</i>
+                                <i className="material-icons">date_range</i>  Workouts {moment(this.state.week.beginWeek).format("MM/DD/YYYY")} - {moment(this.state.week.endWeek).format("MM/DD/YYYY")}
+                                <i className="material-icons" role="button" onClick={() => this.changeWeek(1)}>fast_forward</i></h5>
+                            <hr></hr>
+                            {this.state.workouts.length ? (
+                                <div>
+                                    {this.state.workouts.map(workout => (
+                                        <UserWorkouts
+                                            user={this.state.userInfo}
+                                            workout={workout}
+                                            getUserScore={this.getUserScore}
+                                            deleteWorkout={this.deleteWorkout}
+                                            getRoundLength={this.getRoundLength}
+                                        />
+                                    ))}
+
+                                </div>
+                            ) : ""}
+
+                        </div>
+                    </Col>
+                </Row>
+            </Container >
         )
     }
 };

@@ -82,6 +82,7 @@ class Gym extends Component {
   getMovements = () => {
     API.getMovements()
       .then(res => {
+        console.log(res.data)
         this.setState({ movements: res.data })
       })
       .catch(err => console.log(err));
@@ -173,6 +174,8 @@ class Gym extends Component {
                       movements={this.state.movements}
                       handleFormSubmit={this.handleFormSubmit}
                       changeDate={this.changeDate}
+                      admin ={this.state.isAuthenticated.admin}
+
                     />
                 </div>
                   ):""}
