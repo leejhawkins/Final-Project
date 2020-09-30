@@ -22,6 +22,10 @@ export default {
   submitScore: function (id,workoutData) {
     return axios.put("/api/workouts/"+id._id,workoutData)
   },
+  editScore: function (id,workoutData) {
+    console.log(id)
+    return axios.put("/api/workouts/" + id.workoutId +"/" + id.scoreId, workoutData)
+  },
   getWorkouts: function (id) {
     return axios.get("/api/workouts/" + id);
   },

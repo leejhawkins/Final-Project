@@ -106,6 +106,27 @@ class User extends Component {
                 .catch(err => console.log(err));
         }
     };
+    editScore = (workout,scoreId) => {
+        let rawScore;
+        if (workout.workoutType === "For Time") {
+            rawScore = parseInt(this.state.minutes) * 60 + parseInt(this.state.seconds);
+        } else {
+            let roundLength = this.getRoundLength(workout.movements)
+            rawScore = parseInt(this.state.minutes) * roundLength + parseInt(this.state.seconds)
+        }
+        API.editScore({
+            scoreId:scoreId,
+            workoutId: workout._id 
+        },
+            { scores: { userName: this.state.userInfo.userName, firstName: this.state.userInfo.firstName, lastName: this.state.userInfo.lastName, score: rawScore } }
+        ).then(res => {
+            this.setState({ seconds: "", minutes: "" })
+            this.loadUser(this.state.userInfo.userName)
+        })
+
+            .catch(err => console.log(err));
+
+    }
     getRoundLength = array => {
         var roundLength = 0;
         for (let i = 0; i < array.length; i++) {
@@ -187,6 +208,7 @@ class User extends Component {
 
             .catch(err => console.log(err));
     }
+    
 
     stats = (array, userName) => {
         let countWorkout = array.length;
@@ -310,9 +332,13 @@ class User extends Component {
                                         <UserWorkouts
                                             user={this.state.userInfo}
                                             workout={workout}
+                                            minutes={this.state.minutes}
+                                            seconds={this.state.seconds}
+                                            handleInputChange={this.handleInputChange}
                                             getUserScore={this.getUserScore}
                                             deleteWorkout={this.deleteWorkout}
                                             getRoundLength={this.getRoundLength}
+                                            editScore={this.editScore}
                                         />
                                     ))}
 

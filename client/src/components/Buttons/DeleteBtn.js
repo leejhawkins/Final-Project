@@ -3,7 +3,7 @@ import "./style.css";
 
 export function DeleteBtn(props) {
   return (
-    <span className="delete-btn" style={{ marginLeft:5}} {...props}  role="button" tabIndex="0"> {props.children}
+    <span style={{ marginLeft:5}} {...props}  role="button" tabIndex="0"> {props.children}
     </span>
   );
 }

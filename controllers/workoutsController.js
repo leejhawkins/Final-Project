@@ -43,8 +43,24 @@ module.exports = {
             })
             .catch(err => res.status(422).json(err));
     },
+    editScore: function (req,res) {
+        const score = req.body.scores
+        const _id = req.params.scoreId
+        console.log(score)
+
+        db.Workout
+            .findOneAndUpdate({ _id: req.params.workoutId }, { $pull: { scores: { _id: _id } } })
+            .then(dbWorkout => {
+                return db.Workout.findOneAndUpdate({ _id: dbWorkout._id }, { $push: { scores: score}  })
+            }) 
+            .then(dbUser => {
+                res.json(dbUser)
+            })
+            .catch(err => res.status(422).json(err))
+    },
     submitScore: function (req, res) {
         const userName = req.body.scores.userName
+        console.log(userName)
         
         db.Workout
             .findOneAndUpdate({ _id: req.params.id }, { $push: { scores: { userName: userName,firstName:req.body.scores.firstName,lastName:req.body.scores.lastName, score: req.body.scores.score } } })

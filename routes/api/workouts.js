@@ -20,6 +20,9 @@ router.route("/:createdBy/:date")
     .get(workoutsController.getWOD)
     .post(workoutsController.createWOD)
 
+router.route("/:workoutId/:scoreId")
+    .put(workoutsController.editScore)
+
 
 
 
