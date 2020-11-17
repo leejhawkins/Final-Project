@@ -69,7 +69,7 @@ class Gym extends Component {
       workoutType: workoutType,
       rounds: rounds,
       movements: movementArray,
-      date: date,
+      date: moment(date).format("YYYY-MM-DDT06:00"),
       createdBy: this.state.user.userName
     }
     ).then(res => {

@@ -5,9 +5,11 @@
 }
 
 .edit-btn {
-  float: right;
+  float: right; 
   color: blue;
   position: relative;
+  font-size: 12px;
+  padding: 0px;
 }
 
 

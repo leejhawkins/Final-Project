@@ -5,7 +5,7 @@ function Footer() {
   return (
     <nav className="footer fa fa-copyright">
       <i className="material-icons">copyright</i>
-        FITNESS TRAINER         
+        Collective Fitness 2020        
     </nav>
   );
 }

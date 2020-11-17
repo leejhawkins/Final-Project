@@ -13,20 +13,20 @@ mongoose.connect(
 
 const movementSeed = [
     {
-        name: "C2B Pull Ups",
+        name: "Front Squats",
+        type: "weight"
+    },
+    {
+        name: "Single Arm DB Hang Clean and Jerk",
+        type: "weight"
+    },
+    {
+        name: "Deadlifts",
+        type: "weight"
+    },
+    {
+        name: "Handstand Push-ups - Kipping",
         type: "body weight"
-    },
-    {
-        name: "Row - Calories",
-        type: "cal cardio"
-    },
-    {
-        name: "Hang Power Clean",
-        type: "weight"
-    },
-    {
-        name: "Squat Snatch",
-        type: "weight"
     }
 ];
 

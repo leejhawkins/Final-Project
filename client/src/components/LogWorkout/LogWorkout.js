@@ -27,6 +27,7 @@ class LogWorkout extends React.Component {
     }
     handleInputChange = (event) => {
         const { name, value } = event.target;
+        console.log(event.target)
         this.setState({
             [name]: value,
         });

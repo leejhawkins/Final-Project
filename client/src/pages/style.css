@@ -7,6 +7,9 @@
 header {
   margin-bottom: 20px;
 }
+#edit-score {
+  margin-top: 20px;
+}
 
 .user-input {
    width: 100%;

@@ -20,6 +20,7 @@ class User extends Component {
         workouts: [],
         movements: [],
         scoreSubmitted: [],
+        edit: "",
         date: moment().format("YYYY-MM-DD"),
         minutes: "",
         seconds: "",
@@ -89,7 +90,9 @@ class User extends Component {
         })
     }
     handleInputChange = event => {
+        event.preventDefault()
         const { name, value } = event.target;
+        console.log(event.target)
         this.setState({
             [name]: value
         });
@@ -120,7 +123,7 @@ class User extends Component {
         },
             { scores: { userName: this.state.userInfo.userName, firstName: this.state.userInfo.firstName, lastName: this.state.userInfo.lastName, score: rawScore } }
         ).then(res => {
-            this.setState({ seconds: "", minutes: "" })
+            this.setState({ seconds: "", minutes: "",edit:"" })
             this.loadUser(this.state.userInfo.userName)
         })
 
@@ -334,6 +337,7 @@ class User extends Component {
                                             workout={workout}
                                             minutes={this.state.minutes}
                                             seconds={this.state.seconds}
+                                            edit={this.state.edit}
                                             handleInputChange={this.handleInputChange}
                                             getUserScore={this.getUserScore}
                                             deleteWorkout={this.deleteWorkout}

@@ -22,7 +22,7 @@ app.use(routes);
 
 mongoose.connect(
   process.env.MONGODB_URI ||
-    "mongodb://robmccandless:Saraannmcc1@ds139331.mlab.com:39331/heroku_qsv472z6",
+  "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@cluster-qsv472z6.ljsj7.mongodb.net/heroku_qsv472z6?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
